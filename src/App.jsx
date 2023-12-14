@@ -1,39 +1,68 @@
-import styled from "styled-components";
+import {
+  Navigate,
+  RouterProvider,
+  createBrowserRouter,
+} from "react-router-dom";
 import GlobalStyles from "./styles/GlobalStyles";
-import Button from "./ui/Button";
-import Input from "./ui/Input";
-import Heading from "./ui/Heading";
-import Row from "./ui/Row";
+import Dashboard from "./pages/Dashboard";
+import Bookings from "./pages/Bookings";
+import Cabins from "./pages/Cabins";
+import Users from "./pages/Users";
+import Settings from "./pages/Settings";
+import Account from "./pages/Account";
+import Login from "./pages/Login";
+import PageNotFound from "./pages/PageNotFound";
 
-const StyledApp = styled.div`
-  /* background-color: orange; */
-  padding: 20px;
-`;
+const router = createBrowserRouter([
+  {
+    path: "/",
+    children: [
+      {
+        index: true,
+        element: <Navigate to="/dashboard" replace />,
+      },
+      {
+        path: "dashboard",
+        element: <Dashboard />,
+      },
+      {
+        path: "bookings",
+        element: <Bookings />,
+      },
+      {
+        path: "Cabins",
+        element: <Cabins />,
+      },
+      {
+        path: "users",
+        element: <Users />,
+      },
+
+      {
+        path: "settings",
+        element: <Settings />,
+      },
+      {
+        path: "account",
+        element: <Account />,
+      },
+      {
+        path: "login",
+        element: <Login />,
+      },
+    ],
+  },
+  {
+    path: "*",
+    element: <PageNotFound />,
+  },
+]);
 
 function App() {
   return (
     <>
       <GlobalStyles />
-      <StyledApp>
-        <Row>
-          <Row type="horizontal">
-            <Heading as="h1">The Wild Oasis</Heading>
-            <div>
-              <Heading as="h2">Check in and Check out</Heading>
-              <Button onClick={() => alert("Check in")}>Check in</Button>
-              <Button variation="secondary" size="small" onClick={() => alert("Check out")}>Check out</Button>
-            </div>
-          </Row>
-
-          <Row>
-            <Heading as="h3">form</Heading>
-            <form>
-              <Input type="number" placeholder="Number of guests" />
-              <Input type="number" placeholder="Number of guests" />
-            </form>
-          </Row>
-        </Row>
-      </StyledApp>
+      <RouterProvider router={router} />;
     </>
   );
 }
