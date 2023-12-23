@@ -18,7 +18,7 @@ export async function deleteCabin(id) {
 
     if (error) {
       console.log(error);
-      throw new Error(`Cabin ${id} could not be deleted`);
+      throw new Error(`Cabin could not be deleted`);
     }
     return data;
 }
