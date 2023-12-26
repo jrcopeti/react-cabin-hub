@@ -25,7 +25,7 @@ function CreateCabinForm({ onSetShowForm }) {
         queryKey: ["cabins"],
       });
       reset();
-      // onSetShowForm(false)
+      onSetShowForm(false);
     },
     onError: (err) => {
       toast.error(err.message);
@@ -33,7 +33,9 @@ function CreateCabinForm({ onSetShowForm }) {
   });
 
   function onSubmit(data) {
-    mutate(data);
+    mutate({...data, image: data.image[0]});
+
+
   }
 
   function onError(errors) {
@@ -95,14 +97,19 @@ function CreateCabinForm({ onSetShowForm }) {
         <Textarea
           type="number"
           id="description"
-          defaultValue=""
           disabled={isCreating}
+          defaultValue=""
           {...register("description", { required: "This field is required" })}
         />
       </FormRow>
 
       <FormRow label="Cabin photo">
-        <FileInput id="image" accept="image/*" disabled={isCreating} />
+        <FileInput
+          id="image"
+          accept="image/*"
+          disabled={isCreating}
+          {...register("image", { required: "This field is required" })}
+        />
       </FormRow>
 
       <FormRow>
