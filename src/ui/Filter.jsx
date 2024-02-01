@@ -11,18 +11,17 @@ const StyledFilter = styled.div`
   gap: 0.4rem;
 `;
 
-const FilterButton = styled.button.attrs(props => ({
-
-}))`
+const FilterButton = styled.button`
   background-color: var(--color-grey-0);
   border: none;
 
   ${(props) =>
-    props.active ?
-    css`
-      background-color: var(--color-brand-600);
-      color: var(--color-brand-50);
-    ` : undefined}
+    props.active
+      ? css`
+          background-color: var(--color-brand-600);
+          color: var(--color-brand-50);
+        `
+      : undefined}
 
   border-radius: var(--border-radius-sm);
   font-weight: 500;
