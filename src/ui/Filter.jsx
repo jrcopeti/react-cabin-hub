@@ -11,16 +11,18 @@ const StyledFilter = styled.div`
   gap: 0.4rem;
 `;
 
-const FilterButton = styled.button`
+const FilterButton = styled.button.attrs(props => ({
+
+}))`
   background-color: var(--color-grey-0);
   border: none;
 
   ${(props) =>
-    props.active &&
+    props.active ?
     css`
       background-color: var(--color-brand-600);
       color: var(--color-brand-50);
-    `}
+    ` : undefined}
 
   border-radius: var(--border-radius-sm);
   font-weight: 500;
@@ -50,7 +52,8 @@ function Filter({ filterField, options }) {
         <FilterButton
           onClick={() => handleClick(option.value)}
           key={option.value}
-          active={option.value === currentFilter}
+          active={option.value === currentFilter ? "true" : undefined}
+          disabled={option.value === currentFilter}
         >
           {option.label}
         </FilterButton>
