@@ -2,7 +2,7 @@ import styled from "styled-components";
 import Tag from "../../ui/Tag";
 import { Flag } from "../../ui/Flag";
 import Button from "../../ui/Button";
-import CheckoutButton from "./CheckoutButton"
+import CheckoutButton from "./CheckoutButton";
 import { Link } from "react-router-dom";
 
 const StyledTodayItem = styled.li`
@@ -44,8 +44,9 @@ function TodayItem({ activity }) {
           Check in
         </Button>
       )}
-      {status === "checked-in" && <CheckoutButton bookingId={id}>
-        </CheckoutButton>}
+      {status === "checked-in" && (
+        <CheckoutButton bookingId={id}></CheckoutButton>
+      )}
     </StyledTodayItem>
   );
 }
