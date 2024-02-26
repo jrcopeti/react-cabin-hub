@@ -17,10 +17,18 @@ import {
 } from "date-fns";
 import Spinner from "../../ui/Spinner";
 import Select from "../../ui/Select";
+import Checkbox from "../../ui/Checkbox";
 
 import { useGuests } from "../guests/useGuests";
+import { useState } from "react";
+import { useCreateBookings } from "./useCreateBookings";
 
 function CreateCabinForm({ onCloseModal }) {
+  const [wantsBreakfast, setWantsBreakfast] = useState(false);
+  const [isPaid, setIsPaid] = useState(false);
+
+  const { createBooking, isLoading: isCreating } = useCreateBookings();
+
   const { settings, isLoading: isLoadingSettings } = useSettings();
 
   const { cabins, isLoading: isLoadingCabins } = useCabins();
@@ -40,7 +48,7 @@ function CreateCabinForm({ onCloseModal }) {
   const startDateInput = watch("startDate");
   const endDateInput = watch("endDate");
   const numNightsInput =
-    startDateInput && endDateInput
+    startDateInput && endDateInput && endDateInput > startDateInput
       ? differenceInDays(parseISO(endDateInput), parseISO(startDateInput))
       : 0;
 
@@ -66,15 +74,47 @@ function CreateCabinForm({ onCloseModal }) {
         label: guest.fullName,
       })),
   ];
+
   function onSubmit(data) {
+    // CabinPrice
+    const reservedCabin = cabins
+      .filter((cabin) => cabin.id === +data.cabinId)
+      .at(0);
+    const cabinPrice =
+      (reservedCabin.regularPrice - reservedCabin.discount) * numNightsInput;
+
+    // ExtraPrice
+    const extraPrice = wantsBreakfast
+      ? numNightsInput * settings.breakfastPrice * +data.numGuests
+      : 0;
+
+    // Total Price
+    const totalPrice = cabinPrice + extraPrice;
+
     const finalData = {
       ...data,
+      startDate: new Date(data.startDate).toISOString(),
+      endDate: new Date(data.endDate).toISOString(),
       numNights: numNightsInput,
       numGuests: +data.numGuests,
       cabinId: +data.cabinId,
       guestId: +data.guestId,
+      observations: data.observations,
+      hasBreakfast: wantsBreakfast,
+      isPaid,
+      cabinPrice,
+      extraPrice,
+      totalPrice,
+      status: "unconfirmed",
     };
     console.log(finalData);
+
+    createBooking(finalData, {
+      onSuccess: () => {
+        reset();
+        onCloseModal?.();
+      },
+    });
   }
 
   function onError(errors) {
@@ -88,6 +128,7 @@ function CreateCabinForm({ onCloseModal }) {
     >
       <FormRow label="Start Date" error={errors?.startDate?.message}>
         <Input
+          disabled={isCreating}
           type="date"
           id="startDate"
           {...register("startDate", {
@@ -106,6 +147,7 @@ function CreateCabinForm({ onCloseModal }) {
 
       <FormRow label="End Date" error={errors?.endDate?.message}>
         <Input
+          disabled={isCreating}
           type="date"
           id="endDate"
           {...register("endDate", {
@@ -132,6 +174,7 @@ function CreateCabinForm({ onCloseModal }) {
 
       <FormRow label="Number of Guests" error={errors?.numGuests?.message}>
         <Input
+          disabled={isCreating}
           type="number"
           defaultValue={1}
           id="numGuests"
@@ -161,6 +204,7 @@ function CreateCabinForm({ onCloseModal }) {
               options={cabinOptions}
               value={field.value}
               onChange={(e) => field.onChange(e.target.value)}
+              disabled={isCreating}
             />
           )}
         />
@@ -178,13 +222,51 @@ function CreateCabinForm({ onCloseModal }) {
               options={guestOptions}
               value={field.value}
               onChange={(e) => field.onChange(e.target.value)}
+              disabled={isCreating}
             />
           )}
         />
       </FormRow>
 
+      <FormRow label="Observations">
+        <Textarea
+          disabled={isCreating}
+          id="observations"
+          defaultValue=""
+          {...register("observations")}
+        />
+      </FormRow>
+
       <FormRow>
-        <Button>Create Booking</Button>
+        <Checkbox
+          disabled={isCreating}
+          id="breakfast"
+          onChange={() => setWantsBreakfast((e) => !e)}
+        >
+          Includes breakfast?
+        </Checkbox>
+
+        <Checkbox
+          disabled={isCreating}
+          id="paid"
+          onChange={() => setIsPaid((e) => !e)}
+        >
+          Was paid?
+        </Checkbox>
+      </FormRow>
+
+      <FormRow>
+        <Button
+          disabled={isCreating}
+          variation="secondary"
+          type="reset"
+          onClick={() => onCloseModal?.()}
+        >
+          Cancel
+        </Button>
+        <Button disabled={isCreating} type="submit" variation="primary">
+          Submit
+        </Button>
       </FormRow>
     </Form>
   );

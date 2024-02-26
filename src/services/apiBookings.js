@@ -135,16 +135,62 @@ export async function deleteBooking(id) {
   return data;
 }
 
-export async function createBooking(newBooking) {
-  const { data, error } = await supabase
+export async function checkForOverlappingBookings(cabinId, startDate, endDate) {
+  const query = supabase
     .from("bookings")
-    .insert([{ ...newBooking }])
-    .select();
+    .select("id")
+    .not("status", "eq", "checked-out")
+    .eq("cabinId", cabinId)
+    .lte("startDate", endDate)
+    .gte("endDate", startDate);
+
+  const { data, error } = await query;
 
   if (error) {
     console.error(error);
-    throw new Error("Booking could not be created");
+    throw new Error("Failed to check for overlapping bookings");
   }
 
-  return data;
+  return data.length > 0;
 }
+
+// Modify or call this before your createBooking function
+export async function createBooking(newBooking) {
+  const { cabinId, startDate, endDate } = newBooking;
+  const hasOverlap = await checkForOverlappingBookings(
+    cabinId,
+    startDate,
+    endDate
+  );
+
+  if (hasOverlap) {
+    
+    throw new Error("The cabin is already booked for the selected dates.");
+  } else {
+    const { data, error } = await supabase
+      .from("bookings")
+      .insert([{ ...newBooking }])
+      .select();
+
+    if (error) {
+      console.error(error);
+      throw new Error("Booking could not be created");
+    }
+
+    return data;
+  }
+}
+
+// export async function createBooking(newBooking) {
+//   const { data, error } = await supabase
+//     .from("bookings")
+//     .insert([{ ...newBooking }])
+//     .select();
+
+//   if (error) {
+//     console.error(error);
+//     throw new Error("Booking could not be created");
+//   }
+
+//   return data;
+// }
