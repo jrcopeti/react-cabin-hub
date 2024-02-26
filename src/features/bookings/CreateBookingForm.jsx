@@ -17,15 +17,15 @@ import {
 } from "date-fns";
 import Spinner from "../../ui/Spinner";
 import Select from "../../ui/Select";
-import { useState } from "react";
-import { useCountryFlags } from "../../hooks/useCountryFlags";
+
+import { useGuests } from "../guests/useGuests";
 
 function CreateCabinForm({ onCloseModal }) {
   const { settings, isLoading: isLoadingSettings } = useSettings();
 
   const { cabins, isLoading: isLoadingCabins } = useCabins();
 
-
+  const { guests, isLoading: isLoadingGuests } = useGuests();
 
   const {
     register,
@@ -40,24 +40,39 @@ function CreateCabinForm({ onCloseModal }) {
   const startDateInput = watch("startDate");
   const endDateInput = watch("endDate");
   const numNightsInput =
-  startDateInput && endDateInput
-  ? differenceInDays(parseISO(endDateInput), parseISO(startDateInput))
-  : 0;
+    startDateInput && endDateInput
+      ? differenceInDays(parseISO(endDateInput), parseISO(startDateInput))
+      : 0;
 
-  if (isLoadingSettings || isLoadingCabins) return <Spinner />;
+  if (isLoadingSettings || isLoadingCabins || isLoadingGuests)
+    return <Spinner />;
 
-  const cabinOptions = cabins.map((cabin) => ({
-    value: cabin.id,
-    label: cabin.name,
-  }));
+  const cabinOptions = [
+    { value: "", label: "Select a Cabin" },
+    ...cabins
+      .sort((a, b) => a.name.localeCompare(b.name))
+      .map((cabin) => ({
+        value: cabin.id,
+        label: cabin.name,
+      })),
+  ];
 
-
+  const guestOptions = [
+    { value: "", label: "Select a Guest" },
+    ...guests
+      .sort((a, b) => a.fullName.localeCompare(b.fullName))
+      .map((guest) => ({
+        value: guest.id,
+        label: guest.fullName,
+      })),
+  ];
   function onSubmit(data) {
     const finalData = {
       ...data,
       numNights: numNightsInput,
       numGuests: +data.numGuests,
       cabinId: +data.cabinId,
+      guestId: +data.guestId,
     };
     console.log(finalData);
   }
@@ -134,11 +149,11 @@ function CreateCabinForm({ onCloseModal }) {
         />
       </FormRow>
 
-      <FormRow label="Select a Cabin" error={errors?.cabinId?.message}>
+      <FormRow label="Cabin" error={errors?.cabinId?.message}>
         <Controller
           name="cabinId"
           control={control}
-          rules={{ required: true }}
+          rules={{ required: "This field is required" }}
           render={({ field }) => (
             <Select
               {...field}
@@ -151,13 +166,28 @@ function CreateCabinForm({ onCloseModal }) {
         />
       </FormRow>
 
+      <FormRow label="Guest Name" error={errors?.guestId?.message}>
+        <Controller
+          name="guestId"
+          control={control}
+          rules={{ required: "This field is required" }}
+          render={({ field }) => (
+            <Select
+              {...field}
+              ref={field.ref}
+              options={guestOptions}
+              value={field.value}
+              onChange={(e) => field.onChange(e.target.value)}
+            />
+          )}
+        />
+      </FormRow>
+
       <FormRow>
         <Button>Create Booking</Button>
       </FormRow>
     </Form>
   );
-
- 
 }
 
 export default CreateCabinForm;
