@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { useSettings } from "../settings/useSettings";
 
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
@@ -8,20 +9,15 @@ import Textarea from "../../ui/Textarea";
 import FormRow from "../../ui/FormRow";
 import {
   differenceInDays,
-  isAfter,
   isBefore,
-  isDate,
   isValid,
   parseISO,
-  startOfDay,
   startOfToday,
 } from "date-fns";
-import { useEffect, useState } from "react";
+import Spinner from "../../ui/Spinner";
 
 function CreateCabinForm({ onCloseModal }) {
-
-
-
+  const { settings, isLoading: isLoadingSettings } = useSettings();
   const {
     register,
     handleSubmit,
@@ -31,19 +27,20 @@ function CreateCabinForm({ onCloseModal }) {
     formState: { errors },
   } = useForm();
 
-
   const startDateInput = watch("startDate");
   const endDateInput = watch("endDate");
-  const numNightsInput = startDateInput && endDateInput
-    ? differenceInDays(parseISO(endDateInput), parseISO(startDateInput))
-    : 0;
+  const numNightsInput =
+    startDateInput && endDateInput
+      ? differenceInDays(parseISO(endDateInput), parseISO(startDateInput))
+      : 0;
+
+  if (isLoadingSettings) return <Spinner />;
 
   function onSubmit(data) {
-
-
     const finalData = {
       ...data,
       numNights: numNightsInput,
+      numGuests: +data.numGuests,
     };
     console.log(finalData);
   }
@@ -103,6 +100,25 @@ function CreateCabinForm({ onCloseModal }) {
 
       <FormRow>
         <Button>Create Booking</Button>
+      </FormRow>
+
+      <FormRow label="Number of Guests" error={errors?.numGuests?.message}>
+        <Input
+          type="number"
+          defaultValue={1}
+          id="numGuests"
+          {...register("numGuests", {
+            required: "This field is required",
+            min: {
+              value: 1,
+              message: "Minimum number of guests must be 1",
+            },
+            max: {
+              value: settings.maxGuestsPerBooking,
+              message: `Maximum number of guests must be ${settings.maxGuestsPerBooking}`,
+            },
+          })}
+        />
       </FormRow>
     </Form>
   );
