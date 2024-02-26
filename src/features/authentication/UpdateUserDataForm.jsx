@@ -1,17 +1,19 @@
 import { useState } from "react";
 
+import toast from "react-hot-toast";
+
+import { useUser } from "./useUser";
+import { useUpdateUser } from "./useUpdateUser";
+
 import Button from "../../ui/Button";
 import FileInput from "../../ui/FileInput";
 import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 
-import { useUser } from "./useUser";
-import { useUpdateUser } from "./useUpdateUser";
-import toast from "react-hot-toast";
 
 function UpdateUserDataForm() {
-  // We don't need the loading state, and can immediately use the user data, because we know that it has already been loaded at this point
+  // No need of the loading state, because we know that it has already been loaded at this point
   const {
     user: {
       email,
@@ -26,6 +28,7 @@ function UpdateUserDataForm() {
 
   function handleSubmit(e) {
     e.preventDefault();
+    
     if (!fullName) return;
     updateUser(
       {
@@ -36,8 +39,7 @@ function UpdateUserDataForm() {
         onSuccess: () => {
           setAvatar(null);
           e.target.reset();
-          toast.success("User account was successfully updated")
-
+          toast.success("User account was successfully updated");
         },
       }
     );
@@ -71,7 +73,12 @@ function UpdateUserDataForm() {
         />
       </FormRow>
       <FormRow>
-        <Button type="reset" variation="secondary" disabled={isUpdating} onClick={handleCancel}>
+        <Button
+          type="reset"
+          variation="secondary"
+          disabled={isUpdating}
+          onClick={handleCancel}
+        >
           Cancel
         </Button>
         <Button disabled={isUpdating}>Update account</Button>

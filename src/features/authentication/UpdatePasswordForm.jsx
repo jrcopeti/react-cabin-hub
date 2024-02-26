@@ -1,10 +1,12 @@
 import { useForm } from "react-hook-form";
+
+import { useUpdateUser } from "./useUpdateUser";
+
 import Button from "../../ui/Button";
 import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 
-import { useUpdateUser } from "./useUpdateUser";
 import toast from "react-hot-toast";
 
 function UpdatePasswordForm() {
@@ -14,7 +16,13 @@ function UpdatePasswordForm() {
   const { updateUser, isUpdating } = useUpdateUser();
 
   function onSubmit({ password }) {
-    updateUser({ password }, { onSuccess: () => toast.success("Password was successfully updated"), onSettled: () => reset()});
+    updateUser(
+      { password },
+      {
+        onSuccess: () => toast.success("Password was successfully updated"),
+        onSettled: () => reset(),
+      }
+    );
   }
 
   return (
