@@ -15,10 +15,15 @@ function CreateCabinForm({ onCloseModal, cabinToEdit = {} }) {
 
   const isEditSession = Boolean(editId);
 
-  const { register, handleSubmit, reset, getValues, formState } = useForm({
+  const {
+    register,
+    handleSubmit,
+    reset,
+    getValues,
+    formState: { errors },
+  } = useForm({
     defaultValues: isEditSession ? editValues : {},
   });
-  const { errors } = formState;
 
   const { isCreating, createCabin } = useCreateCabin();
 
@@ -108,7 +113,7 @@ function CreateCabinForm({ onCloseModal, cabinToEdit = {} }) {
             required: "This field is required",
             validate: (value) =>
               +value <= +getValues().regularPrice ||
-              "Discount should be less than regularrreee price",
+              "Discount should be less than regular price",
           })}
         />
       </FormRow>
