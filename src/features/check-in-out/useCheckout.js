@@ -17,6 +17,6 @@ export function useCheckout() {
       toast.error("Could not check out. Please try again.");
     },
   });
-  console.log(checkout, isCheckingOut);
+
   return { checkout, isCheckingOut };
 }

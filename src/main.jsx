@@ -1,8 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import App from "./App.jsx";
-import { StyleSheetManager } from "styled-components";
 import { ErrorBoundary } from "react-error-boundary";
+
+import { StyleSheetManager } from "styled-components";
+
+import App from "./App.jsx";
+
 import ErrorFallback from "./ui/ErrorFallback.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(

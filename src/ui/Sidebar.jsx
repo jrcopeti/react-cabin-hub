@@ -20,7 +20,8 @@ function Sidebar() {
   return <StyledSidebar>
     <Logo/>
     <MainNav/>
-  
+    <Uploader/>
+
   </StyledSidebar>;
 }
 
