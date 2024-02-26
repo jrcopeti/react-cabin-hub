@@ -16,23 +16,36 @@ import {
   startOfDay,
   startOfToday,
 } from "date-fns";
+import { useEffect, useState } from "react";
 
 function CreateCabinForm({ onCloseModal }) {
+
+
+
   const {
     register,
     handleSubmit,
     reset,
+    watch,
     getValues,
     formState: { errors },
   } = useForm();
 
-  // const numNights = differenceInDays(
-  //   new Date(data.endDate),
-  //   new Date(data.startDate)
-  // );
 
-  function onSubmit() {
-    console.log("Submitted");
+  const startDateInput = watch("startDate");
+  const endDateInput = watch("endDate");
+  const numNightsInput = startDateInput && endDateInput
+    ? differenceInDays(parseISO(endDateInput), parseISO(startDateInput))
+    : 0;
+
+  function onSubmit(data) {
+
+
+    const finalData = {
+      ...data,
+      numNights: numNightsInput,
+    };
+    console.log(finalData);
   }
 
   function onError(errors) {
@@ -71,8 +84,8 @@ function CreateCabinForm({ onCloseModal }) {
             validate: {
               isValidDate: (value) =>
                 isValid(parseISO(value)) || "Invalid date",
+
               isAfterStartDate: (value) => {
-                // Access the start date value directly within the validation function
                 const startDate = getValues("startDate");
                 return (
                   !isBefore(parseISO(value), parseISO(startDate)) ||
@@ -82,6 +95,10 @@ function CreateCabinForm({ onCloseModal }) {
             },
           })}
         />
+      </FormRow>
+
+      <FormRow label="Number of Nights">
+        <Input disabled value={numNightsInput} />
       </FormRow>
 
       <FormRow>
