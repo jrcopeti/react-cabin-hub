@@ -1,5 +1,6 @@
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useSettings } from "../settings/useSettings";
+import { useCabins } from "../cabins/useCabins";
 
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
@@ -15,14 +16,23 @@ import {
   startOfToday,
 } from "date-fns";
 import Spinner from "../../ui/Spinner";
+import Select from "../../ui/Select";
+import { useState } from "react";
+import { useCountryFlags } from "../../hooks/useCountryFlags";
 
 function CreateCabinForm({ onCloseModal }) {
   const { settings, isLoading: isLoadingSettings } = useSettings();
+
+  const { cabins, isLoading: isLoadingCabins } = useCabins();
+
+
+
   const {
     register,
     handleSubmit,
     reset,
     watch,
+    control,
     getValues,
     formState: { errors },
   } = useForm();
@@ -30,17 +40,24 @@ function CreateCabinForm({ onCloseModal }) {
   const startDateInput = watch("startDate");
   const endDateInput = watch("endDate");
   const numNightsInput =
-    startDateInput && endDateInput
-      ? differenceInDays(parseISO(endDateInput), parseISO(startDateInput))
-      : 0;
+  startDateInput && endDateInput
+  ? differenceInDays(parseISO(endDateInput), parseISO(startDateInput))
+  : 0;
 
-  if (isLoadingSettings) return <Spinner />;
+  if (isLoadingSettings || isLoadingCabins) return <Spinner />;
+
+  const cabinOptions = cabins.map((cabin) => ({
+    value: cabin.id,
+    label: cabin.name,
+  }));
+
 
   function onSubmit(data) {
     const finalData = {
       ...data,
       numNights: numNightsInput,
       numGuests: +data.numGuests,
+      cabinId: +data.cabinId,
     };
     console.log(finalData);
   }
@@ -98,10 +115,6 @@ function CreateCabinForm({ onCloseModal }) {
         <Input disabled value={numNightsInput} />
       </FormRow>
 
-      <FormRow>
-        <Button>Create Booking</Button>
-      </FormRow>
-
       <FormRow label="Number of Guests" error={errors?.numGuests?.message}>
         <Input
           type="number"
@@ -120,105 +133,31 @@ function CreateCabinForm({ onCloseModal }) {
           })}
         />
       </FormRow>
+
+      <FormRow label="Select a Cabin" error={errors?.cabinId?.message}>
+        <Controller
+          name="cabinId"
+          control={control}
+          rules={{ required: true }}
+          render={({ field }) => (
+            <Select
+              {...field}
+              ref={field.ref}
+              options={cabinOptions}
+              value={field.value}
+              onChange={(e) => field.onChange(e.target.value)}
+            />
+          )}
+        />
+      </FormRow>
+
+      <FormRow>
+        <Button>Create Booking</Button>
+      </FormRow>
     </Form>
   );
-  //   <Form
-  //     onSubmit={handleSubmit(onSubmit, onError)}
-  //     type={onCloseModal ? "modal" : "regular"}
-  //   >
-  //     <FormRow label="Cabin Name" error={errors?.name?.message}>
-  //       <Input
-  //         type="text"
-  //         id="name"
-  //         disabled={isWorking}
-  //         {...register("name", { required: "This field is required" })}
-  //       />
-  //     </FormRow>
 
-  //     <FormRow label="Maximum Capacity" error={errors?.maxCapacity?.message}>
-  //       <Input
-  //         type="number"
-  //         id="maxCapacity"
-  //         disabled={isWorking}
-  //         {...register("maxCapacity", {
-  //           required: "This field is required",
-  //           min: {
-  //             value: 1,
-  //             message: "Minimum capacity is 1",
-  //           },
-  //         })}
-  //       />
-  //     </FormRow>
-
-  //     <FormRow label="Regular Price" error={errors?.regularPrice?.message}>
-  //       <Input
-  //         type="number"
-  //         id="regularPrice"
-  //         disabled={isWorking}
-  //         {...register("regularPrice", {
-  //           required: "This field is required",
-  //           min: {
-  //             value: 1,
-  //             message: "Minimum price should be at least 1",
-  //           },
-  //         })}
-  //       />
-  //     </FormRow>
-
-  //     <FormRow label="Discount" error={errors?.discount?.message}>
-  //       <Input
-  //         type="number"
-  //         id="discount"
-  //         defaultValue={0}
-  //         disabled={isWorking}
-  //         {...register("discount", {
-  //           required: "This field is required",
-  //           validate: (value) =>
-  //             +value <= +getValues().regularPrice ||
-  //             "Discount should be less than regularrreee price",
-  //         })}
-  //       />
-  //     </FormRow>
-
-  //     <FormRow
-  //       label="Description for website"
-  //       error={errors?.description?.message}
-  //     >
-  //       <Textarea
-  //         type="number"
-  //         id="description"
-  //         disabled={isWorking}
-  //         defaultValue=""
-  //         {...register("description", { required: "This field is required" })}
-  //       />
-  //     </FormRow>
-
-  //     <FormRow label="Cabin photo">
-  //       <FileInput
-  //         id="image"
-  //         accept="image/*"
-  //         disabled={isWorking}
-  //         {...register("image", {
-  //           required: isEditSession ? false : "This field is required",
-  //         })}
-  //       />
-  //     </FormRow>
-
-  //     <FormRow>
-  //       {/* type is an HTML attribute! */}
-  //       <Button
-  //         variation="secondary"
-  //         type="reset"
-  //         onClick={() => onCloseModal?.()}
-  //       >
-  //         Cancel
-  //       </Button>
-  //       <Button disabled={isWorking}>
-  //         {isEditSession ? "Edit cabin" : "Create New Cabin"}
-  //       </Button>
-  //     </FormRow>
-  //   </Form>
-  // );
+ 
 }
 
 export default CreateCabinForm;

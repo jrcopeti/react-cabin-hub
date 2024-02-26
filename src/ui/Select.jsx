@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import React from "react";
 
 const StyledSelect = styled.select`
   font-size: 1.4rem;
@@ -14,17 +15,16 @@ const StyledSelect = styled.select`
   box-shadow: var(--shadow-sm);
 `;
 
-function Select({ options, value, onChange, ...props}) {
+const Select = React.forwardRef(({ options, value, onChange, ...props }, ref) => (
+  <StyledSelect ref={ref} value={value} onChange={onChange} {...props}>
+    {options.map((option) => (
+      <option key={option.value} value={option.value}>
+        {option.label}
+      </option>
+    ))}
+  </StyledSelect>
+));
 
-  return (
-    <StyledSelect value={value} onChange={onChange} {...props}>
-      {options.map((option) => (
-        <option value={option.value} key={option.value}>
-          {option.label}
-        </option>
-      ))}
-    </StyledSelect>
-  );
-}
+Select.displayName = 'Select';
 
 export default Select;
