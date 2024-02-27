@@ -6,7 +6,7 @@ export async function getBookings({ filter, sortBy, page }) {
   let query = supabase
     .from("bookings")
     .select(
-      "id, created_at, startDate, endDate, numNights, numGuests, status, totalPrice,cabins(name), guests(fullName, email)",
+      "id, created_at, startDate, endDate, numNights, numGuests, status, totalPrice, cabins(name), guests(fullName, email)",
       { count: "exact" }
     );
 
@@ -21,7 +21,6 @@ export async function getBookings({ filter, sortBy, page }) {
     query = query.order(sortBy.field, {
       ascending: sortBy.direction === "asc",
     });
-    console.log(sortBy.field, sortBy.direction === "asc" ? "asc" : "desc");
   }
 
   // Pagination
@@ -154,7 +153,7 @@ export async function checkForOverlappingBookings(cabinId, startDate, endDate) {
   return data.length > 0;
 }
 
-// Modify or call this before your createBooking function
+
 export async function createBooking(newBooking) {
   const { cabinId, startDate, endDate } = newBooking;
   const hasOverlap = await checkForOverlappingBookings(
@@ -164,7 +163,7 @@ export async function createBooking(newBooking) {
   );
 
   if (hasOverlap) {
-    
+
     throw new Error("The cabin is already booked for the selected dates.");
   } else {
     const { data, error } = await supabase
