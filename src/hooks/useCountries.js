@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-export async function useCountryFlags() {
+export function useCountries() {
   const [countries, setCountries] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
