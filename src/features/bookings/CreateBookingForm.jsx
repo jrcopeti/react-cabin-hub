@@ -19,7 +19,7 @@ import Spinner from "../../ui/Spinner";
 import Select from "../../ui/Select";
 import Checkbox from "../../ui/Checkbox";
 
-import { useGuests } from "../guests/useGuests";
+import { useAllGuests } from "../guests/useAllGuests";
 import { useState } from "react";
 import { useCreateBookings } from "./useCreateBookings";
 
@@ -33,7 +33,7 @@ function CreateCabinForm({ onCloseModal }) {
 
   const { cabins, isLoading: isLoadingCabins } = useCabins();
 
-  const { guests, isLoading: isLoadingGuests } = useGuests();
+  const { guests, isLoading: isLoadingGuests } = useAllGuests();
 
   const {
     register,
