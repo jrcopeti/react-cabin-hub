@@ -12,6 +12,7 @@ import Spinner from "../../ui/Spinner";
 import toast from "react-hot-toast";
 
 import { useUpdateGuest } from "./useUpdateGuest";
+import Heading from "../../ui/Heading";
 
 function CreateGuestForm({ onCloseModal, guestToEdit = {} }) {
   const { id, ...editValues } = guestToEdit;
@@ -63,7 +64,7 @@ function CreateGuestForm({ onCloseModal, guestToEdit = {} }) {
         onSuccess: () => {
           onCloseModal?.();
           queryClient.refetchQueries(["guests"]);
-          toast.success(`The guest ${finalData.fullName} was updated`);
+          toast.success(`Guest ${finalData.fullName} was updated`);
         },
       }
     );
@@ -74,6 +75,9 @@ function CreateGuestForm({ onCloseModal, guestToEdit = {} }) {
   }
 
   return (
+    <>
+      <Heading as="h2">Edit Guest</Heading>
+    <br />
     <Form
       onSubmit={handleSubmit(onSubmit, onError)}
       type={onCloseModal ? "modal" : "regular"}
@@ -144,6 +148,7 @@ function CreateGuestForm({ onCloseModal, guestToEdit = {} }) {
         </Button>
       </FormRow>
     </Form>
+    </>
   );
 }
 
