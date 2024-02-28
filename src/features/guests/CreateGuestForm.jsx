@@ -12,6 +12,7 @@ import Button from "../../ui/Button";
 import Select from "../../ui/Select";
 import Spinner from "../../ui/Spinner";
 import toast from "react-hot-toast";
+import Heading from "../../ui/Heading";
 
 function CreateGuestForm({ onCloseModal }) {
   const {
@@ -71,6 +72,9 @@ function CreateGuestForm({ onCloseModal }) {
   }
 
   return (
+    <>
+    <Heading as="h2">Create new Guest</Heading>
+    <br />
     <Form
       onSubmit={handleSubmit(onSubmit, onError)}
       type={onCloseModal ? "modal" : "regular"}
@@ -141,6 +145,7 @@ function CreateGuestForm({ onCloseModal }) {
         </Button>
       </FormRow>
     </Form>
+    </>
   );
 }
 

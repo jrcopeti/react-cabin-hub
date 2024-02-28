@@ -55,7 +55,9 @@ function TodayActivity() {
             ))}
           </TodayList>
         ) : (
-          <NoActivity>No actvity today</NoActivity>
+          <NoActivity>No activity today.
+            <br />
+            Start creating bookings and check ins.</NoActivity>
         )
       ) : (
         <Spinner />
