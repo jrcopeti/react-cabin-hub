@@ -5,10 +5,9 @@ import supabase from "./supabase";
 export async function getBookings({ filter, sortBy, page }) {
   let query = supabase
     .from("bookings")
-    .select(
-      "id, created_at, startDate, endDate, numNights, numGuests, status, totalPrice, cabins(name), guests(fullName, email)",
-      { count: "exact" }
-    );
+    .select("*, cabins(name, id), guests(fullName, email, id)", {
+      count: "exact",
+    });
 
   // Filter
   if (filter) {
@@ -153,7 +152,6 @@ export async function checkForOverlappingBookings(cabinId, startDate, endDate) {
   return data.length > 0;
 }
 
-
 export async function createBooking(newBooking) {
   const { cabinId, startDate, endDate } = newBooking;
   const hasOverlap = await checkForOverlappingBookings(
@@ -163,7 +161,6 @@ export async function createBooking(newBooking) {
   );
 
   if (hasOverlap) {
-
     throw new Error("The cabin is already booked for the selected dates.");
   } else {
     const { data, error } = await supabase
@@ -178,6 +175,20 @@ export async function createBooking(newBooking) {
 
     return data;
   }
+}
+
+export async function updateBookingAll(id, newBookingData) {
+  const { data, error } = await supabase
+    .from("bookings")
+    .update(newBookingData)
+    .eq("id", id)
+    .select();
+
+  if (error) {
+    console.error(error);
+    throw new Error("Booking could not be updated sua monga");
+  }
+  return data;
 }
 
 // export async function createBooking(newBooking) {

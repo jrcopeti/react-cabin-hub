@@ -22,8 +22,14 @@ import { formatCurrency, subtractDates } from "../../utils/helpers";
 
 import { isBefore, isValid, parseISO, startOfToday } from "date-fns";
 import Heading from "../../ui/Heading";
+import { useUpdateBooking } from "./useUpdateBooking";
 
-function CreateBookingForm() {
+function CreateBookingForm({ onCloseModal, bookingToEdit }) {
+  const { id: editId, ...editValues } = bookingToEdit;
+  console.log(editValues);
+  console.log(editId);
+  console.log(bookingToEdit);
+
   const { createBooking, isLoading: isCreating } = useCreateBookings();
 
   const { settings, isLoading: isLoadingSettings } = useSettings();
@@ -42,7 +48,9 @@ function CreateBookingForm() {
     control,
     getValues,
     formState: { errors },
-  } = useForm();
+  } = useForm({ defaultValues: editValues });
+
+  const { isUpdating, updateBooking } = useUpdateBooking();
 
   const { availability, checkAvailability, resetAvailability } =
     useAvailability(watch);
@@ -133,27 +141,17 @@ function CreateBookingForm() {
       totalPrice,
       status: "unconfirmed",
     };
-    console.log(finalData);
 
-    createBooking(finalData, {
-      onSuccess: () => {
-        resetAvailability();
-        reset({
-          startDate: "",
-          endDate: "",
-          numNights: 0,
-          numGuests: 1,
-          cabinPrice: 0,
-          cabinId: "",
-          guestId: "",
-          observations: "",
-          hasBreakfast: false,
-          isPaid: false,
-          extraPrice: 0,
-          totalPrice: 0,
-        });
-      },
-    });
+    console.log("Updating booking with ID:", editId, "Data:", finalData);
+
+    updateBooking(
+      { id: editId, newBookingData: finalData },
+      {
+        onSuccess: () => {
+          onCloseModal?.();
+        },
+      }
+    );
   }
 
   function onError(errors) {
@@ -162,32 +160,9 @@ function CreateBookingForm() {
 
   return (
     <>
-      <div>
-        <Heading as="h1">Create New Booking</Heading>
-        <p>
-          If the guest is not in the list, please add them first.
-          <br />
-          Bookings will only be created for guests that are already in the
-          system.
-          <br />
-          Check the availability of the cabin before creating a booking.
-        </p>
-      </div>
-
-      <div>
-        <Modal>
-          <Modal.Open opens="guest-form">
-            <Button>New Guest</Button>
-          </Modal.Open>
-          <Modal.Window name="guest-form">
-            <CreateGuestForm />
-          </Modal.Window>
-        </Modal>
-      </div>
-
       <Form
         onSubmit={handleSubmit(onSubmit, onError)}
-
+        type={onCloseModal ? "modal" : "regular"}
       >
         <FormRow label="Cabin" error={errors?.cabinId?.message}>
           <Controller
@@ -253,132 +228,114 @@ function CreateBookingForm() {
           />
         </FormRow>
 
-        {availability.isAvailable === false && (
-          <FormRow>
-            <Button variation="secondary" onClick={moveBack}>
-              Back
-            </Button>
-            <Button type="button" onClick={checkAvailability}>
-              Check Availability
-            </Button>
-          </FormRow>
-        )}
+        <FormRow label="Number of Nights">
+          <Input disabled value={numNightsInput} />
+        </FormRow>
 
-        {availability.isAvailable === true && (
-          <>
-            <FormRow label="Number of Nights">
-              <Input disabled value={numNightsInput} />
-            </FormRow>
+        <FormRow label="Number of Guests" error={errors?.numGuests?.message}>
+          <Input
+            disabled={isCreating}
+            type="number"
+            defaultValue={1}
+            id="numGuests"
+            {...register("numGuests", {
+              required: "This field is required",
+              min: {
+                value: 1,
+                message: "Minimum number of guests must be 1",
+              },
+              max: {
+                value: settings.maxGuestsPerBooking,
+                message: `Maximum number of guests must be ${settings.maxGuestsPerBooking}`,
+              },
+            })}
+          />
+        </FormRow>
 
-            <FormRow
-              label="Number of Guests"
-              error={errors?.numGuests?.message}
-            >
-              <Input
+        <FormRow label="Price">
+          <Input disabled value={formatCurrency(cabinPriceInput)} />
+        </FormRow>
+
+        <FormRow label="Discount">
+          <Input disabled value={formatCurrency(discountInput)} />
+        </FormRow>
+
+        <FormRow label="Guest Name" error={errors?.guestId?.message}>
+          <Controller
+            name="guestId"
+            control={control}
+            rules={{ required: "This field is required" }}
+            render={({ field: { ref, value, onChange } }) => (
+              <Select
+                ref={ref}
+                options={guestOptions}
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
                 disabled={isCreating}
-                type="number"
-                defaultValue={1}
-                id="numGuests"
-                {...register("numGuests", {
-                  required: "This field is required",
-                  min: {
-                    value: 1,
-                    message: "Minimum number of guests must be 1",
-                  },
-                  max: {
-                    value: settings.maxGuestsPerBooking,
-                    message: `Maximum number of guests must be ${settings.maxGuestsPerBooking}`,
-                  },
-                })}
               />
-            </FormRow>
+            )}
+          />
+        </FormRow>
 
-            <FormRow label="Price">
-              <Input disabled value={formatCurrency(cabinPriceInput)} />
-            </FormRow>
+        <FormRow label="Observations">
+          <Textarea
+            disabled={isCreating}
+            id="observations"
+            defaultValue=""
+            {...register("observations")}
+          />
+        </FormRow>
 
-            <FormRow label="Discount">
-              <Input disabled value={formatCurrency(discountInput)} />
-            </FormRow>
+        <FormRow label="Extra Price">
+          <Input disabled value={formatCurrency(extraPriceInput)} />
+        </FormRow>
 
-            <FormRow label="Guest Name" error={errors?.guestId?.message}>
-              <Controller
-                name="guestId"
-                control={control}
-                rules={{ required: "This field is required" }}
-                render={({ field: { ref, value, onChange } }) => (
-                  <Select
-                    ref={ref}
-                    options={guestOptions}
-                    value={value}
-                    onChange={(e) => onChange(e.target.value)}
-                    disabled={isCreating}
-                  />
-                )}
-              />
-            </FormRow>
+        <FormRow label="Total Price">
+          <Input disabled value={formatCurrency(totalPriceInput)} />
+        </FormRow>
 
-            <FormRow label="Observations">
-              <Textarea
+        <FormRow>
+          <Controller
+            control={control}
+            name="hasBreakfast"
+            defaultValue={false}
+            render={({ field: { onChange, value } }) => (
+              <Checkbox
+                id="hasBreakfast"
                 disabled={isCreating}
-                id="observations"
-                defaultValue=""
-                {...register("observations")}
-              />
-            </FormRow>
+                checked={value}
+                onChange={(e) => onChange(e.target.checked)}
+              >
+                Includes breakfast?
+              </Checkbox>
+            )}
+          />
 
-            <FormRow label="Extra Price">
-              <Input disabled value={formatCurrency(extraPriceInput)} />
-            </FormRow>
+          <Controller
+            control={control}
+            name="isPaid"
+            defaultValue={false}
+            render={({ field: { onChange, value } }) => (
+              <Checkbox
+                id="isPaid"
+                disabled={isCreating}
+                checked={value}
+                onChange={(e) => onChange(e.target.checked)}
+              >
+                Was paid?
+              </Checkbox>
+            )}
+          />
+        </FormRow>
 
-            <FormRow label="Total Price">
-              <Input disabled value={formatCurrency(totalPriceInput)} />
-            </FormRow>
-
-            <FormRow>
-              <Controller
-                control={control}
-                name="hasBreakfast"
-                defaultValue={false}
-                render={({ field: { onChange, value } }) => (
-                  <Checkbox
-                    id="hasBreakfast"
-                    disabled={isCreating}
-                    checked={value}
-                    onChange={(e) => onChange(e.target.checked)}
-                  >
-                    Includes breakfast?
-                  </Checkbox>
-                )}
-              />
-
-              <Controller
-                control={control}
-                name="isPaid"
-                defaultValue={false}
-                render={({ field: { onChange, value } }) => (
-                  <Checkbox
-                    id="isPaid"
-                    disabled={isCreating}
-                    checked={value}
-                    onChange={(e) => onChange(e.target.checked)}
-                  >
-                    Was paid?
-                  </Checkbox>
-                )}
-              />
-            </FormRow>
-
-            <FormRow>
-              <Button variation="secondary" onClick={moveBack}>
-                Cancel
-              </Button>
-              <Button disabled={isCreating} type="submit" variation="primary">
-                Submit
-              </Button>
-            </FormRow>
-          </>
-        )}
+        <FormRow>
+          <Button variation="secondary" onClick={moveBack}>
+            Cancel
+          </Button>
+          <Button disabled={isCreating} type="submit" variation="primary">
+            Submit
+          </Button>
+        </FormRow>
       </Form>
     </>
   );

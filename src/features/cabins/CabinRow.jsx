@@ -101,7 +101,7 @@ function CabinRow({ cabin }) {
                 Duplicate
               </Menus.Button>
 
-              <Modal.Open opens="edit">
+              <Modal.Open opens="edit-cabin">
                 <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
               </Modal.Open>
 
@@ -112,7 +112,7 @@ function CabinRow({ cabin }) {
               </Modal.Open>
             </Menus.List>
 
-            <Modal.Window name="edit">
+            <Modal.Window name="edit-cabin">
               <CreateCabinForm cabinToEdit={cabin} />
             </Modal.Window>
 
