@@ -54,11 +54,12 @@ function App() {
               <Route path="bookings/new" element={<CreateBookingForm />} />
               <Route path="checkin/:bookingId" element={<Checkin />} />
               <Route path="cabins" element={<Cabins />} />
-              <Route path="users" element={<Users />} />
+
               <Route path="settings" element={<Settings />} />
               <Route path="account" element={<Account />} />
             </Route>
-
+            
+            <Route path="users" element={<Users />} />
             <Route path="login" element={<Login />} />
             <Route path="*" element={<PageNotFound />} />
           </Routes>

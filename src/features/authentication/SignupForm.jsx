@@ -6,6 +6,8 @@ import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 
 import { useSignup } from "./useSignup";
+import { useMoveBack } from "../../hooks/useMoveBack";
+import { useNavigate } from "react-router-dom";
 
 // Email regex: /\S+@\S+\.\S+/
 
@@ -17,8 +19,19 @@ function SignupForm() {
   const { errors } = formState;
 
   function onSubmit({ fullName, email, password }) {
-    signup({ fullName, email, password }, { onSettled: () => reset() });
+    signup(
+      { fullName, email, password },
+      {
+        onSettled: () => {
+          reset(), navigate("/login");
+        },
+      }
+    );
   }
+
+  const moveBack = useMoveBack();
+
+  const navigate = useNavigate();
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
@@ -83,7 +96,7 @@ function SignupForm() {
           variation="secondary"
           type="reset"
           disabled={isLoading}
-          onClick={reset}
+          onClick={moveBack}
         >
           Cancel
         </Button>
