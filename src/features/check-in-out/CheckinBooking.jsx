@@ -55,13 +55,16 @@ function CheckinBooking() {
     if (!confirmPaid) return;
 
     if (addBreakfast) {
-      checkin({ bookingId, breakfast : {
-        hasBreakfast: true,
-        extraPrice: optionalBreakfastPrice,
-        totalPrice: totalPrice + optionalBreakfastPrice,
-      }});
+      checkin({
+        bookingId,
+        breakfast: {
+          hasBreakfast: true,
+          extraPrice: optionalBreakfastPrice,
+          totalPrice: totalPrice + optionalBreakfastPrice,
+        },
+      });
     } else {
-      checkin({bookingId, breakfast: {}});
+      checkin({ bookingId, breakfast: {} });
     }
   }
 

@@ -7,6 +7,7 @@ import Form from "../../ui/Form";
 import Input from "../../ui/Input";
 import FormRowVertical from "../../ui/FormRowVertical";
 import SpinnerMini from "../../ui/SpinnerMini";
+import toast from "react-hot-toast";
 
 function LoginForm() {
   const [email, setEmail] = useState("");
@@ -16,7 +17,11 @@ function LoginForm() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    if (!email || !password) return;
+    if (!email || !password) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+
     login(
       { email, password },
       {
@@ -41,7 +46,7 @@ function LoginForm() {
           disabled={isLoading}
         />
       </FormRowVertical>
-      
+
       <FormRowVertical label="Password">
         <Input
           type="password"

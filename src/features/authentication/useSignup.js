@@ -10,7 +10,7 @@ export function useSignup() {
     onSuccess: () => {
 
       toast.success(
-        "Account created successfully! Please check your email to verify your account."
+        "Account created! Please Login to continue"
       );
     },
   });
