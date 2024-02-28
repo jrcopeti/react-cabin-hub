@@ -5,7 +5,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 export function useUpdateCabin() {
   const queryClient = useQueryClient();
 
-  const { mutate: UpdateCabin, isLoading: isUpdating } = useMutation({
+  const { mutate: updateCabin, isLoading: isUpdating } = useMutation({
     mutationFn: ({ newCabinData, id }) => createEditCabin(newCabinData, id),
     onSuccess: () => {
       toast.success("Cabin was successfully edited");
@@ -18,5 +18,5 @@ export function useUpdateCabin() {
     },
   });
 
-  return { UpdateCabin, isUpdating };
+  return { updateCabin, isUpdating };
 }

@@ -27,7 +27,7 @@ function CreateCabinForm({ onCloseModal, cabinToEdit = {} }) {
 
   const { isCreating, createCabin } = useCreateCabin();
 
-  const { isUpdating, UpdateCabin } = useUpdateCabin();
+  const { isUpdating, updateCabin } = useUpdateCabin();
 
   const isWorking = isCreating || isUpdating;
 
@@ -35,7 +35,7 @@ function CreateCabinForm({ onCloseModal, cabinToEdit = {} }) {
     const image = typeof data.image === "string" ? data.image : data.image[0];
 
     if (isEditSession)
-      UpdateCabin(
+      updateCabin(
         { newCabinData: { ...data, image }, id: editId },
         {
           onSuccess: () => {
