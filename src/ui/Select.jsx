@@ -15,16 +15,18 @@ const StyledSelect = styled.select`
   box-shadow: var(--shadow-sm);
 `;
 
-const Select = React.forwardRef(({ options, value, onChange, ...props }, ref) => (
-  <StyledSelect ref={ref} value={value} onChange={onChange} {...props}>
-    {options.map((option) => (
-      <option key={option.value} value={option.value}>
-        {option.label}
-      </option>
-    ))}
-  </StyledSelect>
-));
+const Select = React.forwardRef(
+  ({ options, value, onChange, ...props }, ref) => (
+    <StyledSelect ref={ref} value={value} onChange={onChange} {...props}>
+      {options.map((option, index) => (
+        <option key={`${option.value}-${index}`} value={option.value}>
+          {option.label}
+        </option>
+      ))}
+    </StyledSelect>
+  )
+);
 
-Select.displayName = 'Select';
+Select.displayName = "Select";
 
 export default Select;

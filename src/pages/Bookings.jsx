@@ -9,8 +9,8 @@ function Bookings() {
     <>
       <Row type="horizontal">
         <Heading as="h1">All bookings</Heading>
-        <BookingTableOperations />
         <AddBooking />
+        <BookingTableOperations />
       </Row>
 
       <BookingTable />

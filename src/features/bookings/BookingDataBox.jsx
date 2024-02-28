@@ -101,7 +101,6 @@ const Footer = styled.footer`
   text-align: right;
 `;
 
-
 function BookingDataBox({ booking }) {
   const {
     created_at,
@@ -115,7 +114,13 @@ function BookingDataBox({ booking }) {
     hasBreakfast,
     observations,
     isPaid,
-    guests: { fullName: guestName, email,  nationality, countryFlag, nationalID },
+    guests: {
+      fullName: guestName,
+      email,
+      nationality,
+      countryFlag,
+      nationalID,
+    },
     cabins: { name: cabinName },
   } = booking;
 
@@ -140,7 +145,9 @@ function BookingDataBox({ booking }) {
 
       <Section>
         <Guest>
-          {countryFlag && <Flag src={countryFlag} alt={`Flag of ${nationality}`} />}
+          {countryFlag && (
+            <Flag src={countryFlag} alt={`Flag of ${nationality}`} />
+          )}
           <p>
             {guestName} {numGuests > 1 ? `+ ${numGuests - 1} guests` : ""}
           </p>
