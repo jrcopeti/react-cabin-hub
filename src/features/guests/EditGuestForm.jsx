@@ -19,7 +19,6 @@ function CreateGuestForm({ onCloseModal, guestToEdit = {} }) {
   const {
     register,
     handleSubmit,
-    reset,
     control,
     formState: { errors },
   } = useForm({ defaultValues: editValues });

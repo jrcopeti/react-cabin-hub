@@ -185,10 +185,7 @@ function CreateBookingForm() {
         </Modal>
       </div>
 
-      <Form
-        onSubmit={handleSubmit(onSubmit, onError)}
-
-      >
+      <Form onSubmit={handleSubmit(onSubmit, onError)}>
         <FormRow label="Cabin" error={errors?.cabinId?.message}>
           <Controller
             name="cabinId"

@@ -22,7 +22,7 @@ function UpdateSettingsForm() {
 
   function handleUpdate(e, settingField) {
     const { value } = e.target;
-    console.log(value);
+
     if (!value) return;
     updateSetting({ [settingField]: value });
   }
