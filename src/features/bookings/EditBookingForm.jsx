@@ -28,7 +28,7 @@ const StyledDiv = styled.div`
 `;
 
 function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
-  const { id: editId, ...editValues } = bookingToEdit;
+  const { id, ...editValues } = bookingToEdit;
 
   const { isUpdating, updateBooking } = useUpdateBooking();
 
@@ -97,7 +97,6 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
   const discountInput = cabinInput ? cabinInput.discount : 0;
 
   const totalPriceInput = cabinPriceInput + extraPriceInput - discountInput;
-  console.log("Total Price:", totalPriceInput);
 
   function onSubmit(data) {
     // selected Cabin
@@ -134,10 +133,10 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
       status: "unconfirmed",
     };
 
-    console.log("Updating booking with ID:", editId, "Data:", finalData);
+    console.log("bookingId:", id, "Data:", finalData);
 
     updateBooking(
-      { id: editId, editBookingData: finalData },
+      { id, editBookingData: finalData },
       {
         onSuccess: () => {
           onCloseModal?.();

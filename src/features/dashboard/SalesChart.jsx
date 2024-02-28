@@ -30,7 +30,6 @@ function SalesChart({ bookings, numDays }) {
     start: subDays(new Date(), numDays - 1),
     end: new Date(),
   });
-  console.log(allDates);
 
   const data = allDates.map((date) => {
     return {
@@ -43,7 +42,6 @@ function SalesChart({ bookings, numDays }) {
         .reduce((acc, cur) => acc + cur.extraPrice, 0),
     };
   });
-  console.log(data);
 
   const colors = isDarkMode
     ? {
