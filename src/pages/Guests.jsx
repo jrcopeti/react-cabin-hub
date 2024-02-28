@@ -9,8 +9,8 @@ function Guest() {
     <>
       <Row type="horizontal">
         <Heading as="h1">All Guests</Heading>
-        <GuestTableOperations />
         <AddGuest />
+        <GuestTableOperations />
       </Row>
 
       <Row>

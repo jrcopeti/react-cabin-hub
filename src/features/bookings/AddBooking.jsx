@@ -7,7 +7,7 @@ function AddBooking() {
   return (
     <div>
       <NavLink to="/bookings/new">
-        <Button>Add new Booking</Button>
+        <Button>New Booking</Button>
       </NavLink>
       {/* <Modal>
         <Modal.Open opens="booking-form">

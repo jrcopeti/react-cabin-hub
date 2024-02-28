@@ -21,6 +21,7 @@ import { useMoveBack } from "../../hooks/useMoveBack";
 import { formatCurrency, subtractDates } from "../../utils/helpers";
 
 import { isBefore, isValid, parseISO, startOfToday } from "date-fns";
+import Heading from "../../ui/Heading";
 
 function CreateCabinForm({ onCloseModal }) {
   const { createBooking, isLoading: isCreating } = useCreateBookings();
@@ -162,9 +163,21 @@ function CreateCabinForm({ onCloseModal }) {
   return (
     <>
       <div>
+        <Heading as="h1">Create New Booking</Heading>
+        <p>
+          If the guest is not in the list, please add them first.
+          <br />
+          Bookings will only be created for guests that are already in the
+          system.
+          <br />
+          Check the availability of the cabin before creating a booking.
+        </p>
+      </div>
+
+      <div>
         <Modal>
           <Modal.Open opens="guest-form">
-            <Button>New Guest?</Button>
+            <Button>New Guest</Button>
           </Modal.Open>
           <Modal.Window name="guest-form">
             <CreateGuestForm />
@@ -314,22 +327,6 @@ function CreateCabinForm({ onCloseModal }) {
               />
             </FormRow>
 
-            <Controller
-              control={control}
-              name="hasBreakfast"
-              defaultValue={false}
-              render={({ field: { onChange, value } }) => (
-                <Checkbox
-                  id="hasBreakfast"
-                  disabled={isCreating}
-                  checked={value}
-                  onChange={(e) => onChange(e.target.checked)}
-                >
-                  Includes breakfast?
-                </Checkbox>
-              )}
-            />
-
             <FormRow label="Extra Price">
               <Input disabled value={formatCurrency(extraPriceInput)} />
             </FormRow>
@@ -338,21 +335,39 @@ function CreateCabinForm({ onCloseModal }) {
               <Input disabled value={formatCurrency(totalPriceInput)} />
             </FormRow>
 
-            <Controller
-              control={control}
-              name="isPaid"
-              defaultValue={false}
-              render={({ field: { onChange, value } }) => (
-                <Checkbox
-                  id="isPaid"
-                  disabled={isCreating}
-                  checked={value}
-                  onChange={(e) => onChange(e.target.checked)}
-                >
-                  Was paid?
-                </Checkbox>
-              )}
-            />
+            <FormRow>
+              <Controller
+                control={control}
+                name="hasBreakfast"
+                defaultValue={false}
+                render={({ field: { onChange, value } }) => (
+                  <Checkbox
+                    id="hasBreakfast"
+                    disabled={isCreating}
+                    checked={value}
+                    onChange={(e) => onChange(e.target.checked)}
+                  >
+                    Includes breakfast?
+                  </Checkbox>
+                )}
+              />
+
+              <Controller
+                control={control}
+                name="isPaid"
+                defaultValue={false}
+                render={({ field: { onChange, value } }) => (
+                  <Checkbox
+                    id="isPaid"
+                    disabled={isCreating}
+                    checked={value}
+                    onChange={(e) => onChange(e.target.checked)}
+                  >
+                    Was paid?
+                  </Checkbox>
+                )}
+              />
+            </FormRow>
 
             <FormRow>
               <Button variation="secondary" onClick={moveBack}>
