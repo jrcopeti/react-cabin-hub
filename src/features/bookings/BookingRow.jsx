@@ -112,8 +112,8 @@ function BookingRow({ booking }) {
           &rarr; {numNights} night stay
         </span>
         <span>
-          {format(new Date(startDate), "MMM dd yyyy")} &mdash;{" "}
-          {format(new Date(endDate), "MMM dd yyyy")}
+          {format(new Date(startDate), " dd MMM yyyy")} &mdash;{" "}
+          {format(new Date(endDate), " dd MMM yyyy")}
         </span>
       </Stacked>
 
@@ -174,7 +174,7 @@ function BookingRow({ booking }) {
             onConfirm={() => deleteBooking(bookingId)}
           />
         </Modal.Window>
-        
+
       </Modal>
     </Table.Row>
   );
