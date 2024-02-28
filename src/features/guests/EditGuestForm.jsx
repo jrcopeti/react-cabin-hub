@@ -13,7 +13,7 @@ import toast from "react-hot-toast";
 
 import { useUpdateGuest } from "./useUpdateGuest";
 
-function CreateGuestForm({ onCloseModal, guestToEdit }) {
+function CreateGuestForm({ onCloseModal, guestToEdit = {} }) {
   const { id, ...editValues } = guestToEdit;
 
   const {
@@ -141,7 +141,7 @@ function CreateGuestForm({ onCloseModal, guestToEdit }) {
           Cancel
         </Button>
         <Button disabled={isUpdating} type="submit">
-          Add New Guest
+          Update Guest
         </Button>
       </FormRow>
     </Form>

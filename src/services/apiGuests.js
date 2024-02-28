@@ -54,3 +54,14 @@ export async function updateGuest(id, newGuestData) {
   }
   return data;
 }
+
+export async function deleteGuest(id) {
+  const { data, error } = await supabase.from("guests").delete().eq("id", id);
+
+  if (error) {
+    console.log(error);
+    throw new Error(`Guest could not be deleted`);
+  }
+
+  return data;
+}

@@ -27,7 +27,7 @@ const StyledDiv = styled.div`
   overflow: scroll;
 `;
 
-function EditBookingForm({ onCloseModal, bookingToEdit }) {
+function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
   const { id: editId, ...editValues } = bookingToEdit;
 
   const { isUpdating, updateBooking } = useUpdateBooking();
@@ -331,7 +331,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit }) {
               Cancel
             </Button>
             <Button disabled={isUpdating} type="submit" variation="primary">
-              Submit
+              Update Booking
             </Button>
           </FormRow>
         </Form>

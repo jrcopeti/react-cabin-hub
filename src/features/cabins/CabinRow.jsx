@@ -106,10 +106,11 @@ function CabinRow({ cabin }) {
               </Modal.Open>
 
               <Modal.Open opens="delete">
-                <Menus.Button icon={<HiTrash />} onClick={handleDuplicate}>
+                <Menus.Button icon={<HiTrash />}>
                   Delete
                 </Menus.Button>
               </Modal.Open>
+
             </Menus.List>
 
             <Modal.Window name="edit-cabin">

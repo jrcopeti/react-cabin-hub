@@ -3,8 +3,6 @@ import toast from "react-hot-toast";
 import { deleteCabin as deleteCabinApi } from "../../services/apiCabins";
 
 export function useDeleteCabin() {
-
-
   const queryClient = useQueryClient();
 
   const { isLoading: isDeleting, mutate: deleteCabin } = useMutation({
@@ -15,9 +13,11 @@ export function useDeleteCabin() {
         queryKey: ["cabins"],
       });
     },
-    onError: (err) => toast.error(err.message),
+    onError: (err) =>
+      toast.error(
+        "Cabin couldn't be deleted probably because has a reservation"
+      ),
   });
 
   return { isDeleting, deleteCabin };
-
 }

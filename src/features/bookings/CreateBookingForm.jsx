@@ -374,7 +374,7 @@ function CreateBookingForm() {
                 Cancel
               </Button>
               <Button disabled={isCreating} type="submit" variation="primary">
-                Submit
+                Create Booking
               </Button>
             </FormRow>
           </>

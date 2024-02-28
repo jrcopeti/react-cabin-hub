@@ -3,24 +3,16 @@ import { format, isToday } from "date-fns";
 
 import EditGuestForm from "./EditGuestForm";
 
-import Tag from "../../ui/Tag";
 import Table from "../../ui/Table";
 import Modal from "../../ui/Modal";
 import Menus from "../../ui/Menus";
 import ConfirmDelete from "../../ui/ConfirmDelete";
-
-import { formatCurrency } from "../../utils/helpers";
-import { formatDistanceFromNow } from "../../utils/helpers";
 import { useNavigate } from "react-router-dom";
-import { useCheckout } from "../check-in-out/useCheckout";
-import {
-  HiArrowDownOnSquare,
-  HiArrowUpOnSquare,
-  HiEye,
-  HiPencil,
-  HiTrash,
-} from "react-icons/hi2";
+
+import { HiPencil, HiTrash } from "react-icons/hi2";
 import { Flag } from "../../ui/Flag";
+
+import { useDeleteGuest } from "./useDeleteGuest";
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -59,6 +51,8 @@ function GuestRow({ guest }) {
 
   const navigate = useNavigate();
 
+  const { deleteGuest, isDeleting } = useDeleteGuest();
+
   return (
     <Table.Row>
       <Cabin>{guestId}</Cabin>
@@ -90,7 +84,7 @@ function GuestRow({ guest }) {
           <Menus.Menu>
             <Menus.Toggle id={guestId} />
             <Menus.List id={guestId}>
-              <Modal.Open opens="edit-booking">
+              <Modal.Open opens="edit-guest">
                 <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
               </Modal.Open>
 
@@ -99,13 +93,17 @@ function GuestRow({ guest }) {
               </Modal.Open>
             </Menus.List>
 
-            <Modal.Window name="edit-booking">
+            <Modal.Window name="edit-guest">
               <EditGuestForm guestToEdit={guest} />
             </Modal.Window>
           </Menus.Menu>
 
           <Modal.Window name="delete">
-            <ConfirmDelete resourceName="booking" />
+            <ConfirmDelete
+              resourceName="cabins"
+              disabled={isDeleting}
+              onConfirm={() => deleteGuest(guestId)}
+            />
           </Modal.Window>
         </Modal>
       </Stacked>
