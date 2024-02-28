@@ -1,7 +1,5 @@
 import styled from "styled-components";
-import { format, isToday, parse, parseISO } from "date-fns";
-
-import CreateBookingForm from "./CreateBookingForm";
+import { format, isToday } from "date-fns";
 
 import Tag from "../../ui/Tag";
 import Table from "../../ui/Table";
@@ -66,9 +64,9 @@ function BookingRow({ booking }) {
     totalPrice,
     status,
     guests: { fullName: guestName, email, id: guestId },
-    cabins: { name: cabinName, id: cabinId},
+    cabins: { name: cabinName, id: cabinId },
   } = booking;
-  console.log(booking)
+  console.log(booking);
 
   const bookingEditData = {
     id: bookingId,
@@ -99,12 +97,11 @@ function BookingRow({ booking }) {
 
   return (
     <Table.Row>
-      <Cabin>{cabinName} {observations}</Cabin>
+      <Cabin>{cabinName} </Cabin>
 
       <Stacked>
         <span>{guestName}</span>
         <span>{email}</span>
-        <span>{cabinId}</span>
       </Stacked>
 
       <Stacked>
@@ -123,6 +120,7 @@ function BookingRow({ booking }) {
       <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
 
       <Amount>{formatCurrency(totalPrice)}</Amount>
+
       <Modal>
         <Menus.Menu>
           <Menus.Toggle id={bookingId} />
@@ -135,12 +133,18 @@ function BookingRow({ booking }) {
             </Menus.Button>
 
             {status === "unconfirmed" && (
-              <Menus.Button
-                icon={<HiArrowDownOnSquare />}
-                onClick={() => navigate(`/checkin/${bookingId}`)}
-              >
-                Checkin
-              </Menus.Button>
+              <>
+                <Menus.Button
+                  icon={<HiArrowDownOnSquare />}
+                  onClick={() => navigate(`/checkin/${bookingId}`)}
+                >
+                  Checkin
+                </Menus.Button>
+
+                <Modal.Open opens="edit-booking">
+                  <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
+                </Modal.Open>
+              </>
             )}
 
             {status === "checked-in" && (
@@ -153,12 +157,8 @@ function BookingRow({ booking }) {
               </Menus.Button>
             )}
 
-            <Modal.Open opens="edit-booking">
-              <Menus.Button icon={<HiPencil />}>Edit Booking</Menus.Button>
-            </Modal.Open>
-
             <Modal.Open opens="delete">
-              <Menus.Button icon={<HiTrash />}>Delete Booking</Menus.Button>
+              <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
             </Modal.Open>
           </Menus.List>
 
@@ -174,6 +174,7 @@ function BookingRow({ booking }) {
             onConfirm={() => deleteBooking(bookingId)}
           />
         </Modal.Window>
+        
       </Modal>
     </Table.Row>
   );

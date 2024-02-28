@@ -1,8 +1,6 @@
 import { Controller, useForm } from "react-hook-form";
 import { useQueryClient } from "@tanstack/react-query";
 
-import { useCreateGuest } from "./useCreateGuest";
-
 import { useCountries } from "../../hooks/useCountries";
 
 import Form from "../../ui/Form";
@@ -13,18 +11,22 @@ import Select from "../../ui/Select";
 import Spinner from "../../ui/Spinner";
 import toast from "react-hot-toast";
 
-function CreateGuestForm({ onCloseModal }) {
+import { useUpdateGuest } from "./useUpdateGuest";
+
+function CreateGuestForm({ onCloseModal, guestToEdit }) {
+  const { id, ...editValues } = guestToEdit;
+
   const {
     register,
     handleSubmit,
     reset,
     control,
     formState: { errors },
-  } = useForm();
+  } = useForm({ defaultValues: editValues });
 
   const queryClient = useQueryClient();
 
-  const { createGuest, isCreating } = useCreateGuest();
+  const { updateGuest, isUpdating } = useUpdateGuest();
 
   const { countries, isLoading: isLoadingCountries } = useCountries();
 
@@ -56,14 +58,16 @@ function CreateGuestForm({ onCloseModal }) {
 
     console.log(finalData);
 
-    createGuest(finalData, {
-      onSuccess: () => {
-        reset();
-        onCloseModal?.();
-        queryClient.refetchQueries(["guests"]);
-        toast.success(`A new guest ${finalData.fullName} was created`);
-      },
-    });
+    updateGuest(
+      { id, editGuestData: finalData },
+      {
+        onSuccess: () => {
+          onCloseModal?.();
+          queryClient.refetchQueries(["guests"]);
+          toast.success(`The guest ${finalData.fullName} was updated`);
+        },
+      }
+    );
   }
 
   function onError(errors) {
@@ -77,7 +81,7 @@ function CreateGuestForm({ onCloseModal }) {
     >
       <FormRow label="Full Name" error={errors?.fullName?.message}>
         <Input
-          disabled={isCreating}
+          disabled={isUpdating}
           type="text"
           id="fullName"
           {...register("fullName", { required: "This field is required" })}
@@ -86,7 +90,7 @@ function CreateGuestForm({ onCloseModal }) {
 
       <FormRow label="Email" error={errors?.email?.message}>
         <Input
-          disabled={isCreating}
+          disabled={isUpdating}
           type="text"
           id="email"
           {...register("email", {
@@ -101,7 +105,7 @@ function CreateGuestForm({ onCloseModal }) {
 
       <FormRow label="national ID" error={errors?.nationalID?.message}>
         <Input
-          disabled={isCreating}
+          disabled={isUpdating}
           type="text"
           id="nationalID"
           {...register("nationalID", {
@@ -121,7 +125,7 @@ function CreateGuestForm({ onCloseModal }) {
               options={countriesOptionsNationality}
               value={value}
               onChange={(e) => onChange(e.target.value)}
-              disabled={isCreating}
+              disabled={isUpdating}
             />
           )}
         />
@@ -129,14 +133,14 @@ function CreateGuestForm({ onCloseModal }) {
 
       <FormRow>
         <Button
-          disabled={isCreating}
+          disabled={isUpdating}
           variation="secondary"
           type="reset"
           onClick={() => onCloseModal?.()}
         >
           Cancel
         </Button>
-        <Button disabled={isCreating} type="submit">
+        <Button disabled={isUpdating} type="submit">
           Add New Guest
         </Button>
       </FormRow>

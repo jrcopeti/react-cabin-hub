@@ -7,7 +7,6 @@ export async function getAllGuests() {
   if (error) throw new Error("Guests could not be loaded");
 
   return data;
-
 }
 
 export async function getGuests({ sortBy, page }) {
@@ -39,5 +38,19 @@ export async function createGuest(newGuest) {
 
   if (error) throw new Error("Guest could not be created");
 
+  return data;
+}
+
+export async function updateGuest(id, newGuestData) {
+  const { data, error } = await supabase
+    .from("guests")
+    .update(newGuestData)
+    .eq("id", id)
+    .select();
+
+  if (error) {
+    console.error(error);
+    throw new Error("Guest could not be updated");
+  }
   return data;
 }
