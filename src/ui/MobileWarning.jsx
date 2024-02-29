@@ -11,19 +11,13 @@ const MobileWarningStyled = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-
   z-index: 1000;
-
-  align-items: center;
   text-align: center;
-
-  box-sizing: border-box;
-
   background-color: var(--color-grey-50);
 
   align-items: center;
-  justify-content: center;
-  padding: 3rem;
+  padding: 0.5rem;
+
 
   @media (max-width: 1024px) {
     display: flex;
@@ -34,26 +28,32 @@ const StyledMain = styled.main`
   background-color: var(--color-grey-0);
   display: flex;
   flex-direction: column;
-  padding: 2rem;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 3rem;
   gap: 1rem;
 `;
 
-const MobileWarning = () => (
-  <>
-    <GlobalStyles />
-
-    <MobileWarningStyled>
-      <StyledMain>
-        <Logo />
-        <Heading as="h2">Mobile Device Detected</Heading>
-        <p>
-          This application is optimized for desktop usage and may not function
-          as intended on mobile devices. Please access it on a desktop for the
-          best experience.
-        </p>
-      </StyledMain>
-    </MobileWarningStyled>
-  </>
-);
+function MobileWarning() {
+  return (
+    <>
+      <GlobalStyles />
+      <MobileWarningStyled>
+        <StyledMain>
+          <Logo />
+          <Heading as="h2">Mobile Device Detected</Heading>
+          <p>
+            This application is optimized for desktop usage and may not function
+            as intended on mobile devices.
+            <br />
+            Please access it on a desktop for the best experience.
+          </p>
+        </StyledMain>
+      </MobileWarningStyled>
+    </>
+  );
+}
 
 export default MobileWarning;

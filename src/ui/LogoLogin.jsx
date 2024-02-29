@@ -10,10 +10,12 @@ const Img = styled.img`
   width: auto;
 `;
 
-function Logo() {
-  const {isDarkMode} = useDarkMode()
+function LogoLogin() {
+  const { isDarkMode } = useDarkMode();
   // const src = isDarkMode ? "/logo-dark.png" : "/logo-light.png"
-  const src1= isDarkMode ? "/logo_trial_dark.png" : "/logo_trial_light.png"
+  const src1 = isDarkMode
+    ? "/logo_trial_dark.png"
+    : "/logo_trial_light_login.png";
   return (
     <StyledLogo>
       <Img src={src1} alt="Logo" />
@@ -21,4 +23,4 @@ function Logo() {
   );
 }
 
-export default Logo;
+export default LogoLogin;
