@@ -53,6 +53,7 @@ const Amount = styled.div`
 function BookingRow({ booking }) {
   const {
     id: bookingId,
+    created_at,
     startDate,
     endDate,
     numNights,
@@ -71,6 +72,7 @@ function BookingRow({ booking }) {
 
   const bookingEditData = {
     id: bookingId,
+    created_at,
     startDate: toLocalISODate(startDate),
     endDate: toLocalISODate(endDate),
     numNights,

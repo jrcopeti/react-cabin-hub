@@ -7,10 +7,10 @@ function GuestTableOperations() {
     <TableOperations>
       <SortBy
         options={[
-          { value: "fullName-asc", label: "Sort by name (A-Z)" },
-          { value: "fullName-desc", label: "Sort by name (Z-A)" },
-          { value: "id-asc", label: "Sort by ID (asc)" },
-          { value: "id-desc", label: "Sort by ID (desc)" },
+          { value: "fullName-asc", label: "Name (A-Z)" },
+          { value: "fullName-desc", label: "Name (Z-A)" },
+          { value: "id-asc", label: "ID # (asc)" },
+          { value: "id-desc", label: "ID # (desc)" },
         ]}
       />
     </TableOperations>

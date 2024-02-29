@@ -16,6 +16,7 @@ import Heading from "../../ui/Heading";
 
 function CreateGuestForm({ onCloseModal, guestToEdit = {} }) {
   const { id, ...editValues } = guestToEdit;
+  const { fullName} = editValues;
 
   const {
     register,
@@ -76,7 +77,7 @@ function CreateGuestForm({ onCloseModal, guestToEdit = {} }) {
 
   return (
     <>
-      <Heading as="h2">Edit Guest</Heading>
+      <Heading as="h2">{`Edit Guest # ${id} - ${fullName}`}</Heading>
     <br />
     <Form
       onSubmit={handleSubmit(onSubmit, onError)}

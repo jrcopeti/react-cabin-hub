@@ -185,7 +185,7 @@ function BookingDataBox({ booking }) {
       </Section>
 
       <Footer>
-        <p>Booked {format(new Date(created_at), "EEE, MMM dd yyyy, p")}</p>
+        <p>Booked {format(new Date(created_at), "EEE, dd MMM yyyy, p")}</p>
       </Footer>
     </StyledBookingDataBox>
   );

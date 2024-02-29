@@ -16,7 +16,7 @@ import Checkbox from "../../ui/Checkbox";
 
 import { formatCurrency, subtractDates } from "../../utils/helpers";
 
-import { isBefore, isValid, parseISO, startOfToday } from "date-fns";
+import { format, isBefore, isValid, parseISO, startOfToday } from "date-fns";
 
 import { useUpdateBooking } from "./useUpdateBooking";
 import Heading from "../../ui/Heading";
@@ -27,10 +27,16 @@ const StyledDiv = styled.div`
   flex-direction: column;
   max-height: 80vh;
   overflow: scroll;
+  & p {
+    margin: 0.8rem 0rem;
+    color: var(--color-grey-500);
+    font-size: 1.4rem;
+  }
 `;
 
 function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
   const { id, ...editValues } = bookingToEdit;
+  const { created_at } = editValues;
 
   const { isUpdating, updateBooking } = useUpdateBooking();
 
@@ -142,7 +148,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
       {
         onSuccess: () => {
           onCloseModal?.();
-          toast.success(`Booking # ${id} was successfully updated`)
+          toast.success(`Booking # ${id} was successfully updated`);
         },
       }
     );
@@ -155,7 +161,8 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
   return (
     <StyledDiv>
       <div>
-        <Heading as="h2">Edit Booking</Heading>
+        <Heading as="h2">{`Edit Booking # ${id}`}</Heading>
+        <p>Booked on {format(new Date(created_at), "EEE, dd/MM/yyyy, p")}</p>
         <br />
         <Form
           onSubmit={handleSubmit(onSubmit, onError)}
