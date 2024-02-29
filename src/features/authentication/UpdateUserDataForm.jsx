@@ -11,7 +11,6 @@ import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 
-
 function UpdateUserDataForm() {
   // No need of the loading state, because we know that it has already been loaded at this point
   const {
@@ -28,8 +27,17 @@ function UpdateUserDataForm() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    
-    if (!fullName) return;
+
+    if (!fullName) {
+      toast.error("Full Name is required");
+      return;
+    }
+
+    if (fullName === currentFullName) {
+      toast.error("No changes were made in your account");
+      return;
+    }
+
     updateUser(
       {
         fullName,

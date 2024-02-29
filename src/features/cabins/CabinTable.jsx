@@ -5,9 +5,10 @@ import Table from "../../ui/Table";
 import Menus from "../../ui/Menus";
 import { useSearchParams } from "react-router-dom";
 import Empty from "../../ui/Empty";
+import Pagination from "../../ui/Pagination";
 
 function CabinTable() {
-  const { isLoading, cabins, error } = useCabins();
+  const { isLoading, cabins, error, count } = useCabins();
   const [searchParams] = useSearchParams();
 
   if (isLoading) return <Spinner />;
@@ -48,6 +49,9 @@ function CabinTable() {
           data={sortedCabins}
           render={(cabin) => <CabinRow cabin={cabin} key={cabin.id} />}
         />
+           <Table.Footer>
+          <Pagination count={count} />
+        </Table.Footer>
       </Table>
     </Menus>
   );

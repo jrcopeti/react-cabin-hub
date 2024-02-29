@@ -1,6 +1,7 @@
+import { PAGE_SIZE } from "../utils/constants";
 import supabase, { supabaseUrl } from "./supabase";
 
-export async function getCabins() {
+export async function getAllCabins() {
   let { data, error } = await supabase.from("cabins").select("*");
 
   if (error) {
@@ -10,8 +11,23 @@ export async function getCabins() {
   return data;
 }
 
+export async function getCabins({ page }) {
+  let query = supabase.from("cabins").select("*", { count: "exact" });
+  if (page) {
+    const from = (page - 1) * (PAGE_SIZE - 1);
+    const to = from + PAGE_SIZE - 1;
+    query = query.range(from, to);
+  }
+
+  const { data, error, count } = await query;
+
+  if (error) throw new Error("Cabins could not be loaded");
+
+  return { data, count };
+}
+
 export async function createEditCabin(newCabin, id) {
-  
+
   const hasImagePath = newCabin.image?.startsWith?.(supabaseUrl)
 
   const imageName = `${Math.random()}-${newCabin.image.name}`.replaceAll(
