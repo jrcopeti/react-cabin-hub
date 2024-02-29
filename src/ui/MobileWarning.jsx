@@ -31,7 +31,7 @@ const MobileWarningStyled = styled.div`
 `;
 
 const StyledMain = styled.main`
-  background-color: var(--color-grey-50);
+  background-color: var(--color-grey-0);
   display: flex;
   flex-direction: column;
   padding: 2rem;
