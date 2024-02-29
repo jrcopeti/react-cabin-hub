@@ -1,5 +1,7 @@
 import styled from "styled-components";
 import { format, isToday } from "date-fns";
+import { useDeleteBooking } from "./useDeleteBooking";
+import EditBookingForm from "./EditBookingForm";
 
 import Tag from "../../ui/Tag";
 import Table from "../../ui/Table";
@@ -7,9 +9,8 @@ import Modal from "../../ui/Modal";
 import Menus from "../../ui/Menus";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 
-import { useDeleteBooking } from "./useDeleteBooking";
 
-import { formatCurrency } from "../../utils/helpers";
+import { formatCurrency, toLocalISODate } from "../../utils/helpers";
 import { formatDistanceFromNow } from "../../utils/helpers";
 import { useNavigate } from "react-router-dom";
 import { useCheckout } from "../check-in-out/useCheckout";
@@ -20,7 +21,7 @@ import {
   HiPencil,
   HiTrash,
 } from "react-icons/hi2";
-import EditBookingForm from "./EditBookingForm";
+
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -66,12 +67,12 @@ function BookingRow({ booking }) {
     guests: { fullName: guestName, email, id: guestId },
     cabins: { name: cabinName, id: cabinId },
   } = booking;
-  console.log(booking);
+  console.log("booking", booking);
 
   const bookingEditData = {
     id: bookingId,
-    startDate: new Date(startDate).toISOString().slice(0, 10),
-    endDate: new Date(endDate).toISOString().slice(0, 10),
+    startDate: toLocalISODate(startDate),
+    endDate: toLocalISODate(endDate),
     numNights,
     numGuests,
     cabinId,
@@ -84,6 +85,10 @@ function BookingRow({ booking }) {
     totalPrice,
     status: "unconfirmed",
   };
+
+  console.log("bookingEditData",bookingEditData)
+  console.log("start date", startDate)
+  console.log("end date", endDate)
 
   const navigate = useNavigate();
   const { checkout, isCheckingOut } = useCheckout();

@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import BookingDataBox from "../../features/bookings/BookingDataBox";
 
@@ -7,14 +8,14 @@ import ButtonGroup from "../../ui/ButtonGroup";
 import Button from "../../ui/Button";
 import ButtonText from "../../ui/ButtonText";
 import Spinner from "../../ui/Spinner";
-
-import { useMoveBack } from "../../hooks/useMoveBack";
-import { useBooking } from "../bookings/useBooking";
-import { useSettings } from "../settings/useSettings";
-import { useEffect, useState } from "react";
 import Checkbox from "../../ui/Checkbox";
-import { formatCurrency } from "../../utils/helpers";
+
+import { useBooking } from "../bookings/useBooking";
+import { useMoveBack } from "../../hooks/useMoveBack";
+import { useSettings } from "../settings/useSettings";
 import { useCheckin } from "./useCheckin";
+
+import { formatCurrency } from "../../utils/helpers";
 
 const Box = styled.div`
   /* Box */
@@ -111,11 +112,11 @@ function CheckinBooking() {
       </Box>
 
       <ButtonGroup>
-        <Button onClick={handleCheckin} disabled={!confirmPaid || isCheckingIn}>
-          Check in booking #{bookingId}
-        </Button>
         <Button variation="secondary" onClick={moveBack}>
           Back
+        </Button>
+        <Button onClick={handleCheckin} disabled={!confirmPaid || isCheckingIn}>
+          Check in booking #{bookingId}
         </Button>
       </ButtonGroup>
     </>

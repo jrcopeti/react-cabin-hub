@@ -24,6 +24,11 @@ export const getToday = function (options = {}) {
   return today.toISOString();
 };
 
+export function toLocalISODate(date) {
+  const timeZoneOffset = new Date().getTimezoneOffset() * 60000; 
+  return new Date(new Date(date) - timeZoneOffset).toISOString().slice(0, 10);
+}
+
 export const formatCurrency = (value) =>
   new Intl.NumberFormat("en", { style: "currency", currency: "USD" }).format(
     value

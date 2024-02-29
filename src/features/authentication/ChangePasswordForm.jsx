@@ -21,7 +21,7 @@ function ChangePasswordForm() {
     changePassword(
       { updatedPassword: password },
       {
-        onSuccess: () => {
+        onSettled: () => {
           reset();
           navigate("/login");
         },
