@@ -12,17 +12,17 @@ function BookingTable() {
   if (isLoading) return <Spinner />;
 
   if (!bookings.length) return <Empty resourceName="bookings" />;
-
+  // columns="0.6fr 2fr 2.4fr 1.4fr 1fr 3.2rem">
   return (
     <Menus>
-      <Table columns="0.6fr 2fr 2.4fr 1.4fr 1fr 3.2rem">
+      <Table columns="0.6fr 0.6fr 1.2fr 1.4fr 1.0fr 0.8fr 0.5rem">
         <Table.Header>
+          <div>Id</div>
           <div>Cabin</div>
           <div>Guest</div>
           <div>Dates</div>
           <div>Status</div>
           <div>Amount</div>
-          <div></div>
         </Table.Header>
 
         <Table.Body

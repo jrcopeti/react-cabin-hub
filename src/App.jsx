@@ -21,6 +21,7 @@ import PageNotFound from "./pages/PageNotFound";
 import CreateBookingForm from "./features/bookings/CreateBookingForm";
 import AppLayout from "./ui/AppLayout";
 import ProtectedRoute from "./ui/ProtectedRoute";
+import MobileWarning from "./ui/MobileWarning";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -33,6 +34,7 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <DarkModeProvider>
+      <MobileWarning />
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen={false} />
 
@@ -58,7 +60,7 @@ function App() {
               <Route path="settings" element={<Settings />} />
               <Route path="account" element={<Account />} />
             </Route>
-            
+
             <Route path="users" element={<Users />} />
             <Route path="login" element={<Login />} />
             <Route path="*" element={<PageNotFound />} />
