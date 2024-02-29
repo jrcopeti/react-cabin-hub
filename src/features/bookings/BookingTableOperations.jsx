@@ -17,8 +17,8 @@ function BookingTableOperations() {
 
       <SortBy
         options={[
-          { value: "startDate-desc", label: "Sort by date (recent first)" },
-          { value: "startDate-asc", label: "Sort by date (earlier first)" },
+          { value: "startDate-asc", label: "Sort by date (earliest)" },
+          { value: "startDate-desc", label: "Sort by date (latest)" },
           { value: "cabinId-asc", label: "Sort by cabin (A-Z)" },
           { value: "cabinId-desc", label: "Sort by cabin (Z-A)" },
           {
@@ -26,6 +26,8 @@ function BookingTableOperations() {
             label: "Sort by amount (high first)",
           },
           { value: "totalPrice-asc", label: "Sort by amount (low first)" },
+          { value: "id-asc", label: "Sort by ID (low first)" },
+          { value: "id-desc", label: "Sort by ID (high first)" },
         ]}
       />
     </TableOperations>

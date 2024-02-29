@@ -97,12 +97,18 @@ function BookingRow({ booking }) {
 
   return (
     <Table.Row>
-      <Cabin>{cabinName} </Cabin>
+      <Cabin>{bookingId} </Cabin>
+
+      <Stacked>
+        <span>{cabinName}</span>
+        <span></span>
+      </Stacked>
 
       <Stacked>
         <span>{guestName}</span>
         <span>{email}</span>
       </Stacked>
+
 
       <Stacked>
         <span>

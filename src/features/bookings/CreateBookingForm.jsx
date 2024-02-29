@@ -86,6 +86,7 @@ function CreateBookingForm() {
   const cabinInput = cabins.find(
     (cabinInput) => cabinInput.id === Number(cabinPriceWatch)
   );
+
   const cabinPriceInput = cabinInput
     ? cabinInput.regularPrice * numNightsInput
     : 0;
@@ -271,22 +272,31 @@ function CreateBookingForm() {
               label="Number of Guests"
               error={errors?.numGuests?.message}
             >
-              <Input
-                disabled={isCreating}
-                type="number"
-                defaultValue={1}
-                id="numGuests"
-                {...register("numGuests", {
+              <Controller
+                name="numGuests"
+                control={control}
+                rules={{
                   required: "This field is required",
                   min: {
                     value: 1,
                     message: "Minimum number of guests must be 1",
                   },
                   max: {
-                    value: settings.maxGuestsPerBooking,
-                    message: `Maximum number of guests must be ${settings.maxGuestsPerBooking}`,
+                    value: cabinInput.maxCapacity,
+                    message: `Maximum number of guests must be ${cabinInput.maxCapacity}`,
                   },
-                })}
+                }}
+                render={({ field: { ref, value, onChange } }) => (
+                  <Input
+                    type="number"
+                    id="numGuests"
+                    defaultValue={1}
+                    ref={ref}
+                    value={value}
+                    onChange={(e) => onChange(e.target.value)}
+                    disabled={isCreating}
+                  />
+                )}
               />
             </FormRow>
 
