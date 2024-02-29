@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import LoginForm from "../features/authentication/LoginForm";
 import Heading from "../ui/Heading";
-import Logo from "../ui/Logo";
+import LogoLogin from "../ui/LogoLogin";
 import { NavLink } from "react-router-dom";
 import Button from "../ui/Button";
 
@@ -18,7 +18,7 @@ const LoginLayout = styled.main`
 function Login() {
   return (
     <LoginLayout>
-      <Logo />
+      <LogoLogin />
       <Heading as="h4">Login to your account</Heading>
       <LoginForm />
       <NavLink to={"/users"}>

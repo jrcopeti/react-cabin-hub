@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Controller, useForm } from "react-hook-form";
 
 import { useSettings } from "../settings/useSettings";
-import { useCabins } from "../cabins/useCabins";
+import { useAllCabins } from "../cabins/useAllCabins";
 import { useAllGuests } from "../guests/useAllGuests";
 
 import Input from "../../ui/Input";
@@ -34,7 +34,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
 
   const { settings, isLoading: isLoadingSettings } = useSettings();
 
-  const { cabins, isLoading: isLoadingCabins } = useCabins();
+  const { cabins, isLoading: isLoadingCabins } = useAllCabins();
 
   const { guests, isLoading: isLoadingGuests } = useAllGuests();
 

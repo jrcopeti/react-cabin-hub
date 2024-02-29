@@ -3,7 +3,7 @@ import { Controller, useForm } from "react-hook-form";
 import { useCreateBookings } from "./useCreateBookings";
 import CreateGuestForm from "../guests/CreateGuestForm";
 import { useSettings } from "../settings/useSettings";
-import { useCabins } from "../cabins/useCabins";
+import { useAllCabins } from "../cabins/useAllCabins";
 import { useAllGuests } from "../guests/useAllGuests";
 import { useAvailability } from "./useAvailability";
 
@@ -28,7 +28,7 @@ function CreateBookingForm() {
 
   const { settings, isLoading: isLoadingSettings } = useSettings();
 
-  const { cabins, isLoading: isLoadingCabins } = useCabins();
+  const { cabins, isLoading: isLoadingCabins } = useAllCabins();
 
   const { guests, isLoading: isLoadingGuests } = useAllGuests();
 

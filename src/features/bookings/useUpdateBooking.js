@@ -1,5 +1,5 @@
 import toast from "react-hot-toast";
-import { updateBookingAll as updateBookingApi } from "../../services/apiBookings";
+import { updateAllColumnsBooking as updateBookingApi } from "../../services/apiBookings";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export function useUpdateBooking() {

@@ -186,7 +186,7 @@ export async function createBooking(newBooking) {
   }
 }
 
-export async function updateBookingAll(bookingId, newBookingData) {
+export async function updateAllColumnsBooking(bookingId, newBookingData) {
   const { cabinId, startDate, endDate } = newBookingData;
   const hasOverlap = await checkForOverlappingBookings(
     cabinId,
@@ -211,17 +211,3 @@ export async function updateBookingAll(bookingId, newBookingData) {
     return data;
   }
 }
-
-// export async function createBooking(newBooking) {
-//   const { data, error } = await supabase
-//     .from("bookings")
-//     .insert([{ ...newBooking }])
-//     .select();
-
-//   if (error) {
-//     console.error(error);
-//     throw new Error("Booking could not be created");
-//   }
-
-//   return data;
-// }
