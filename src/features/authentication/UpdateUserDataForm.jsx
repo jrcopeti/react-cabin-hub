@@ -33,8 +33,9 @@ function UpdateUserDataForm() {
       return;
     }
 
-    if (fullName === currentFullName || !avatar) {
+    if (fullName === currentFullName && !avatar) {
       toast.error("No changes were made in your account");
+      console.log(fullName, currentFullName, avatar)
       return;
     }
 
