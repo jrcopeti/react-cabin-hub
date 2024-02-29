@@ -20,6 +20,7 @@ import { isBefore, isValid, parseISO, startOfToday } from "date-fns";
 
 import { useUpdateBooking } from "./useUpdateBooking";
 import Heading from "../../ui/Heading";
+import toast from "react-hot-toast";
 
 const StyledDiv = styled.div`
   display: flex;
@@ -141,6 +142,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
       {
         onSuccess: () => {
           onCloseModal?.();
+          toast.success(`Booking # ${id} was successfully updated`)
         },
       }
     );
