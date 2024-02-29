@@ -22,6 +22,23 @@ import { formatCurrency, subtractDates } from "../../utils/helpers";
 
 import { isBefore, isValid, parseISO, startOfToday } from "date-fns";
 import Heading from "../../ui/Heading";
+import styled from "styled-components";
+
+const StyledDiv = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
+  align-items: flex-start;
+  padding-inline-start: 0.3rem;
+
+  & p {
+    font-size: 1.5rem;
+    color: var(--color-grey-500);
+    line-height: 1.6;
+    letter-spacing: 0.4px;
+    font-weight: 400;
+  }
+`;
 
 function CreateBookingForm() {
   const { createBooking, isLoading: isCreating } = useCreateBookings();
@@ -42,7 +59,16 @@ function CreateBookingForm() {
     control,
     getValues,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      numGuests: 1,
+      cabinPrice: 0,
+      extraPrice: 0,
+      totalPrice: 0,
+      hasBreakfast: false,
+      isPaid: false,
+    },
+  });
 
   const { availability, checkAvailability, resetAvailability } =
     useAvailability(watch);
@@ -106,14 +132,12 @@ function CreateBookingForm() {
     const reservedCabin = cabins.find((cabin) => cabin.id === cabinIdNum);
 
     // CabinPrice
-    const cabinPrice = reservedCabin
-      ? (reservedCabin.regularPrice - reservedCabin.discount) * numNightsInput
-      : 0;
+    const cabinPrice =
+      (reservedCabin.regularPrice - reservedCabin.discount) * numNightsInput;
 
     // ExtraPrice
-    const extraPrice = hasBreakfast
-      ? numNightsInput * settings.breakfastPrice * Number(data.numGuests)
-      : 0;
+    const extraPrice =
+      numNightsInput * settings.breakfastPrice * Number(numGuestInput);
 
     // Total Price
     const totalPrice = cabinPrice + extraPrice;
@@ -134,6 +158,7 @@ function CreateBookingForm() {
       totalPrice,
       status: "unconfirmed",
     };
+
     console.log(finalData);
 
     createBooking(finalData, {
@@ -163,7 +188,7 @@ function CreateBookingForm() {
 
   return (
     <>
-      <div>
+      <StyledDiv>
         <Heading as="h1">Create New Booking</Heading>
         <p>
           If the guest is not in the list, please add them first.
@@ -173,20 +198,19 @@ function CreateBookingForm() {
           <br />
           Check the availability of the cabin before creating a booking.
         </p>
-      </div>
+        <div>
+          <Modal>
+            <Modal.Open opens="guest-form">
+              <Button>New Guest</Button>
+            </Modal.Open>
+            <Modal.Window name="guest-form">
+              <CreateGuestForm />
+            </Modal.Window>
+          </Modal>
+        </div>
+      </StyledDiv>
 
-      <div>
-        <Modal>
-          <Modal.Open opens="guest-form">
-            <Button>New Guest</Button>
-          </Modal.Open>
-          <Modal.Window name="guest-form">
-            <CreateGuestForm />
-          </Modal.Window>
-        </Modal>
-      </div>
-
-      <Form onSubmit={handleSubmit(onSubmit, onError)}>
+      <Form type="regular" onSubmit={handleSubmit(onSubmit, onError)}>
         <FormRow label="Cabin" error={errors?.cabinId?.message}>
           <Controller
             name="cabinId"
@@ -282,18 +306,17 @@ function CreateBookingForm() {
                     message: "Minimum number of guests must be 1",
                   },
                   max: {
-                    value: cabinInput.maxCapacity,
-                    message: `Maximum number of guests must be ${cabinInput.maxCapacity}`,
+                    value: cabinInput?.maxCapacity,
+                    message: `Maximum number of guests must be ${cabinInput?.maxCapacity}`,
                   },
                 }}
-                render={({ field: { ref, value, onChange } }) => (
+                render={({ field }) => (
                   <Input
                     type="number"
                     id="numGuests"
-                    defaultValue={1}
-                    ref={ref}
-                    value={value}
-                    onChange={(e) => onChange(e.target.value)}
+                    ref={field.ref}
+                    value={field.value}
+                    onChange={(e) => field.onChange(e.target.value)}
                     disabled={isCreating}
                   />
                 )}

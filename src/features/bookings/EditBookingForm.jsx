@@ -19,6 +19,7 @@ import { formatCurrency, subtractDates } from "../../utils/helpers";
 import { isBefore, isValid, parseISO, startOfToday } from "date-fns";
 
 import { useUpdateBooking } from "./useUpdateBooking";
+import Heading from "../../ui/Heading";
 
 const StyledDiv = styled.div`
   display: flex;
@@ -152,6 +153,8 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
   return (
     <StyledDiv>
       <div>
+        <Heading as="h2">Edit Booking</Heading>
+        <br />
         <Form
           onSubmit={handleSubmit(onSubmit, onError)}
           type={onCloseModal ? "modal" : "regular"}

@@ -33,7 +33,7 @@ function UpdateUserDataForm() {
       return;
     }
 
-    if (fullName === currentFullName) {
+    if (fullName === currentFullName || !avatar) {
       toast.error("No changes were made in your account");
       return;
     }
