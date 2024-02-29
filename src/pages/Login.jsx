@@ -15,19 +15,29 @@ const LoginLayout = styled.main`
   background-color: var(--color-grey-50);
 `;
 
+const StyledDiv = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
 function Login() {
   return (
     <LoginLayout>
       <LogoLogin />
       <Heading as="h4">Login to your account</Heading>
       <LoginForm />
-      <NavLink to={"/users"}>
-        <Button variation="secondary">
-          {" "}
-          Don't have an account?
-          <strong> Sign Up </strong>
-        </Button>
-      </NavLink>
+      <StyledDiv>
+        <NavLink to={"/users"}>
+          <Button variation="secondary">
+            {" "}
+            Don't have an account?
+            <strong> Sign Up </strong>
+          </Button>
+        </NavLink>
+        <NavLink to={"/reset-password"}>
+          <Button variation="secondary">Forgot your password?</Button>
+        </NavLink>
+      </StyledDiv>
     </LoginLayout>
   );
 }

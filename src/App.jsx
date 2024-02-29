@@ -17,11 +17,13 @@ import Login from "./pages/Login";
 import Booking from "./pages/Booking";
 import Checkin from "./pages/Checkin";
 import PageNotFound from "./pages/PageNotFound";
+import ResetPassword from "./pages/ResetPassword";
 
 import CreateBookingForm from "./features/bookings/CreateBookingForm";
 import AppLayout from "./ui/AppLayout";
 import ProtectedRoute from "./ui/ProtectedRoute";
 import MobileWarning from "./ui/MobileWarning";
+import ChangePassword from "./pages/ChangePassword";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -61,8 +63,10 @@ function App() {
               <Route path="account" element={<Account />} />
             </Route>
 
+            <Route path="change-password" element={<ChangePassword />} />
             <Route path="users" element={<Users />} />
             <Route path="login" element={<Login />} />
+            <Route path="reset-password" element={<ResetPassword />} />
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </BrowserRouter>

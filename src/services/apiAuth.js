@@ -52,6 +52,7 @@ export async function updateCurrentUser({ password, fullName, avatar }) {
   if (fullName) updateData = { data: { fullName } };
 
   const { data, error } = await supabase.auth.updateUser(updateData);
+
   if (error) throw new Error(error.message);
   if (!avatar) return data;
 
@@ -74,4 +75,24 @@ export async function updateCurrentUser({ password, fullName, avatar }) {
 
   if (error2) throw new Error(error2.message);
   return updatedUser;
+}
+
+export async function resetPassword(email) {
+  let redirectUrl;
+  if (import.meta.env.DEV)
+    redirectUrl = "http://localhost:5173/change-password";
+  if (import.meta.env.PROD)
+    redirectUrl = "https://cabinhub.vercel.app/change-password";
+
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: redirectUrl,
+  });
+
+  if (error) throw new Error(error.message);
+}
+
+export async function changePassword(newPassword) {
+  const { error } = await supabase.auth.updateUser({ password: newPassword });
+
+  if (error) throw new Error(error.message);
 }
