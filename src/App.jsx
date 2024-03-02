@@ -9,21 +9,22 @@ import GlobalStyles from "./styles/GlobalStyles";
 import Dashboard from "./pages/Dashboard";
 import Guests from "./pages/Guests";
 import Bookings from "./pages/Bookings";
+import Booking from "./pages/Booking";
+import NewBooking from "./pages/NewBooking";
 import Cabins from "./pages/Cabins";
 import Users from "./pages/Users";
 import Settings from "./pages/Settings";
 import Account from "./pages/Account";
 import Login from "./pages/Login";
-import Booking from "./pages/Booking";
 import Checkin from "./pages/Checkin";
 import PageNotFound from "./pages/PageNotFound";
 import ResetPassword from "./pages/ResetPassword";
-
-import CreateBookingForm from "./features/bookings/CreateBookingForm";
-import AppLayout from "./ui/AppLayout";
-import ProtectedRoute from "./ui/ProtectedRoute";
-import MobileWarning from "./ui/MobileWarning";
 import ChangePassword from "./pages/ChangePassword";
+
+import ProtectedRoute from "./ui/ProtectedRoute";
+import AppLayout from "./ui/AppLayout";
+
+import MobileWarning from "./ui/MobileWarning";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -55,7 +56,7 @@ function App() {
               <Route path="guests" element={<Guests />} />
               <Route path="bookings" element={<Bookings />} />
               <Route path="bookings/:bookingId" element={<Booking />} />
-              <Route path="bookings/new" element={<CreateBookingForm />} />
+              <Route path="bookings/new" element={<NewBooking />} />
               <Route path="checkin/:bookingId" element={<Checkin />} />
               <Route path="cabins" element={<Cabins />} />
 
@@ -63,10 +64,10 @@ function App() {
               <Route path="account" element={<Account />} />
             </Route>
 
-            <Route path="change-password" element={<ChangePassword />} />
             <Route path="users" element={<Users />} />
             <Route path="login" element={<Login />} />
             <Route path="reset-password" element={<ResetPassword />} />
+            <Route path="change-password" element={<ChangePassword />} />
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </BrowserRouter>

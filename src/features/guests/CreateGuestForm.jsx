@@ -61,8 +61,8 @@ function CreateGuestForm({ onCloseModal }) {
       onSuccess: () => {
         reset();
         onCloseModal?.();
-        queryClient.refetchQueries(["guests"]);
-        toast.success(`A new guest ${finalData.fullName} was created`);
+        queryClient.invalidateQueries(["guests"]);
+        toast.success(`A new guest was created`);
       },
     });
   }
@@ -73,78 +73,78 @@ function CreateGuestForm({ onCloseModal }) {
 
   return (
     <>
-    <Heading as="h2">Create new Guest</Heading>
-    <br />
-    <Form
-      onSubmit={handleSubmit(onSubmit, onError)}
-      type={onCloseModal ? "modal" : "regular"}
-    >
-      <FormRow label="Full Name" error={errors?.fullName?.message}>
-        <Input
-          disabled={isCreating}
-          type="text"
-          id="fullName"
-          {...register("fullName", { required: "This field is required" })}
-        />
-      </FormRow>
+      <Heading as="h2">Create new Guest</Heading>
+      <br />
+      <Form
+        onSubmit={handleSubmit(onSubmit, onError)}
+        type={onCloseModal ? "modal" : "regular"}
+      >
+        <FormRow label="Full Name" error={errors?.fullName?.message}>
+          <Input
+            disabled={isCreating}
+            type="text"
+            id="fullName"
+            {...register("fullName", { required: "This field is required" })}
+          />
+        </FormRow>
 
-      <FormRow label="Email" error={errors?.email?.message}>
-        <Input
-          disabled={isCreating}
-          type="text"
-          id="email"
-          {...register("email", {
-            required: "Email is required",
-            pattern: {
-              value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-              message: "Invalid email address",
-            },
-          })}
-        />
-      </FormRow>
+        <FormRow label="Email" error={errors?.email?.message}>
+          <Input
+            disabled={isCreating}
+            type="text"
+            id="email"
+            {...register("email", {
+              required: "Email is required",
+              pattern: {
+                value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                message: "Invalid email address",
+              },
+            })}
+          />
+        </FormRow>
 
-      <FormRow label="national ID" error={errors?.nationalID?.message}>
-        <Input
-          disabled={isCreating}
-          type="text"
-          id="nationalID"
-          {...register("nationalID", {
-            required: "National ID is required",
-          })}
-        />
-      </FormRow>
+        <FormRow label="national ID" error={errors?.nationalID?.message}>
+          <Input
+            disabled={isCreating}
+            type="text"
+            id="nationalID"
+            {...register("nationalID", {
+              required: "National ID is required",
+            })}
+          />
+        </FormRow>
 
-      <FormRow label="Nationality" error={errors?.nationality?.message}>
-        <Controller
-          name="nationality"
-          control={control}
-          rules={{ required: "This field is required" }}
-          render={({ field: { ref, value, onChange } }) => (
-            <Select
-              ref={ref}
-              options={countriesOptionsNationality}
-              value={value}
-              onChange={(e) => onChange(e.target.value)}
-              disabled={isCreating}
-            />
-          )}
-        />
-      </FormRow>
+        <FormRow label="Nationality" error={errors?.nationality?.message}>
+          <Controller
+            name="nationality"
+            control={control}
+            rules={{ required: "This field is required" }}
+            render={({ field: { ref, value, onChange } }) => (
+              <Select
+                ref={ref}
+                options={countriesOptionsNationality}
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+                disabled={isCreating}
+              />
+            )}
+          />
+        </FormRow>
 
-      <FormRow>
-        <Button
-          disabled={isCreating}
-          variation="secondary"
-          type="reset"
-          onClick={() => onCloseModal?.()}
-        >
-          Cancel
-        </Button>
-        <Button disabled={isCreating} type="submit">
-          Add New Guest
-        </Button>
-      </FormRow>
-    </Form>
+        <FormRow>
+          <Button
+            disabled={isCreating}
+            variation="secondary"
+            type="reset"
+            onClick={() => onCloseModal?.()}
+          >
+            Cancel
+          </Button>
+          <Button disabled={isCreating} type="submit">
+            Add New Guest
+          </Button>
+        </FormRow>
+      </Form>
     </>
   );
 }

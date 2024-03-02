@@ -23,7 +23,9 @@ function CreateCabinForm({ onCloseModal, cabinToEdit = {} }) {
     getValues,
     formState: { errors },
   } = useForm({
-    defaultValues: isEditSession ? editValues : {},
+    defaultValues: isEditSession
+      ? editValues
+      : { discount: 0, description: "", maxCapacity: 1 },
   });
 
   const { isCreating, createCabin } = useCreateCabin();
@@ -115,7 +117,6 @@ function CreateCabinForm({ onCloseModal, cabinToEdit = {} }) {
           <Input
             type="number"
             id="discount"
-            defaultValue={0}
             disabled={isWorking}
             {...register("discount", {
               required: "This field is required",
@@ -139,7 +140,7 @@ function CreateCabinForm({ onCloseModal, cabinToEdit = {} }) {
           />
         </FormRow>
 
-        <FormRow label="Cabin photo">
+        <FormRow label="Cabin photo" error={errors?.image?.message}>
           <FileInput
             id="image"
             accept="image/*"

@@ -9,7 +9,6 @@ import Modal from "../../ui/Modal";
 import Menus from "../../ui/Menus";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 
-
 import { formatCurrency, toLocalISODate } from "../../utils/helpers";
 import { formatDistanceFromNow } from "../../utils/helpers";
 import { useNavigate } from "react-router-dom";
@@ -21,7 +20,6 @@ import {
   HiPencil,
   HiTrash,
 } from "react-icons/hi2";
-
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -68,7 +66,6 @@ function BookingRow({ booking }) {
     guests: { fullName: guestName, email, id: guestId },
     cabins: { name: cabinName, id: cabinId },
   } = booking;
-  console.log("booking", booking);
 
   const bookingEditData = {
     id: bookingId,
@@ -87,10 +84,6 @@ function BookingRow({ booking }) {
     totalPrice,
     status: "unconfirmed",
   };
-
-  console.log("bookingEditData",bookingEditData)
-  console.log("start date", startDate)
-  console.log("end date", endDate)
 
   const navigate = useNavigate();
   const { checkout, isCheckingOut } = useCheckout();
@@ -115,7 +108,6 @@ function BookingRow({ booking }) {
         <span>{guestName}</span>
         <span>{email}</span>
       </Stacked>
-
 
       <Stacked>
         <span>
@@ -187,7 +179,6 @@ function BookingRow({ booking }) {
             onConfirm={() => deleteBooking(bookingId)}
           />
         </Modal.Window>
-
       </Modal>
     </Table.Row>
   );

@@ -16,7 +16,7 @@ import Heading from "../../ui/Heading";
 
 function CreateGuestForm({ onCloseModal, guestToEdit = {} }) {
   const { id, ...editValues } = guestToEdit;
-  const { fullName} = editValues;
+  const { fullName } = editValues;
 
   const {
     register,
@@ -57,8 +57,6 @@ function CreateGuestForm({ onCloseModal, guestToEdit = {} }) {
       countryFlag,
     };
 
-    console.log(finalData);
-
     updateGuest(
       { id, editGuestData: finalData },
       {
@@ -78,77 +76,77 @@ function CreateGuestForm({ onCloseModal, guestToEdit = {} }) {
   return (
     <>
       <Heading as="h2">{`Edit Guest # ${id} - ${fullName}`}</Heading>
-    <br />
-    <Form
-      onSubmit={handleSubmit(onSubmit, onError)}
-      type={onCloseModal ? "modal" : "regular"}
-    >
-      <FormRow label="Full Name" error={errors?.fullName?.message}>
-        <Input
-          disabled={isUpdating}
-          type="text"
-          id="fullName"
-          {...register("fullName", { required: "This field is required" })}
-        />
-      </FormRow>
+      <br />
+      <Form
+        onSubmit={handleSubmit(onSubmit, onError)}
+        type={onCloseModal ? "modal" : "regular"}
+      >
+        <FormRow label="Full Name" error={errors?.fullName?.message}>
+          <Input
+            disabled={isUpdating}
+            type="text"
+            id="fullName"
+            {...register("fullName", { required: "This field is required" })}
+          />
+        </FormRow>
 
-      <FormRow label="Email" error={errors?.email?.message}>
-        <Input
-          disabled={isUpdating}
-          type="text"
-          id="email"
-          {...register("email", {
-            required: "Email is required",
-            pattern: {
-              value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-              message: "Invalid email address",
-            },
-          })}
-        />
-      </FormRow>
+        <FormRow label="Email" error={errors?.email?.message}>
+          <Input
+            disabled={isUpdating}
+            type="text"
+            id="email"
+            {...register("email", {
+              required: "Email is required",
+              pattern: {
+                value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                message: "Invalid email address",
+              },
+            })}
+          />
+        </FormRow>
 
-      <FormRow label="national ID" error={errors?.nationalID?.message}>
-        <Input
-          disabled={isUpdating}
-          type="text"
-          id="nationalID"
-          {...register("nationalID", {
-            required: "National ID is required",
-          })}
-        />
-      </FormRow>
+        <FormRow label="national ID" error={errors?.nationalID?.message}>
+          <Input
+            disabled={isUpdating}
+            type="text"
+            id="nationalID"
+            {...register("nationalID", {
+              required: "National ID is required",
+            })}
+          />
+        </FormRow>
 
-      <FormRow label="Nationality" error={errors?.nationality?.message}>
-        <Controller
-          name="nationality"
-          control={control}
-          rules={{ required: "This field is required" }}
-          render={({ field: { ref, value, onChange } }) => (
-            <Select
-              ref={ref}
-              options={countriesOptionsNationality}
-              value={value}
-              onChange={(e) => onChange(e.target.value)}
-              disabled={isUpdating}
-            />
-          )}
-        />
-      </FormRow>
+        <FormRow label="Nationality" error={errors?.nationality?.message}>
+          <Controller
+            name="nationality"
+            control={control}
+            rules={{ required: "This field is required" }}
+            render={({ field: { ref, value, onChange } }) => (
+              <Select
+                ref={ref}
+                options={countriesOptionsNationality}
+                value={value}
+                onChange={(e) => onChange(e.target.value)}
+                disabled={isUpdating}
+              />
+            )}
+          />
+        </FormRow>
 
-      <FormRow>
-        <Button
-          disabled={isUpdating}
-          variation="secondary"
-          type="reset"
-          onClick={() => onCloseModal?.()}
-        >
-          Cancel
-        </Button>
-        <Button disabled={isUpdating} type="submit">
-          Update Guest
-        </Button>
-      </FormRow>
-    </Form>
+        <FormRow>
+          <Button
+            disabled={isUpdating}
+            variation="secondary"
+            type="reset"
+            onClick={() => onCloseModal?.()}
+          >
+            Cancel
+          </Button>
+          <Button disabled={isUpdating} type="submit">
+            Update Guest
+          </Button>
+        </FormRow>
+      </Form>
     </>
   );
 }

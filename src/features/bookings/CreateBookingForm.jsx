@@ -124,7 +124,6 @@ function CreateBookingForm() {
   const discountInput = cabinInput ? cabinInput.discount : 0;
 
   const totalPriceInput = cabinPriceInput + extraPriceInput - discountInput;
-  console.log("Total Price:", totalPriceInput);
 
   function onSubmit(data) {
     // selected Cabin
@@ -159,25 +158,10 @@ function CreateBookingForm() {
       status: "unconfirmed",
     };
 
-    console.log(finalData);
-
     createBooking(finalData, {
       onSuccess: () => {
         resetAvailability();
-        reset({
-          startDate: "",
-          endDate: "",
-          numNights: 0,
-          numGuests: 1,
-          cabinPrice: 0,
-          cabinId: "",
-          guestId: "",
-          observations: "",
-          hasBreakfast: false,
-          isPaid: false,
-          extraPrice: 0,
-          totalPrice: 0,
-        });
+        reset();
       },
     });
   }
@@ -277,7 +261,7 @@ function CreateBookingForm() {
 
         {availability.isAvailable === false && (
           <FormRow>
-            <Button variation="secondary" onClick={moveBack}>
+            <Button type="reset" variation="secondary" onClick={moveBack}>
               Back
             </Button>
             <Button type="button" onClick={checkAvailability}>
@@ -310,13 +294,14 @@ function CreateBookingForm() {
                     message: `Maximum number of guests must be ${cabinInput?.maxCapacity}`,
                   },
                 }}
-                render={({ field }) => (
+                render={({ field: { ref, value, onChange } }) => (
                   <Input
                     type="number"
                     id="numGuests"
-                    ref={field.ref}
-                    value={field.value}
-                    onChange={(e) => field.onChange(e.target.value)}
+                    min={1}
+                    ref={ref}
+                    value={value}
+                    onChange={(e) => onChange(e.target.value)}
                     disabled={isCreating}
                   />
                 )}
@@ -352,7 +337,6 @@ function CreateBookingForm() {
               <Textarea
                 disabled={isCreating}
                 id="observations"
-                defaultValue=""
                 {...register("observations")}
               />
             </FormRow>
@@ -369,7 +353,6 @@ function CreateBookingForm() {
               <Controller
                 control={control}
                 name="hasBreakfast"
-                defaultValue={false}
                 render={({ field: { onChange, value } }) => (
                   <Checkbox
                     id="hasBreakfast"
@@ -385,7 +368,6 @@ function CreateBookingForm() {
               <Controller
                 control={control}
                 name="isPaid"
-                defaultValue={false}
                 render={({ field: { onChange, value } }) => (
                   <Checkbox
                     id="isPaid"
@@ -400,7 +382,11 @@ function CreateBookingForm() {
             </FormRow>
 
             <FormRow>
-              <Button variation="secondary" onClick={moveBack}>
+              <Button
+                variation="secondary"
+                type="reset"
+                onClick={() => resetAvailability()}
+              >
                 Cancel
               </Button>
               <Button disabled={isCreating} type="submit" variation="primary">

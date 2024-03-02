@@ -240,8 +240,8 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             <Input
               disabled={isUpdating}
               type="number"
-              defaultValue={1}
               id="numGuests"
+              min={1}
               {...register("numGuests", {
                 required: "This field is required",
                 min: {
