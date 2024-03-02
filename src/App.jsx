@@ -37,7 +37,7 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <DarkModeProvider>
-      <MobileWarning />
+      {/* <MobileWarning /> */}
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen={false} />
 

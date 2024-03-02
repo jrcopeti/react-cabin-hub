@@ -175,17 +175,16 @@ function CreateBookingForm() {
       <StyledDiv>
         <Heading as="h1">Create New Booking</Heading>
         <p>
-          If the guest is not in the list, please add them first.
+          First check if the cabin is available for the selected dates.
           <br />
-          Bookings will only be created for guests that are already in the
-          system.
+          If the cabin is available, fill in the form to create a new booking.
           <br />
-          Check the availability of the cabin before creating a booking.
+          For new guests, click the button below.
         </p>
         <div>
           <Modal>
             <Modal.Open opens="guest-form">
-              <Button>New Guest</Button>
+              <Button type="button">New Guest</Button>
             </Modal.Open>
             <Modal.Window name="guest-form">
               <CreateGuestForm />
