@@ -28,7 +28,6 @@ const MobileWarningStyled = styled.div`
 
 const Overlay = styled.div`
   display: none;
-  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
@@ -40,6 +39,7 @@ const Overlay = styled.div`
 
   @media (max-width: 1024px) {
     display: block;
+    position: fixed;
   }
 `;
 
@@ -52,10 +52,9 @@ const CloseButton = styled.button`
 `;
 
 const StyledMain = styled.main`
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  padding: 1rem;
+  display: grid;
+  gap: 1.5rem;
+  padding: 1.5rem;
 `;
 
 function MobileWarning() {
