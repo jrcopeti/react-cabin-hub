@@ -23,7 +23,6 @@ import ChangePassword from "./pages/ChangePassword";
 
 import ProtectedRoute from "./ui/ProtectedRoute";
 import AppLayout from "./ui/AppLayout";
-
 import MobileWarning from "./ui/MobileWarning";
 
 const queryClient = new QueryClient({
@@ -37,10 +36,9 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <DarkModeProvider>
-      {/* <MobileWarning /> */}
+      <MobileWarning />
       <QueryClientProvider client={queryClient}>
         <ReactQueryDevtools initialIsOpen={false} />
-
         <GlobalStyles />
         <BrowserRouter>
           <Routes>
