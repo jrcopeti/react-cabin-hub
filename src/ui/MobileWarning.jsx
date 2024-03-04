@@ -1,59 +1,97 @@
+import { useEffect, useState } from "react";
+
 import styled from "styled-components";
-import GlobalStyles from "../styles/GlobalStyles";
+import { HiXMark } from "react-icons/hi2";
+
 import Heading from "./Heading";
 import Logo from "./Logo";
+import Button from "./Button";
 
 const MobileWarningStyled = styled.div`
   display: none;
-
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1000;
-  text-align: center;
-  background-color: var(--color-grey-50);
-
-  align-items: center;
-  padding: 0.5rem;
-
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--color-grey-0);
+  border-radius: var(--border-radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 3.2rem 4rem;
+  transition: all 0.5s;
 
   @media (max-width: 1024px) {
-    display: flex;
+    display: block;
   }
 `;
 
+const Overlay = styled.div`
+  display: none;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: var(--backdrop-color);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  transition: all 0.5s;
+
+  @media (max-width: 1024px) {
+    display: block;
+    position: fixed;
+  }
+`;
+
+const CloseButton = styled.button`
+  float: right;
+  background: none;
+  border: none;
+  font-size: 2rem;
+  cursor: pointer;
+`;
+
 const StyledMain = styled.main`
-  background-color: var(--color-grey-0);
   display: flex;
   flex-direction: column;
-
   align-items: center;
   justify-content: center;
-
-  padding: 3rem;
   gap: 1rem;
 `;
 
 function MobileWarning() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    setIsOpen(true);
+  }, []);
+
+  function handleClose() {
+    setIsOpen(false);
+  }
+
+  if (!isOpen) {
+    return;
+  }
+
   return (
     <>
-      <GlobalStyles />
-      <MobileWarningStyled>
-        <StyledMain>
+      <Overlay>
+        <MobileWarningStyled>
+          <CloseButton onClick={handleClose}>
+            <HiXMark />
+          </CloseButton>
           <Logo />
-          <Heading as="h2">Mobile Device Detected</Heading>
-          <p>
-            This application is optimized for desktop usage and may not function
-            as intended on mobile devices.
-            <br />
-            Please access it on a desktop for the best experience.
-          </p>
-        </StyledMain>
-      </MobileWarningStyled>
+          <StyledMain>
+            <Heading as="h2">Mobile Device Detected</Heading>
+            <p>
+              We are still working on the mobile version.
+              <br />
+              Please access it on a desktop for the best experience.
+            </p>
+            <Button onClick={handleClose}>Close</Button>
+          </StyledMain>
+        </MobileWarningStyled>
+      </Overlay>
     </>
   );
 }
-
 export default MobileWarning;
