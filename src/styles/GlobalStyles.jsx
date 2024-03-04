@@ -38,6 +38,7 @@ const GlobalStyles = createGlobalStyle`
   --color-red-800: #991b1b;
 
   --backdrop-color: rgba(255, 255, 255, 0.1);
+  --backdrop-color-mobilewarning: rgba(255, 255, 255, 0.5);
 
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.04);
   --shadow-md: 0px 0.6rem 2.4rem rgba(0, 0, 0, 0.06);
@@ -77,6 +78,7 @@ const GlobalStyles = createGlobalStyle`
 --color-red-800: #991b1b;
 
 --backdrop-color: rgba(0, 0, 0, 0.3);
+--backdrop-color-mobilewarning: rgba(0, 0, 0, 0.5);
 
 --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
 --shadow-md: 0px 0.6rem 2.4rem rgba(0, 0, 0, 0.3);

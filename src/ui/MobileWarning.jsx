@@ -28,17 +28,23 @@ const MobileWarningStyled = styled.div`
 const Overlay = styled.div`
   display: none;
   position: fixed;
+
   top: 0;
   left: 0;
   width: 100%;
   height: 100vh;
   z-index: 1000;
-  background-color: var(--backdrop-color);
-  backdrop-filter: blur(4px);
+  background-color: var(--backdrop-color-mobilewarning);
+  backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   transition: all 0.5s;
+
 
   @media (max-width: 1024px) {
     display: block;
+
+
   }
 `;
 
@@ -74,25 +80,23 @@ function MobileWarning() {
   }
 
   return (
-    <>
-      <Overlay>
-        <MobileWarningStyled>
-          <CloseButton onClick={handleClose}>
-            <HiXMark />
-          </CloseButton>
-          <Logo />
-          <StyledMain>
-            <Heading as="h2">Mobile Device Detected</Heading>
-            <p>
-              We are still working on the mobile version.
-              <br />
-              Please access it on a desktop for the best experience.
-            </p>
-            <Button onClick={handleClose}>Close</Button>
-          </StyledMain>
-        </MobileWarningStyled>
-      </Overlay>
-    </>
+    <Overlay>
+      <MobileWarningStyled>
+        <CloseButton onClick={handleClose}>
+          <HiXMark />
+        </CloseButton>
+        <Logo />
+        <StyledMain>
+          <Heading as="h2">Mobile Device Detected</Heading>
+          <p>
+            We are still working on the mobile version.
+            <br />
+            Please access it on a desktop for the best experience.
+          </p>
+          <Button onClick={handleClose}>Close</Button>
+        </StyledMain>
+      </MobileWarningStyled>
+    </Overlay>
   );
 }
 export default MobileWarning;
