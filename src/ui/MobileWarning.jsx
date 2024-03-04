@@ -18,7 +18,6 @@ const MobileWarningStyled = styled.div`
   border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-lg);
   padding: 2rem 3rem;
-  z-index: 1000;
   transition: all 0.5s;
 
   @media (max-width: 1024px) {
@@ -28,18 +27,18 @@ const MobileWarningStyled = styled.div`
 
 const Overlay = styled.div`
   display: none;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100vh;
+  z-index: 1000;
   background-color: var(--backdrop-color);
   backdrop-filter: blur(4px);
-  z-index: 1000;
   transition: all 0.5s;
 
   @media (max-width: 1024px) {
     display: block;
-    position: fixed;
   }
 `;
 
@@ -52,7 +51,9 @@ const CloseButton = styled.button`
 `;
 
 const StyledMain = styled.main`
-  display: grid;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
   gap: 1.5rem;
   padding: 1.5rem;
 `;
