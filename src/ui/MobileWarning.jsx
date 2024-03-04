@@ -12,7 +12,7 @@ const MobileWarningStyled = styled.div`
   position: fixed;
   top: 50%;
   left: 50%;
-  width: 75%;
+  width: 90%;
   transform: translate(-50%, -50%);
   background-color: var(--color-grey-0);
   border-radius: var(--border-radius-lg);
@@ -34,7 +34,7 @@ const Overlay = styled.div`
   width: 100%;
   height: 100vh;
   z-index: 1000;
-  background-color: var(--backdrop-color-mobilewarning);
+  background-color: var(--backdrop-color);
   backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
