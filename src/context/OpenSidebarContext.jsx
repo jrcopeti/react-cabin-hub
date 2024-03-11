@@ -1,0 +1,39 @@
+import { createContext, useState, useRef } from "react";
+import { useOutsideClickSidebar } from "../hooks/useOutsideClickSidebar";
+
+const OpenSidebarContext = createContext();
+
+function OpenSidebarProvider({ children }) {
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+  const sidebarRef = useRef(null);
+  const headerRef = useRef(null);
+  const darkModeRef = useRef(null);
+
+  useOutsideClickSidebar(
+    () => setIsSidebarOpen(false),
+    sidebarRef,
+    headerRef,
+    darkModeRef
+  );
+
+  function toggleSidebar() {
+    setIsSidebarOpen((isSidebarOpen) => !isSidebarOpen);
+  }
+
+  return (
+    <OpenSidebarContext.Provider
+      value={{
+        isSidebarOpen,
+        toggleSidebar,
+        sidebarRef,
+        headerRef,
+        darkModeRef,
+      }}
+    >
+      {children}
+    </OpenSidebarContext.Provider>
+  );
+}
+
+export { OpenSidebarContext, OpenSidebarProvider };

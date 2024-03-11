@@ -1,6 +1,13 @@
 import styled from "styled-components";
+import { forwardRef } from "react";
+
 import UserAvatar from "../features/authentication/UserAvatar";
+import { useOpenSidebar } from "../context/useOpenSideBar";
+
 import HeaderMenu from "./HeaderMenu";
+import ButtonIcon from "./ButtonIcon";
+
+import { HiOutlineQueueList } from "react-icons/hi2";
 
 const StyledHeader = styled.header`
   background-color: var(--color-grey-0);
@@ -10,16 +17,21 @@ const StyledHeader = styled.header`
   display: flex;
   gap: 2.4rem;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
+  grid-column: 1 / 3;
 `;
 
-function Header() {
+const Header = forwardRef(function Header() {
+  const { toggleSidebar, headerRef } = useOpenSidebar();
   return (
-    <StyledHeader>
+    <StyledHeader ref={headerRef}>
+      <ButtonIcon onClick={toggleSidebar}>
+        <HiOutlineQueueList />
+      </ButtonIcon>
       <UserAvatar />
       <HeaderMenu />
     </StyledHeader>
   );
-}
+});
 
 export default Header;
