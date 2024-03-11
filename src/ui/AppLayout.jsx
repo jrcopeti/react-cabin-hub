@@ -1,13 +1,26 @@
 import { Outlet } from "react-router-dom";
+import styled, { css } from "styled-components";
+
+import { useOpenSidebar } from "../context/useOpenSideBar";
+
 import Header from "./Header";
 import Sidebar from "./Sidebar";
-import styled from "styled-components";
 
+
+const sidebar = {
+  open: css`
+    grid-template-columns: 26rem 1fr;
+  `,
+  closed: css`
+    grid-template-columns: 0rem 1fr;
+  `,
+};
 const StyledAppLayout = styled.div`
   display: grid;
-  grid-template-columns: 26rem 1fr;
   grid-template-rows: auto 1fr;
   height: 100vh;
+  transition: ease-in-out 0.3s;
+${(props) => sidebar[props.sidebar]}
 `;
 
 const Main = styled.main`
@@ -25,16 +38,20 @@ const Container = styled.div`
 `;
 
 function AppLayout() {
+  const { isSidebarOpen } = useOpenSidebar();
+
   return (
-    <StyledAppLayout>
-      <Header />
-      <Sidebar />
-      <Main>
-        <Container>
-          <Outlet />
-        </Container>
-      </Main>
-    </StyledAppLayout>
+    <>
+      <StyledAppLayout sidebar={isSidebarOpen ? "open" : "closed"}>
+        <Header />
+        <Sidebar />
+        <Main>
+          <Container>
+            <Outlet />
+          </Container>
+        </Main>
+      </StyledAppLayout>
+    </>
   );
 }
 
