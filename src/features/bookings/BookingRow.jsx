@@ -108,7 +108,7 @@ function BookingRow({ booking }) {
 
       <Stacked>
         <span>{guestName}</span>
-        <span className="not-important-mobile">{email}</span>
+        <span>{email}</span>
       </Stacked>
 
       <Stacked>
@@ -128,7 +128,7 @@ function BookingRow({ booking }) {
         {status.replace("-", " ")}
       </Tag>
 
-      <Amount className="not-important-mobile">{formatCurrency(totalPrice)}</Amount>
+      <Amount>{formatCurrency(totalPrice)}</Amount>
 
       <Modal>
         <Menus.Menu>
