@@ -27,6 +27,13 @@ const StyledDiv = styled.div`
   flex-direction: column;
   max-height: 80vh;
   overflow: scroll;
+
+  &::-webkit-scrollbar {
+    width: 0 !important;
+  }
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
   & p {
     margin: 0.8rem 0rem;
     color: var(--color-grey-500);
