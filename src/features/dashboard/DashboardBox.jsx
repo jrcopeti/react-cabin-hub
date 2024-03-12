@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { screenSizes } from "../../utils/constants";
 
 const DashboardBox = styled.div`
   /* Box */
@@ -11,6 +12,15 @@ const DashboardBox = styled.div`
   display: flex;
   flex-direction: column;
   gap: 2.4rem;
+
+  @media (max-width: ${screenSizes.tablet}) {
+    width: 90dvw;
+    align-self: center;
+    padding: 1.6rem;
+    
+
+
+  }
 `;
 
 export default DashboardBox;
