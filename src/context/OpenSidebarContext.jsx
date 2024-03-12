@@ -8,14 +8,8 @@ function OpenSidebarProvider({ children }) {
 
   const sidebarRef = useRef(null);
   const headerRef = useRef(null);
-  const darkModeRef = useRef(null);
 
-  useOutsideClickSidebar(
-    () => setIsSidebarOpen(false),
-    sidebarRef,
-    headerRef,
-    darkModeRef
-  );
+  useOutsideClickSidebar(() => setIsSidebarOpen(false), sidebarRef, headerRef);
 
   function toggleSidebar() {
     setIsSidebarOpen((isSidebarOpen) => !isSidebarOpen);
@@ -28,7 +22,6 @@ function OpenSidebarProvider({ children }) {
         toggleSidebar,
         sidebarRef,
         headerRef,
-        darkModeRef,
       }}
     >
       {children}
