@@ -1,4 +1,5 @@
 import styled, { css } from "styled-components";
+import { screenSizes } from "../utils/constants";
 
 const Row = styled.div`
   display: flex;
@@ -7,6 +8,11 @@ const Row = styled.div`
     css`
       justify-content: space-between;
       align-items: center;
+
+      @media (max-width: ${screenSizes.tablet}) {
+        flex-direction: column;
+        gap: 1rem;
+      }
     `}
 
   ${(props) =>
@@ -15,7 +21,6 @@ const Row = styled.div`
       flex-direction: column;
       gap: 1.6rem;
     `}
-
 `;
 
 Row.defaultProps = {

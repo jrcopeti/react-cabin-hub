@@ -12,7 +12,7 @@ function CabinTable() {
   const [searchParams] = useSearchParams();
 
   if (isLoading) return <Spinner />;
-  if (error) throw new Error("Couldn't load cabins")
+  if (error) throw new Error("Couldn't load cabins");
   if (!cabins.length) return <Empty resourceName="cabins" />;
 
   const filterValue = searchParams.get("discount") || "all";
@@ -36,9 +36,9 @@ function CabinTable() {
 
   return (
     <Menus>
-      <Table columns="0.6fr 1.8fr 2.2fr 1fr 1fr 1fr">
+      <Table columns="0.6fr 1.8fr 2.2fr 1fr 1fr 1fr" mobileColumns="1fr 1fr 1fr">
         <Table.Header>
-          <div></div>
+          <div>Picture</div>
           <div>Cabin</div>
           <div>Capacity</div>
           <div>Price</div>
@@ -49,7 +49,7 @@ function CabinTable() {
           data={sortedCabins}
           render={(cabin) => <CabinRow cabin={cabin} key={cabin.id} />}
         />
-           <Table.Footer>
+        <Table.Footer>
           <Pagination count={count} />
         </Table.Footer>
       </Table>

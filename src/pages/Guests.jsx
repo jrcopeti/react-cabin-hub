@@ -12,10 +12,7 @@ function Guest() {
         <AddGuest />
         <GuestTableOperations />
       </Row>
-
-      <Row>
-        <GuestTable />
-      </Row>
+      <GuestTable />
     </>
   );
 }
