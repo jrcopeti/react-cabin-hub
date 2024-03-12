@@ -3,10 +3,10 @@ import { useChangePassword } from "./useChangePassword";
 import { useNavigate } from "react-router-dom";
 
 import Form from "../../ui/Form";
-import FormRowVertical from "../../ui/FormRow";
 import Input from "../../ui/Input";
 import SpinnerMini from "../../ui/SpinnerMini";
 import Button from "../../ui/Button";
+import FormRowVertical from "../../ui/FormRowVertical";
 
 function ChangePasswordForm() {
   const { register, formState, getValues, handleSubmit, reset } = useForm();
@@ -66,6 +66,7 @@ function ChangePasswordForm() {
       </FormRowVertical>
       <br />
       <FormRowVertical>
+        <Button>{isLoading ? <SpinnerMini /> : "Change password"}</Button>
         <Button
           type="button"
           variation="secondary"
@@ -73,7 +74,6 @@ function ChangePasswordForm() {
         >
           Cancel
         </Button>
-        <Button>{isLoading ? <SpinnerMini /> : "Change password"}</Button>
       </FormRowVertical>
     </Form>
   );

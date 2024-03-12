@@ -10,13 +10,14 @@ import FileInput from "../../ui/FileInput";
 import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
+import Spinner from "../../ui/Spinner";
 
 function UpdateUserDataForm() {
-  // No need of the loading state, because we know that it has already been loaded at this point
   const {
     user: {
       email,
       user_metadata: { fullName: currentFullName },
+      isLoading,
     },
   } = useUser();
 
@@ -24,6 +25,8 @@ function UpdateUserDataForm() {
 
   const [fullName, setFullName] = useState(currentFullName);
   const [avatar, setAvatar] = useState(null);
+
+  if (isLoading) return <Spinner />;
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -35,7 +38,7 @@ function UpdateUserDataForm() {
 
     if (fullName === currentFullName && !avatar) {
       toast.error("No changes were made in your account");
-      console.log(fullName, currentFullName, avatar)
+      console.log(fullName, currentFullName, avatar);
       return;
     }
 

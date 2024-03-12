@@ -2,12 +2,13 @@ import { useForm } from "react-hook-form";
 
 import Button from "../../ui/Button";
 import Form from "../../ui/Form";
-import FormRow from "../../ui/FormRow";
+import FormRowVertical from "../../ui/FormRowVertical";
 import Input from "../../ui/Input";
 
 import { useSignup } from "./useSignup";
 import { useMoveBack } from "../../hooks/useMoveBack";
 import { useNavigate } from "react-router-dom";
+import SpinnerMini from "../../ui/SpinnerMini";
 
 // Email regex: /\S+@\S+\.\S+/
 
@@ -35,16 +36,16 @@ function SignupForm() {
 
   return (
     <Form onSubmit={handleSubmit(onSubmit)}>
-      <FormRow label="Full name" error={errors?.fullName?.message}>
+      <FormRowVertical label="Full name" error={errors?.fullName?.message}>
         <Input
           type="text"
           id="fullName"
           {...register("fullName", { required: "This field is required" })}
           disabled={isLoading}
         />
-      </FormRow>
+      </FormRowVertical>
 
-      <FormRow label="Email address" error={errors?.email?.message}>
+      <FormRowVertical label="Email address" error={errors?.email?.message}>
         <Input
           type="email"
           id="email"
@@ -57,9 +58,9 @@ function SignupForm() {
           })}
           disabled={isLoading}
         />
-      </FormRow>
+      </FormRowVertical>
 
-      <FormRow
+      <FormRowVertical
         label="Password (min 8 characters)"
         error={errors?.password?.message}
       >
@@ -75,9 +76,12 @@ function SignupForm() {
           })}
           disabled={isLoading}
         />
-      </FormRow>
+      </FormRowVertical>
 
-      <FormRow label="Repeat password" error={errors?.passwordConfirm?.message}>
+      <FormRowVertical
+        label="Repeat password"
+        error={errors?.passwordConfirm?.message}
+      >
         <Input
           type="password"
           id="passwordConfirm"
@@ -88,10 +92,13 @@ function SignupForm() {
           })}
           disabled={isLoading}
         />
-      </FormRow>
+      </FormRowVertical>
 
-      <FormRow>
-        {/* type is an HTML attribute! */}
+      <FormRowVertical>
+        <Button disabled={isLoading}>
+          {" "}
+          {!isLoading ? "Sign Up" : <SpinnerMini />}
+        </Button>
         <Button
           variation="secondary"
           type="reset"
@@ -100,8 +107,7 @@ function SignupForm() {
         >
           Cancel
         </Button>
-        <Button disabled={isLoading}>Create new user</Button>
-      </FormRow>
+      </FormRowVertical>
     </Form>
   );
 }

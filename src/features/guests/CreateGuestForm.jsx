@@ -6,13 +6,19 @@ import { useCreateGuest } from "./useCreateGuest";
 import { useCountries } from "../../hooks/useCountries";
 
 import Form from "../../ui/Form";
-import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 import Button from "../../ui/Button";
 import Select from "../../ui/Select";
 import Spinner from "../../ui/Spinner";
 import toast from "react-hot-toast";
 import Heading from "../../ui/Heading";
+import FormRow from "../../ui/FormRow";
+import styled from "styled-components";
+
+const StyledDiv = styled.div`
+  
+
+`
 
 function CreateGuestForm({ onCloseModal }) {
   const {
@@ -72,7 +78,7 @@ function CreateGuestForm({ onCloseModal }) {
   }
 
   return (
-    <>
+    <StyledDiv>
       <Heading as="h2">Create new Guest</Heading>
       <br />
       <Form
@@ -145,7 +151,7 @@ function CreateGuestForm({ onCloseModal }) {
           </Button>
         </FormRow>
       </Form>
-    </>
+    </StyledDiv>
   );
 }
 

@@ -9,7 +9,6 @@ import Input from "../../ui/Input";
 import FormRowVertical from "../../ui/FormRowVertical";
 import SpinnerMini from "../../ui/SpinnerMini";
 import Button from "../../ui/Button";
-import ButtonGroup from "../../ui/ButtonGroup";
 
 function ResetPasswordForm() {
   const { resetPassword, isLoading } = useResetPassword();
@@ -41,14 +40,14 @@ function ResetPasswordForm() {
           disabled={isLoading}
         />
       </FormRowVertical>
-      <ButtonGroup>
-        <Button type="button" variation="secondary" onClick={moveBack}>
-          Cancel
-        </Button>
+      <FormRowVertical>
         <Button disabled={isLoading}>
           {isLoading ? <SpinnerMini /> : "Reset password"}
         </Button>
-      </ButtonGroup>
+        <Button type="button" variation="secondary" onClick={moveBack}>
+          Cancel
+        </Button>
+      </FormRowVertical>
     </Form>
   );
 }

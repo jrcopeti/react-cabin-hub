@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { COUNTRY_MAX_LENGTH } from "../utils/constants";
 
 export function useCountries() {
   const [countries, setCountries] = useState([]);
@@ -11,7 +12,9 @@ export function useCountries() {
         const data = await response.json();
         const countryOptions = Object.entries(data).map(([code, name]) => ({
           value: code,
-          label: name,
+          label:
+            name.slice(0, COUNTRY_MAX_LENGTH) +
+            (name.length > COUNTRY_MAX_LENGTH ? "..." : ""),
           flagUrl: `https://flagcdn.com/${code}.svg`,
         }));
         setCountries(countryOptions);

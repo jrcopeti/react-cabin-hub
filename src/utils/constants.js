@@ -6,3 +6,5 @@ export const screenSizes = {
   laptop: "1024px",
   desktop: "2560px",
 };
+
+export const COUNTRY_MAX_LENGTH = 15;
