@@ -2,6 +2,7 @@ import styled from "styled-components";
 import Heading from "../ui/Heading";
 
 import ResetPasswordForm from "../features/authentication/ResetPasswordForm";
+import { screenSizes } from "../utils/constants";
 
 const LoginLayout = styled.main`
   min-height: 100vh;
@@ -14,6 +15,12 @@ const LoginLayout = styled.main`
 
   & p {
     color: var(--color-grey-500);
+  }
+
+  @media (max-width: ${screenSizes.tablet}) {
+    grid-template-columns: 1fr;
+    padding: 1rem 1.8rem 3.2rem;
+    gap: 1.6rem;
   }
 `;
 

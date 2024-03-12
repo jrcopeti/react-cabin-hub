@@ -160,7 +160,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
 
   return (
     <StyledDiv>
-      <div>
+      <>
         <Heading as="h2">{`Edit Booking # ${id}`}</Heading>
         <p>Booked on {format(new Date(created_at), "EEE, dd/MM/yyyy, p")}</p>
         <br />
@@ -346,7 +346,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             </Button>
           </FormRow>
         </Form>
-      </div>
+      </>
     </StyledDiv>
   );
 }

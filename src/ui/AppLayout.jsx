@@ -5,7 +5,7 @@ import { useOpenSidebar } from "../context/useOpenSideBar";
 
 import Header from "./Header";
 import Sidebar from "./Sidebar";
-
+import { screenSizes } from "../utils/constants";
 
 const sidebar = {
   open: css`
@@ -20,21 +20,28 @@ const StyledAppLayout = styled.div`
   grid-template-rows: auto 1fr;
   height: 100vh;
   transition: ease-in-out 0.3s;
-${(props) => sidebar[props.sidebar]}
+  ${(props) => sidebar[props.sidebar]}
 `;
 
 const Main = styled.main`
   background-color: var(--color-grey-50);
   padding: 4rem 4.8rem 6.4rem;
   overflow: scroll;
+  @media (max-width: ${screenSizes.tablet}) {
+    padding: 2rem 2.4rem 3.2rem;
+
+  }
 `;
 
 const Container = styled.div`
   max-width: 120rem;
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
+  display: grid;
   gap: 3.2rem;
+
+  @media (max-width: ${screenSizes.tablet}) {
+    gap: 1.6rem;
+  }
 `;
 
 function AppLayout() {

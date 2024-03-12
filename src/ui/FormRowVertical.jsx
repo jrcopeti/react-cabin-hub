@@ -1,10 +1,15 @@
 import styled from "styled-components";
+import { screenSizes } from "../utils/constants";
 
 const StyledFormRow = styled.div`
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
   padding: 1.2rem 0;
+
+  @media (max-width: ${screenSizes.tablet}) {
+    padding: 1.2rem 1rem;
+  }
 `;
 
 const Label = styled.label`

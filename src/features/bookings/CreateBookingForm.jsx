@@ -23,13 +23,13 @@ import { formatCurrency, subtractDates } from "../../utils/helpers";
 import { isBefore, isValid, parseISO, startOfToday } from "date-fns";
 import Heading from "../../ui/Heading";
 import styled from "styled-components";
+import { screenSizes } from "../../utils/constants";
 
 const StyledDiv = styled.div`
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 1.3rem;
-  align-items: flex-start;
-  padding-inline-start: 0.3rem;
+  white-space: nowrap;
 
   & p {
     font-size: 1.5rem;
@@ -37,6 +37,11 @@ const StyledDiv = styled.div`
     line-height: 1.6;
     letter-spacing: 0.4px;
     font-weight: 400;
+
+    @media (max-width: ${screenSizes.tablet}) {
+      font-size: 1rem;
+      line-height: 1.4;
+    }
   }
 `;
 

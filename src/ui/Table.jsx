@@ -1,5 +1,6 @@
 import { createContext, useContext } from "react";
 import styled from "styled-components";
+import { screenSizes } from "../utils/constants";
 
 const StyledTable = styled.div`
   border: 1px solid var(--color-grey-200);
@@ -16,6 +17,24 @@ const CommonRow = styled.div`
   column-gap: 2.4rem;
   align-items: center;
   transition: none;
+
+  .not-important-mobile {
+
+    &.important {
+      display: block;
+    }
+
+    @media (max-width: ${screenSizes.tablet}) {
+      &:not(.important) {
+        display: none;
+      }
+    }
+  }
+
+  @media (max-width: ${screenSizes.tablet}) {
+    grid-template-columns: ${(props) => props.mobileColumns};
+    gap: 1.6rem;
+  }
 `;
 
 const StyledHeader = styled(CommonRow)`
@@ -27,6 +46,10 @@ const StyledHeader = styled(CommonRow)`
   letter-spacing: 0.4px;
   font-weight: 600;
   color: var(--color-grey-600);
+
+  @media (max-width: ${screenSizes.tablet}) {
+    padding: 0.8rem 1.6rem;
+  }
 `;
 
 const StyledRow = styled(CommonRow)`
@@ -34,6 +57,10 @@ const StyledRow = styled(CommonRow)`
 
   &:not(:last-child) {
     border-bottom: 1px solid var(--color-grey-100);
+  }
+
+  @media (max-width: ${screenSizes.tablet}) {
+    padding: 0.8rem 1.6rem;
   }
 `;
 
@@ -47,7 +74,6 @@ const Footer = styled.footer`
   justify-content: center;
   padding: 1.2rem;
 
-  /* This will hide the footer when it contains no child elements. Possible thanks to the parent selector :has 🎉 */
   &:not(:has(*)) {
     display: none;
   }
@@ -61,26 +87,31 @@ const Empty = styled.p`
 `;
 
 const TableContext = createContext();
-function Table({ columns, children }) {
+function Table({ columns, mobileColumns, children }) {
   return (
-    <TableContext.Provider value={{ columns }}>
+    <TableContext.Provider value={{ columns, mobileColumns }}>
       <StyledTable role="table">{children}</StyledTable>
     </TableContext.Provider>
   );
 }
 function Header({ children }) {
-  const { columns } = useContext(TableContext);
+  const { columns, mobileColumns } = useContext(TableContext);
   return (
-    <StyledHeader role="row" columns={columns} as="header">
+    <StyledHeader
+      role="row"
+      columns={columns}
+      mobileColumns={mobileColumns}
+      as="header"
+    >
       {children}
     </StyledHeader>
   );
 }
 
 function Row({ children }) {
-  const { columns } = useContext(TableContext);
+  const { columns, mobileColumns } = useContext(TableContext);
   return (
-    <StyledRow role="row" columns={columns}>
+    <StyledRow role="row" columns={columns} mobileColumns={mobileColumns}>
       {children}
     </StyledRow>
   );

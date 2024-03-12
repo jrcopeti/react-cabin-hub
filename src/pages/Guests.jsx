@@ -4,7 +4,7 @@ import GuestTableOperations from "../features/guests/GuestTableOperation";
 import Heading from "../ui/Heading";
 import Row from "../ui/Row";
 
-function Guest() {
+function Guests() {
   return (
     <>
       <Row type="horizontal">
@@ -13,11 +13,9 @@ function Guest() {
         <GuestTableOperations />
       </Row>
 
-      <Row>
-        <GuestTable />
-      </Row>
+      <GuestTable />
     </>
   );
 }
 
-export default Guest;
+export default Guests;

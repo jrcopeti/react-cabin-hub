@@ -41,6 +41,8 @@ const Stacked = styled.div`
     color: var(--color-grey-500);
     font-size: 1.2rem;
   }
+
+
 `;
 
 const Amount = styled.div`
@@ -106,7 +108,7 @@ function BookingRow({ booking }) {
 
       <Stacked>
         <span>{guestName}</span>
-        <span>{email}</span>
+        <span className="not-important-mobile">{email}</span>
       </Stacked>
 
       <Stacked>
@@ -122,9 +124,11 @@ function BookingRow({ booking }) {
         </span>
       </Stacked>
 
-      <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
+      <Tag type={statusToTagName[status]}>
+        {status.replace("-", " ")}
+      </Tag>
 
-      <Amount>{formatCurrency(totalPrice)}</Amount>
+      <Amount className="not-important-mobile">{formatCurrency(totalPrice)}</Amount>
 
       <Modal>
         <Menus.Menu>

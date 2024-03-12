@@ -4,7 +4,6 @@ import ButtonIcon from "./ButtonIcon";
 import Logout from "../features/authentication/Logout";
 import { HiOutlineUser } from "react-icons/hi2";
 import DarkModeToggle from "./DarkModeToggle";
-import { useOpenSidebar } from "../context/useOpenSideBar";
 
 const StyledHeaderMenu = styled.ul`
   display: flex;
@@ -13,7 +12,7 @@ const StyledHeaderMenu = styled.ul`
 
 function HeaderMenu() {
   const navigate = useNavigate();
-  const { darkModeRef } = useOpenSidebar();
+
   return (
     <StyledHeaderMenu>
       <li>
@@ -22,7 +21,7 @@ function HeaderMenu() {
         </ButtonIcon>
       </li>
       <li>
-        <DarkModeToggle ref={darkModeRef} />
+        <DarkModeToggle />
       </li>
       <li>
         <Logout />

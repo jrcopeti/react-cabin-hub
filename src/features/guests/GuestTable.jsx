@@ -16,12 +16,15 @@ function GuestTable() {
 
   return (
     <Menus>
-      <Table columns="0.6fr 1.2fr 1.4fr 1.1fr 1.2fr 0.1fr 0.5fr ">
+      <Table
+        columns="0.6fr 1.2fr 1.4fr 1.1fr 1.2fr 0.1fr 0.5fr"
+        mobileColumns="1fr 1fr"
+      >
         <Table.Header>
           <div>Id</div>
           <div>Guest</div>
           <div>email</div>
-          <div>Document #</div>
+          <div className="not-important-mobile">Document #</div>
           <div>Nationality</div>
           <div>Flag</div>
         </Table.Header>

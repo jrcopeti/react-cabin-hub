@@ -1,12 +1,16 @@
 import styled from "styled-components";
+import { screenSizes } from "../utils/constants";
 
 const StyledFormRow = styled.div`
   display: grid;
   align-items: center;
   grid-template-columns: 24rem 1fr 1.2fr;
   gap: 2.4rem;
-
   padding: 1.2rem 0;
+
+  @media (max-width: ${screenSizes.tablet}) {
+    grid-template-columns: 1fr 1.3fr;
+  }
 
   &:first-child {
     padding-top: 0;

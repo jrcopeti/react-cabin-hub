@@ -1,19 +1,17 @@
-
-
-import styled from "styled-components";
 import Heading from "../ui/Heading";
-import ChangePasswordForm from "../features/authentication/ChangePasswordForm";
+import SignupForm from "../features/authentication/SignupForm";
+import styled from "styled-components";
 import { screenSizes } from "../utils/constants";
 
-const LoginLayout = styled.main`
+const StyledNewUsers = styled.main`
   min-height: 100vh;
   display: grid;
-  grid-template-columns: 52rem;
+  grid-template-columns: 1fr 48;
   align-content: center;
   justify-content: center;
   gap: 3.2rem;
   background-color: var(--color-grey-50);
-  
+
   @media (max-width: ${screenSizes.tablet}) {
     grid-template-columns: 1fr;
     padding: 1rem 1.8rem 3.2rem;
@@ -21,13 +19,13 @@ const LoginLayout = styled.main`
   }
 `;
 
-function ChangePassword() {
+function Signup() {
   return (
-    <LoginLayout>
-      <Heading as="h1">Change Password</Heading>
-      <ChangePasswordForm />
-    </LoginLayout>
+    <StyledNewUsers>
+      <Heading as="h1">Create an account to get started</Heading>
+      <SignupForm />
+    </StyledNewUsers>
   );
 }
 
-export default ChangePassword;
+export default Signup;
