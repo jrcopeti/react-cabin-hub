@@ -30,6 +30,7 @@ const Main = styled.main`
   @media (max-width: ${screenSizes.tablet}) {
     padding: 2rem 2.4rem 3.2rem;
 
+
   }
 `;
 
@@ -41,6 +42,8 @@ const Container = styled.div`
 
   @media (max-width: ${screenSizes.tablet}) {
     gap: 1.6rem;
+
+
   }
 `;
 

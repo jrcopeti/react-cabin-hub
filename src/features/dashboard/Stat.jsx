@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { screenSizes } from "../../utils/constants";
 
 const StyledStat = styled.div`
   /* Box */
@@ -12,6 +13,15 @@ const StyledStat = styled.div`
   grid-template-rows: auto auto;
   column-gap: 1.6rem;
   row-gap: 0.4rem;
+
+  @media (max-width: ${screenSizes.tablet}) {
+    width: 70%;
+    align-self: center;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
 `;
 
 const Icon = styled.div`
@@ -23,7 +33,13 @@ const Icon = styled.div`
   justify-content: center;
 
   /* Make these dynamic, based on the received prop */
+
   background-color: var(--color-${(props) => props.color}-100);
+
+  @media (max-width: ${screenSizes.tablet}) {
+    justify-self: center;
+    width: 6.4rem;
+  }
 
   & svg {
     width: 3.2rem;
@@ -39,12 +55,18 @@ const Title = styled.h5`
   letter-spacing: 0.4px;
   font-weight: 600;
   color: var(--color-grey-500);
+  @media (max-width: ${screenSizes.tablet}) {
+    align-self: center;
+  }
 `;
 
 const Value = styled.p`
   font-size: 2.4rem;
   line-height: 1;
   font-weight: 500;
+  @media (max-width: ${screenSizes.tablet}) {
+    align-self: center;
+  }
 `;
 
 function Stat({ icon, title, value, color }) {

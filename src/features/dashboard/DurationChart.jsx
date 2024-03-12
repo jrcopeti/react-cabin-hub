@@ -9,6 +9,7 @@ import {
   Tooltip,
 } from "recharts";
 import { useDarkMode } from "../../context/useDarkMode";
+import { screenSizes } from "../../utils/constants";
 
 const ChartBox = styled.div`
   /* Box */
@@ -18,6 +19,7 @@ const ChartBox = styled.div`
 
   padding: 2.4rem 3.2rem;
   grid-column: 3 / span 2;
+  overflow: auto;
 
   & > *:first-child {
     margin-bottom: 1.6rem;
@@ -25,6 +27,14 @@ const ChartBox = styled.div`
 
   & .recharts-pie-label-text {
     font-weight: 600;
+  }
+
+  @media (max-width: ${screenSizes.tablet}) {
+    display: flex;
+    flex-direction: column;
+    width: 90dvw;
+    align-self: center;
+    padding: 1.2rem 1.6rem;
   }
 `;
 
