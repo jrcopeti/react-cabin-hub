@@ -16,7 +16,7 @@ function BookingTable() {
     <Menus>
       <Table
         columns="0.6fr 0.6fr 1.2fr 1.4fr 1.0fr 0.8fr 0.5rem"
-        mobileColumns="1fr 1fr"
+        mobilecolumns="1fr"
       >
         <Table.Header>
           <div>Id</div>
@@ -24,7 +24,7 @@ function BookingTable() {
           <div>Guest</div>
           <div>Dates</div>
           <div>Status</div>
-          <div className="not-important-mobile">Amount</div>
+          <div>Amount</div>
         </Table.Header>
 
         <Table.Body

@@ -6,7 +6,7 @@ const StyledTable = styled.div`
   border: 1px solid var(--color-grey-200);
 
   font-size: 1.4rem;
-  background-color: var(--color-grey-0);
+
   border-radius: 7px;
   overflow: scroll;
 `;
@@ -18,8 +18,15 @@ const CommonRow = styled.div`
   align-items: center;
   transition: none;
 
-  .not-important-mobile {
+  &:nth-child(odd) {
+    background-color: var(--color-grey-50);
+  }
 
+  &:nth-child(even) {
+    background-color: var(--color-grey-0);
+  }
+
+  .not-important-mobile {
     &.important {
       display: block;
     }
@@ -32,23 +39,26 @@ const CommonRow = styled.div`
   }
 
   @media (max-width: ${screenSizes.tablet}) {
-    grid-template-columns: ${(props) => props.mobileColumns};
-    gap: 1.6rem;
+    grid-template-columns: ${(props) => props.mobilecolumns};
+    gap: 0.6rem;
   }
 `;
 
 const StyledHeader = styled(CommonRow)`
   padding: 1.6rem 2.4rem;
 
-  background-color: var(--color-grey-50);
   border-bottom: 1px solid var(--color-grey-100);
   text-transform: uppercase;
   letter-spacing: 0.4px;
   font-weight: 600;
   color: var(--color-grey-600);
 
+  &:nth-child(odd) {
+    background-color: var(--color-indigo-100);
+  }
+
   @media (max-width: ${screenSizes.tablet}) {
-    padding: 0.8rem 1.6rem;
+    display: none;
   }
 `;
 
@@ -57,10 +67,6 @@ const StyledRow = styled(CommonRow)`
 
   &:not(:last-child) {
     border-bottom: 1px solid var(--color-grey-100);
-  }
-
-  @media (max-width: ${screenSizes.tablet}) {
-    padding: 0.8rem 1.6rem;
   }
 `;
 
@@ -87,20 +93,20 @@ const Empty = styled.p`
 `;
 
 const TableContext = createContext();
-function Table({ columns, mobileColumns, children }) {
+function Table({ columns, mobilecolumns, children }) {
   return (
-    <TableContext.Provider value={{ columns, mobileColumns }}>
+    <TableContext.Provider value={{ columns, mobilecolumns }}>
       <StyledTable role="table">{children}</StyledTable>
     </TableContext.Provider>
   );
 }
 function Header({ children }) {
-  const { columns, mobileColumns } = useContext(TableContext);
+  const { columns, mobilecolumns } = useContext(TableContext);
   return (
     <StyledHeader
       role="row"
       columns={columns}
-      mobileColumns={mobileColumns}
+      mobilecolumns={mobilecolumns}
       as="header"
     >
       {children}
@@ -109,9 +115,9 @@ function Header({ children }) {
 }
 
 function Row({ children }) {
-  const { columns, mobileColumns } = useContext(TableContext);
+  const { columns, mobilecolumns } = useContext(TableContext);
   return (
-    <StyledRow role="row" columns={columns} mobileColumns={mobileColumns}>
+    <StyledRow role="row" columns={columns} mobilecolumns={mobilecolumns}>
       {children}
     </StyledRow>
   );

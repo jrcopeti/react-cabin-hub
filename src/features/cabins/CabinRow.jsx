@@ -11,6 +11,7 @@ import Table from "../../ui/Table";
 import Menus from "../../ui/Menus";
 
 import { formatCurrency } from "../../utils/helpers";
+import { screenSizes } from "../../utils/constants";
 
 const Img = styled.img`
   display: block;
@@ -19,6 +20,8 @@ const Img = styled.img`
   object-fit: cover;
   object-position: center;
   transform: scale(1.5) translateX(-7px);
+  @media (max-width: ${screenSizes.tablet}) {
+  }
 `;
 
 const Cabin = styled.div`
@@ -31,6 +34,10 @@ const Cabin = styled.div`
 const Price = styled.div`
   font-family: "Sono";
   font-weight: 600;
+
+  @media (max-width: ${screenSizes.tablet}) {
+    margin-top: 0.5rem;
+  }
 `;
 
 const Discount = styled.div`

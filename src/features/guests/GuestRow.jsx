@@ -32,22 +32,11 @@ const Stacked = styled.div`
     color: var(--color-grey-500);
   }
   @media (max-width: ${screenSizes.tablet}) {
-    flex-direction: row;
-    gap: 0.5rem;
+
   }
 `;
 
-const StackedModal = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
 
-  @media (max-width: ${screenSizes.tablet}) {
-    flex-direction: row;
-    gap: 0rem;
-    flex: 1;
-  }
-`;
 
 const Number = styled.div`
   font-family: "Sono";
@@ -82,7 +71,7 @@ function GuestRow({ guest }) {
         <span>{nationalID}</span>
       </Number>
 
-      <Stacked className="not-important-mobile">
+      <Stacked>
         <span>{nationality}</span>
       </Stacked>
 
