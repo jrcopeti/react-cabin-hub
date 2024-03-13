@@ -15,10 +15,7 @@ import Heading from "../../ui/Heading";
 import FormRow from "../../ui/FormRow";
 import styled from "styled-components";
 
-const StyledDiv = styled.div`
-  
-
-`
+const StyledDiv = styled.div``;
 
 function CreateGuestForm({ onCloseModal }) {
   const {

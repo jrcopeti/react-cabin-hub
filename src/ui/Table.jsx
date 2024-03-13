@@ -40,7 +40,7 @@ const CommonRow = styled.div`
 
   @media (max-width: ${screenSizes.tablet}) {
     grid-template-columns: ${(props) => props.mobilecolumns};
-    gap: 0.6rem;
+    row-gap: 1rem;
   }
 `;
 
@@ -67,6 +67,10 @@ const StyledRow = styled(CommonRow)`
 
   &:not(:last-child) {
     border-bottom: 1px solid var(--color-grey-100);
+  }
+
+  @media (max-width: ${screenSizes.tablet}) {
+    padding: 1.2rem 4rem 2.4rem ;
   }
 `;
 

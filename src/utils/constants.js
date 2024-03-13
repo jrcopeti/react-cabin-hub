@@ -7,4 +7,12 @@ export const screenSizes = {
   desktop: "2560px",
 };
 
+export const windowSizes = {
+  mobile: 320,
+  tablet: 768,
+  laptop: 1024,
+  desktop: 2560,
+};
+
+
 export const COUNTRY_MAX_LENGTH = 15;
