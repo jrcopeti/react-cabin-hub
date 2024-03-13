@@ -5,6 +5,8 @@ import Button from "../../ui/Button";
 
 import { screenSizes } from "../../utils/constants";
 import { formatCurrency } from "../../utils/helpers";
+import Spinner from "../../ui/Spinner";
+
 
 const StyledCabinDetails = styled.div`
   display: flex;
@@ -97,9 +99,13 @@ const StyledNavLink = styled(NavLink)`
   flex-direction: column;
 `;
 
-function CabinDetails({ cabin, onCloseModal }) {
+function CabinDetails({ cabin, onCloseModal, isLoading }) {
   const { name, maxCapacity, regularPrice, discount, image, description } =
     cabin;
+
+    if (isLoading) {
+      return <Spinner />;
+    }
 
   return (
     <>
