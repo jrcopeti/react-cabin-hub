@@ -10,6 +10,7 @@ function GuestTable() {
   const { guests, isLoading, error, count } = useGuests();
 
   if (isLoading) return <Spinner />;
+  
   if (error) throw new Error("Couldn't load guests");
 
   if (!guests.length) return <Empty resourceName="guests" />;

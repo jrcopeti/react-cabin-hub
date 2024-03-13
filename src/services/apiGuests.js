@@ -21,7 +21,6 @@ export async function getGuests({ filter, sortBy, page }) {
   }
 
   if (sortBy) {
-    console.log(sortBy);
     query = query.order(sortBy.field, {
       ascending: sortBy.direction === "asc",
     });
@@ -36,7 +35,6 @@ export async function getGuests({ filter, sortBy, page }) {
 
   if (error) throw new Error("Guests could not be loaded");
 
-  console.log(data);
   return { data, count };
 }
 

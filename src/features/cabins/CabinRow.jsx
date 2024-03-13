@@ -46,7 +46,7 @@ const Discount = styled.div`
   color: var(--color-green-700);
 `;
 
-function CabinRow({ cabin }) {
+function CabinRow({ cabin, isLoading }) {
   const { isDeleting, deleteCabin } = useDeleteCabin();
   const { isCreating, createCabin } = useCreateCabin();
 
@@ -167,7 +167,7 @@ function CabinRow({ cabin }) {
                 </Modal.Window>
 
                 <Modal.Window name="cabin-details">
-                  <CabinDetails cabin={cabin} />
+                  <CabinDetails cabin={cabin} isLoading={isLoading} />
                 </Modal.Window>
 
                 <Modal.Window name="delete">
