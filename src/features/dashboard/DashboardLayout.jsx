@@ -16,11 +16,9 @@ const StyledDashboardLayout = styled.div`
   gap: 2.4rem;
 
   @media (max-width: ${screenSizes.tablet}) {
-   flex-direction: column;
-   display: flex;
-
-
-
+    flex-direction: column;
+    display: flex;
+    gap: 1.2rem;
   }
 `;
 
