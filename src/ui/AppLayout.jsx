@@ -41,6 +41,7 @@ const Container = styled.div`
 
   @media (max-width: ${screenSizes.tablet}) {
     gap: 1.6rem;
+    max-width: 40rem;
   }
 `;
 
