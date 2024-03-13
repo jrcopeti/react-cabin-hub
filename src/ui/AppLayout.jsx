@@ -29,7 +29,7 @@ const Main = styled.main`
   overflow: scroll;
 
   @media (max-width: ${screenSizes.tablet}) {
-    max-width: 100dvh;
+    padding: 2rem 2.4rem 3.2rem;
   }
 `;
 
