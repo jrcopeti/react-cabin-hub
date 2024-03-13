@@ -8,13 +8,17 @@ const Row = styled.div`
     css`
       justify-content: space-between;
       align-items: center;
-      min-width: 30rem;
+      min-width: 120rem;
 
+      @media (max-width: ${screenSizes.laptop}) {
+        min-width: 88rem;
+      }
 
       @media (max-width: ${screenSizes.tablet}) {
         flex-direction: column;
         gap: 1rem;
         justify-content: center;
+        min-width: 30rem;
       }
     `}
 

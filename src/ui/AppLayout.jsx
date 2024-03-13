@@ -39,6 +39,12 @@ const Container = styled.div`
   display: grid;
   gap: 3.2rem;
 
+  @media (max-width: ${screenSizes.laptop}) {
+
+    max-width: 75rem;
+
+  }
+
   @media (max-width: ${screenSizes.tablet}) {
     gap: 1.6rem;
     max-width: 40rem;
