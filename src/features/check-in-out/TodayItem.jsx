@@ -22,6 +22,7 @@ const StyledTodayItem = styled.li`
 
   @media (max-width: ${screenSizes.tablet}) {
     grid-template-columns: 9rem 2rem 11rem 8rem 9rem;
+    
   }
 `;
 
