@@ -18,7 +18,7 @@ const sidebar = {
 const StyledAppLayout = styled.div`
   display: grid;
   grid-template-rows: auto 1fr;
-  height: 100vh;
+  height: 100dvh;
   transition: ease-in-out 0.3s;
   ${(props) => sidebar[props.sidebar]}
 `;
@@ -28,13 +28,8 @@ const Main = styled.main`
   padding: 4rem 4.8rem 6.4rem;
   overflow: scroll;
 
-  &::-webkit-scrollbar {
-    width: 0 !important;
-  }
-  scrollbar-width: none;
-  -ms-overflow-style: none;
   @media (max-width: ${screenSizes.tablet}) {
-    padding: 2rem 2.4rem 3.2rem;
+    max-width: 100dvh;
   }
 `;
 
@@ -46,6 +41,7 @@ const Container = styled.div`
 
   @media (max-width: ${screenSizes.tablet}) {
     gap: 1.6rem;
+    max-width: 100dvh;
   }
 `;
 
