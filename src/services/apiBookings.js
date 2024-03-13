@@ -11,6 +11,7 @@ export async function getBookings({ filter, sortBy, page }) {
 
   // Filter
   if (filter) {
+    console.log(filter, filter.field, filter.value, filter.method)
     query = query[filter.method || "eq"](filter.field, filter.value);
   }
 
@@ -122,7 +123,6 @@ export async function updateBooking(id, obj) {
 }
 
 export async function deleteBooking(id) {
-  // REMEMBER RLS POLICIES
   const { data, error } = await supabase.from("bookings").delete().eq("id", id);
 
   if (error) {

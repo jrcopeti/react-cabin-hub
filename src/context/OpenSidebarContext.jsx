@@ -4,7 +4,7 @@ import { useOutsideClickSidebar } from "../hooks/useOutsideClickSidebar";
 const OpenSidebarContext = createContext();
 
 function OpenSidebarProvider({ children }) {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const sidebarRef = useRef(null);
   const headerRef = useRef(null);

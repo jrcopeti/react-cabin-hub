@@ -1,5 +1,4 @@
-// import Uploader from "../data/Uploader";
-import { forwardRef } from "react";
+import Uploader from "../data/Uploader";
 import Logo from "./Logo";
 import MainNav from "./MainNav";
 
@@ -17,15 +16,15 @@ const StyledSidebar = styled.aside`
   transition: ease-in-out 0.3s;
 `;
 
-const Sidebar = forwardRef(function Sidebar() {
+function Sidebar() {
   const { sidebarRef } = useOpenSidebar();
   return (
     <StyledSidebar ref={sidebarRef}>
       <Logo />
       <MainNav />
-      {/* <Uploader /> */}
+      <Uploader />
     </StyledSidebar>
   );
-});
+}
 
 export default Sidebar;
