@@ -7,9 +7,11 @@ const TableOperations = styled.div`
   gap: 1.6rem;
   min-width: 34rem;
 
+
   @media (max-width: ${screenSizes.tablet}) {
     flex-direction: column;
     gap: 0.8rem;
+
   }
 `;
 
