@@ -6,8 +6,8 @@ import {
   HiOutlineHome,
   HiOutlineHomeModern,
   HiOutlineUserGroup,
-  HiOutlineUserPlus,
-  HiOutlineUsers,
+  // HiOutlineUserPlus,
+  // HiOutlineUsers,
 } from "react-icons/hi2";
 
 const NavList = styled.ul`

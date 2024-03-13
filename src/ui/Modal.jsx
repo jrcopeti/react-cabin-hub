@@ -23,7 +23,6 @@ const StyledModal = styled.div`
   }
   scrollbar-width: none;
   -ms-overflow-style: none;
-
 `;
 
 const Overlay = styled.div`

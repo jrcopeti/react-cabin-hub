@@ -4,6 +4,7 @@ import { Flag } from "../../ui/Flag";
 import Button from "../../ui/Button";
 import CheckoutButton from "./CheckoutButton";
 import { Link } from "react-router-dom";
+import { screenSizes } from "../../utils/constants";
 
 const StyledTodayItem = styled.li`
   display: grid;
@@ -17,6 +18,10 @@ const StyledTodayItem = styled.li`
 
   &:first-child {
     border-top: 1px solid var(--color-grey-100);
+  }
+
+  @media (max-width: ${screenSizes.tablet}) {
+    grid-template-columns: 9rem 2rem 11rem 8rem 9rem;
   }
 `;
 
