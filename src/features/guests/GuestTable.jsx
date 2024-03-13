@@ -10,7 +10,7 @@ function GuestTable() {
   const { guests, isLoading, error, count } = useGuests();
 
   if (isLoading) return <Spinner />;
-  
+
   if (error) throw new Error("Couldn't load guests");
 
   if (!guests.length) return <Empty resourceName="guests" />;
@@ -25,7 +25,7 @@ function GuestTable() {
           <div>Id</div>
           <div>Guest</div>
           <div>email</div>
-          <div >Document</div>
+          <div>Document</div>
           <div>Nationality</div>
           <div>Flag</div>
         </Table.Header>

@@ -24,6 +24,7 @@ import { isBefore, isValid, parseISO, startOfToday } from "date-fns";
 import Heading from "../../ui/Heading";
 import styled from "styled-components";
 import { screenSizes } from "../../utils/constants";
+import ButtonText from "../../ui/ButtonText";
 
 const StyledDiv = styled.div`
   display: grid;
@@ -42,6 +43,27 @@ const StyledDiv = styled.div`
       font-size: 1rem;
       line-height: 1.4;
     }
+  }
+`;
+
+const HeadingGroup = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 1.6rem;
+  align-items: flex-start;
+
+  & div {
+    background-color: var(--color-grey-0);
+    border: 1px solid var(--color-grey-100);
+    border-radius: var(--border-radius-md);
+    padding: 1.6rem 2.4rem;
+    color: var(--color-grey-600);
+    min-width: 36rem;
+    white-space: pre-line;
+  }
+
+  @media (max-width: ${screenSizes.tablet}) {
+    gap: 1rem;
   }
 `;
 
@@ -177,26 +199,27 @@ function CreateBookingForm() {
 
   return (
     <>
-      <StyledDiv>
+      <HeadingGroup>
+        <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
         <Heading as="h1">Create New Booking</Heading>
-        <p>
-          First check if the cabin is available for the selected dates.
-          <br />
-          If the cabin is available, fill in the form to create a new booking.
-          <br />
-          For new guests, click the button below.
-        </p>
         <div>
-          <Modal>
-            <Modal.Open opens="guest-form">
-              <Button type="button">New Guest</Button>
-            </Modal.Open>
-            <Modal.Window name="guest-form">
-              <CreateGuestForm />
-            </Modal.Window>
-          </Modal>
+          <span>
+            First check if the cabin is available for the selected dates.
+            <br />
+            If the cabin is available, fill in the form to create a new booking.
+            <br />
+            For new guests, click the button below.
+          </span>
         </div>
-      </StyledDiv>
+        <Modal>
+          <Modal.Open opens="guest-form">
+            <Button type="button">New Guest</Button>
+          </Modal.Open>
+          <Modal.Window name="guest-form">
+            <CreateGuestForm />
+          </Modal.Window>
+        </Modal>
+      </HeadingGroup>
 
       <Form type="regular" onSubmit={handleSubmit(onSubmit, onError)}>
         <FormRow label="Cabin" error={errors?.cabinId?.message}>

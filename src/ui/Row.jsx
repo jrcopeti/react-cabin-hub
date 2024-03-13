@@ -8,6 +8,8 @@ const Row = styled.div`
     css`
       justify-content: space-between;
       align-items: center;
+      min-width: 30rem;
+
 
       @media (max-width: ${screenSizes.tablet}) {
         flex-direction: column;
