@@ -21,12 +21,12 @@ function GuestTable() {
         mobilecolumns="1fr"
       >
         <Table.Header>
-          <div className="not-important-mobile">Id</div>
-          <div className="not-important-mobile">Guest</div>
-          <div className="not-important-mobile">email</div>
-          <div className="not-important-mobile" >Document</div>
-          <div className="not-important-mobile">Nationality</div>
-          <div className="not-important-mobile">Flag</div>
+          <div>Id</div>
+          <div>Guest</div>
+          <div>email</div>
+          <div >Document</div>
+          <div>Nationality</div>
+          <div>Flag</div>
         </Table.Header>
 
         <Table.Body

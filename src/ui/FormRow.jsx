@@ -8,10 +8,6 @@ const StyledFormRow = styled.div`
   gap: 2.4rem;
   padding: 1.2rem 0;
 
-  @media (max-width: ${screenSizes.tablet}) {
-    grid-template-columns: 1fr 1.3fr;
-  }
-
   &:first-child {
     padding-top: 0;
   }
@@ -28,6 +24,10 @@ const StyledFormRow = styled.div`
     display: flex;
     justify-content: flex-end;
     gap: 1.2rem;
+  }
+
+  @media (max-width: ${screenSizes.tablet}) {
+    grid-template-columns: 1fr 1.3fr;
   }
 `;
 

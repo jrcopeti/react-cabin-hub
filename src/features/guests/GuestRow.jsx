@@ -11,7 +11,8 @@ import { HiPencil, HiTrash } from "react-icons/hi2";
 import { Flag } from "../../ui/Flag";
 
 import { useDeleteGuest } from "./useDeleteGuest";
-import { screenSizes } from "../../utils/constants";
+import { windowSizes } from "../../utils/constants";
+import { useWindowSize } from "../../hooks/useWindowSize";
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -21,22 +22,13 @@ const Cabin = styled.div`
 `;
 
 const Stacked = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem;
-
   & span:first-child {
     font-weight: 500;
   }
   & span:last-child {
     color: var(--color-grey-500);
   }
-  @media (max-width: ${screenSizes.tablet}) {
-
-  }
 `;
-
-
 
 const Number = styled.div`
   font-family: "Sono";
@@ -54,59 +46,119 @@ function GuestRow({ guest }) {
   } = guest;
 
   const { deleteGuest, isDeleting } = useDeleteGuest();
+  const { width } = useWindowSize();
 
   return (
-    <Table.Row>
-      <Cabin>{guestId}</Cabin>
+    <>
+      {width >= windowSizes.tablet ? (
+        <Table.Row>
+          <Cabin>{guestId}</Cabin>
 
-      <Stacked>
-        <span>{fullName}</span>
-      </Stacked>
+          <Stacked>
+            <span>{fullName}</span>
+          </Stacked>
 
-      <Stacked>
-        <span>{email}</span>
-      </Stacked>
+          <Stacked>
+            <span>{email}</span>
+          </Stacked>
 
-      <Number>
-        <span>{nationalID}</span>
-      </Number>
+          <Number>
+            <span>{nationalID}</span>
+          </Number>
 
-      <Stacked>
-        <span>{nationality}</span>
-      </Stacked>
+          <Stacked>
+            <span>{nationality}</span>
+          </Stacked>
 
-      <Stacked>
-        {countryFlag && (
-          <Flag src={countryFlag} alt={`Flag of ${nationality}`} />
-        )}
-      </Stacked>
-      <Modal>
-        <Menus.Menu>
-          <Menus.Toggle id={guestId} />
-          <Menus.List id={guestId}>
-            <Modal.Open opens="edit-guest">
-              <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
-            </Modal.Open>
+          <Stacked>
+            {countryFlag && (
+              <Flag src={countryFlag} alt={`Flag of ${nationality}`} />
+            )}
+          </Stacked>
+          <Modal>
+            <Menus.Menu>
+              <Menus.Toggle id={guestId} />
+              <Menus.List id={guestId}>
+                <Modal.Open opens="edit-guest">
+                  <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
+                </Modal.Open>
 
-            <Modal.Open opens="delete">
-              <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
-            </Modal.Open>
-          </Menus.List>
+                <Modal.Open opens="delete">
+                  <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
+                </Modal.Open>
+              </Menus.List>
 
-          <Modal.Window name="edit-guest">
-            <EditGuestForm guestToEdit={guest} />
-          </Modal.Window>
-        </Menus.Menu>
+              <Modal.Window name="edit-guest">
+                <EditGuestForm guestToEdit={guest} />
+              </Modal.Window>
+            </Menus.Menu>
 
-        <Modal.Window name="delete">
-          <ConfirmDelete
-            resourceName="cabins"
-            disabled={isDeleting}
-            onConfirm={() => deleteGuest(guestId)}
-          />
-        </Modal.Window>
-      </Modal>
-    </Table.Row>
+            <Modal.Window name="delete">
+              <ConfirmDelete
+                resourceName="cabins"
+                disabled={isDeleting}
+                onConfirm={() => deleteGuest(guestId)}
+              />
+            </Modal.Window>
+          </Modal>
+        </Table.Row>
+      ) : (
+        <Table.Row>
+          <Stacked>
+            <Modal>
+              <Menus.Menu>
+                <Menus.Toggle id={guestId} />
+                <Menus.List id={guestId}>
+                  <Modal.Open opens="edit-guest">
+                    <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
+                  </Modal.Open>
+
+                  <Modal.Open opens="delete">
+                    <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
+                  </Modal.Open>
+                </Menus.List>
+
+                <Modal.Window name="edit-guest">
+                  <EditGuestForm guestToEdit={guest} />
+                </Modal.Window>
+              </Menus.Menu>
+
+              <Modal.Window name="delete">
+                <ConfirmDelete
+                  resourceName="cabins"
+                  disabled={isDeleting}
+                  onConfirm={() => deleteGuest(guestId)}
+                />
+              </Modal.Window>
+            </Modal>
+          </Stacked>
+          <Cabin>{guestId}</Cabin>
+
+          <Stacked>
+            <span> {fullName}</span>
+            <span></span>
+          </Stacked>
+
+          <Stacked>
+            <span>{email}</span>
+          </Stacked>
+
+          <Number>
+            <span>{nationalID}</span>
+          </Number>
+
+          <Stacked>
+            <span>{nationality}</span>
+          </Stacked>
+
+          <Stacked>
+            {countryFlag && (
+              <Flag src={countryFlag} alt={`Flag of ${nationality}`} />
+            )}
+          </Stacked>
+        </Table.Row>
+      )}
+    </>
   );
 }
 
