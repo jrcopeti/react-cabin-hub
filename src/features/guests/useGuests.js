@@ -7,6 +7,15 @@ export function useGuests() {
   const queryClient = useQueryClient();
   const [searchParams] = useSearchParams();
 
+  // Filter
+  const filterValue = searchParams.get("bookings.startDate");
+  const method = searchParams.get("bookings.startDateMethod") || "eq";
+
+  const filter =
+    !filterValue || filterValue === "all"
+      ? null
+      : { field: "bookings.startDate", method, value: filterValue };
+
   // SortBy
   const sortByRaw = searchParams.get("sortBy") || "fullName-asc";
 
@@ -21,8 +30,8 @@ export function useGuests() {
     data: { data: guests, count } = {},
     error,
   } = useQuery({
-    queryKey: ["guests", sortBy, page],
-    queryFn: () => getGuests({ sortBy, page }),
+    queryKey: ["guests", filter, sortBy, page],
+    queryFn: () => getGuests({ filter, sortBy, page }),
   });
 
   //  Pre-Fetching

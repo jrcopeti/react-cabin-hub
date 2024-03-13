@@ -1,4 +1,5 @@
 import { PAGE_SIZE } from "../utils/constants";
+
 import supabase from "./supabase";
 
 export async function getAllGuests() {
@@ -9,10 +10,18 @@ export async function getAllGuests() {
   return data;
 }
 
-export async function getGuests({ sortBy, page }) {
-  let query = supabase.from("guests").select("*", { count: "exact" });
+export async function getGuests({ filter, sortBy, page }) {
+  let query = supabase
+    .from("guests")
+    .select("*, bookings!inner(*)", { count: "exact" });
+
+  // Filter
+  if (filter) {
+    query = query[filter.method || "eq"](filter.field, filter.value);
+  }
 
   if (sortBy) {
+    console.log(sortBy);
     query = query.order(sortBy.field, {
       ascending: sortBy.direction === "asc",
     });
@@ -27,6 +36,7 @@ export async function getGuests({ sortBy, page }) {
 
   if (error) throw new Error("Guests could not be loaded");
 
+  console.log(data);
   return { data, count };
 }
 
