@@ -11,6 +11,7 @@ import DataItem from "../../ui/DataItem";
 import { Flag } from "../../ui/Flag";
 
 import { formatDistanceFromNow, formatCurrency } from "../../utils/helpers";
+import { screenSizes } from "../../utils/constants";
 
 const StyledBookingDataBox = styled.section`
   /* Box */
@@ -49,10 +50,18 @@ const Header = styled.header`
     font-size: 2rem;
     margin-left: 4px;
   }
+
+  @media (max-width: ${screenSizes.tablet}) {
+    flex-direction: column;
+    gap: 1rem;
+  }
 `;
 
 const Section = styled.section`
   padding: 3.2rem 4rem 1.2rem;
+  @media (max-width: ${screenSizes.tablet}) {
+    padding: 1.8rem 2rem 0.6rem;
+  }
 `;
 
 const Guest = styled.div`
@@ -65,6 +74,10 @@ const Guest = styled.div`
   & p:first-of-type {
     font-weight: 500;
     color: var(--color-grey-700);
+  }
+  @media (max-width: ${screenSizes.tablet}) {
+    flex-direction: column;
+    gap: 0.2rem;
   }
 `;
 
@@ -173,7 +186,6 @@ function BookingDataBox({ booking }) {
         <Price $isPaid={isPaid}>
           <DataItem icon={<HiOutlineCurrencyDollar />} label={`Total price`}>
             {formatCurrency(totalPrice)}
-
             {hasBreakfast &&
               ` (${formatCurrency(cabinPrice)} cabin + ${formatCurrency(
                 extraPrice

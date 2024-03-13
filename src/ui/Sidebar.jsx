@@ -1,4 +1,4 @@
-// import Uploader from "../data/Uploader";
+import Uploader from "../data/Uploader";
 import Logo from "./Logo";
 import MainNav from "./MainNav";
 
@@ -22,7 +22,7 @@ function Sidebar() {
     <StyledSidebar ref={sidebarRef}>
       <Logo />
       <MainNav />
-      {/* <Uploader /> */}
+      <Uploader />
     </StyledSidebar>
   );
 }

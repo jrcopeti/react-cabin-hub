@@ -6,6 +6,7 @@ import BookingDataBox from "./BookingDataBox";
 import { useCheckout } from "../check-in-out/useCheckout";
 import { useMoveBack } from "../../hooks/useMoveBack";
 import { useBooking } from "./useBooking";
+import { useWindowSize } from "../../hooks/useWindowSize";
 import { useDeleteBooking } from "./useDeleteBooking";
 
 import Modal from "../../ui/Modal";
@@ -18,12 +19,18 @@ import ButtonGroup from "../../ui/ButtonGroup";
 import Button from "../../ui/Button";
 import ButtonText from "../../ui/ButtonText";
 import Empty from "../../ui/Empty";
+import { screenSizes, windowSizes } from "../../utils/constants";
 
 import { HiArrowUpOnSquare } from "react-icons/hi2";
+
 const HeadingGroup = styled.div`
   display: flex;
   gap: 2.4rem;
   align-items: center;
+
+  @media (max-width: ${screenSizes.tablet}) {
+    gap: 1rem;
+  }
 `;
 
 function BookingDetail() {
@@ -33,6 +40,8 @@ function BookingDetail() {
   const navigate = useNavigate();
 
   const moveBack = useMoveBack();
+
+  const { width } = useWindowSize();
 
   if (isLoading) return <Spinner />;
   if (!booking) return <Empty resourceName="booking" />;
@@ -48,11 +57,17 @@ function BookingDetail() {
   return (
     <>
       <Row type="horizontal">
+        {width <= windowSizes.tablet && (
+          <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
+        )}
         <HeadingGroup>
+          {width >= windowSizes.tablet && (
+            <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
+          )}
+
           <Heading as="h1">Booking #{bookingId}</Heading>
           <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
         </HeadingGroup>
-        <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
       </Row>
 
       <BookingDataBox booking={booking} />

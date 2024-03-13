@@ -16,6 +16,7 @@ import { useSettings } from "../settings/useSettings";
 import { useCheckin } from "./useCheckin";
 
 import { formatCurrency } from "../../utils/helpers";
+import { screenSizes } from "../../utils/constants";
 
 const Box = styled.div`
   /* Box */
@@ -23,6 +24,18 @@ const Box = styled.div`
   border: 1px solid var(--color-grey-100);
   border-radius: var(--border-radius-md);
   padding: 2.4rem 4rem;
+`;
+
+const HeadingGroup = styled.div`
+  display: flex;
+  gap: 2.4rem;
+  align-items: center;
+
+  @media (max-width: ${screenSizes.tablet}) {
+    gap: 1rem;
+    align-items: flex-end;
+
+  }
 `;
 
 function CheckinBooking() {
@@ -72,8 +85,10 @@ function CheckinBooking() {
   return (
     <>
       <Row type="horizontal">
-        <Heading as="h1">Check in booking #{bookingId}</Heading>
-        <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
+        <HeadingGroup>
+          <Heading as="h1">Check in booking #{bookingId}</Heading>
+          <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
+        </HeadingGroup>
       </Row>
 
       <BookingDataBox booking={booking} />
