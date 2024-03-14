@@ -4,7 +4,7 @@ import styled from "styled-components";
 import { screenSizes } from "../utils/constants";
 
 const StyledNewUsers = styled.main`
-  min-height: 100vh;
+  min-height: 80dvh;
   display: grid;
   grid-template-columns: 1fr 48;
   align-content: center;

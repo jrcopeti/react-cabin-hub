@@ -5,7 +5,7 @@ import ResetPasswordForm from "../features/authentication/ResetPasswordForm";
 import { screenSizes } from "../utils/constants";
 
 const LoginLayout = styled.main`
-  min-height: 100vh;
+  min-height: 80dvh;
   display: grid;
   grid-template-columns: 48rem;
   align-content: center;
