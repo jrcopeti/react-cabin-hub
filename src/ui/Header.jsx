@@ -21,6 +21,11 @@ const StyledHeader = styled.header`
   align-items: center;
   justify-content: space-between;
   grid-column: 1 / 3;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  z-index: 100;
 
   @media (max-width: ${screenSizes.tablet}) {
     display: grid;
