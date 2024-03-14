@@ -11,7 +11,7 @@ import { HiPencil, HiTrash } from "react-icons/hi2";
 import { Flag } from "../../ui/Flag";
 
 import { useDeleteGuest } from "./useDeleteGuest";
-import { windowSizes } from "../../utils/constants";
+import { screenSizes, windowSizes } from "../../utils/constants";
 import { useWindowSize } from "../../hooks/useWindowSize";
 
 const Cabin = styled.div`
@@ -19,20 +19,36 @@ const Cabin = styled.div`
   font-weight: 600;
   color: var(--color-grey-600);
   font-family: "Sono";
+
+  @media (max-width: ${screenSizes.tablet}) {
+    font-size: 1.6rem;
+  }
 `;
 
 const Stacked = styled.div`
   & span:first-child {
     font-weight: 500;
+
+    @media (max-width: ${screenSizes.tablet}) {
+      font-size: 1.8rem;
+    }
   }
   & span:last-child {
     color: var(--color-grey-500);
+
+    @media (max-width: ${screenSizes.tablet}) {
+      font-size: 1.4rem;
+    }
   }
 `;
 
 const Number = styled.div`
   font-family: "Sono";
   font-weight: 500;
+
+  @media (max-width: ${screenSizes.tablet}) {
+    font-size: 1.4rem;
+  }
 `;
 
 function GuestRow({ guest }) {

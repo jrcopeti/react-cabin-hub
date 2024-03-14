@@ -21,13 +21,17 @@ import {
   HiTrash,
 } from "react-icons/hi2";
 import { useWindowSize } from "../../hooks/useWindowSize";
-import { windowSizes } from "../../utils/constants";
+import { screenSizes, windowSizes } from "../../utils/constants";
 
 const Cabin = styled.div`
   font-size: 1.6rem;
   font-weight: 600;
   color: var(--color-grey-600);
   font-family: "Sono";
+
+  @media (max-width: ${screenSizes.tablet}) {
+    font-size: 1.8rem;
+  }
 `;
 
 const Stacked = styled.div`
@@ -37,17 +41,26 @@ const Stacked = styled.div`
 
   & span:first-child {
     font-weight: 500;
+    @media (max-width: ${screenSizes.tablet}) {
+      font-size: 1.6rem;
+    }
   }
 
   & span:last-child {
     color: var(--color-grey-500);
     font-size: 1.2rem;
+    @media (max-width: ${screenSizes.tablet}) {
+      font-size: 1.4rem;
+    }
   }
 `;
 
 const Amount = styled.div`
   font-family: "Sono";
   font-weight: 500;
+  @media (max-width: ${screenSizes.tablet}) {
+    font-size: 1.5rem;
+  }
 `;
 
 function BookingRow({ booking }) {

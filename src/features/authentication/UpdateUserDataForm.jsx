@@ -12,6 +12,7 @@ import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 import Spinner from "../../ui/Spinner";
 
+
 function UpdateUserDataForm() {
   const {
     user: {
@@ -62,6 +63,7 @@ function UpdateUserDataForm() {
     setAvatar(null);
   }
 
+
   return (
     <Form onSubmit={handleSubmit}>
       <FormRow label="Email address">
@@ -95,6 +97,7 @@ function UpdateUserDataForm() {
         </Button>
         <Button disabled={isUpdating}>Update account</Button>
       </FormRow>
+
     </Form>
   );
 }

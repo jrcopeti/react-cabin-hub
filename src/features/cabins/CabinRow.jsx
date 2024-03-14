@@ -29,6 +29,10 @@ const Cabin = styled.div`
   font-weight: 600;
   color: var(--color-grey-600);
   font-family: "Sono";
+
+  @media (max-width: ${screenSizes.tablet}) {
+    font-size: 1.8rem;
+  }
 `;
 
 const Price = styled.div`
@@ -37,6 +41,7 @@ const Price = styled.div`
 
   @media (max-width: ${screenSizes.tablet}) {
     margin-top: 0.5rem;
+    font-size: 1.6rem;
   }
 `;
 
@@ -44,6 +49,10 @@ const Discount = styled.div`
   font-family: "Sono";
   font-weight: 500;
   color: var(--color-green-700);
+
+  @media (max-width: ${screenSizes.tablet}) {
+    font-size: 1.5rem;
+  }
 `;
 
 function CabinRow({ cabin, isLoading }) {
@@ -92,7 +101,6 @@ function CabinRow({ cabin, isLoading }) {
                 <Menus.Toggle id={cabinId} />
 
                 <Menus.List id={cabinId}>
-
                   <Modal.Open opens="cabin-details">
                     <Menus.Button icon={<HiEye />}>See Details</Menus.Button>
                   </Modal.Open>
