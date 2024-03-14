@@ -35,7 +35,7 @@ const ChartBox = styled.div`
     flex-direction: column;
     width: 90dvw;
     align-self: center;
-    padding: 1rem 1rem;
+    padding: 1.2rem 1.6rem;
   }
 `;
 

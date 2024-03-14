@@ -33,11 +33,7 @@ const Main = styled.main`
   background-color: var(--color-grey-50);
   padding: 4rem 4.8rem 6.4rem;
   min-height: 100dvh;
-  overflow: auto;
-
-  @media (max-width: ${screenSizes.tablet}) {
-    min-height: calc(100vh - 4.8rem);
-  }
+  /* overflow: auto; */
 
   @media (max-width: ${screenSizes.tablet}) {
     padding: 2rem 2.4rem 3.2rem;
