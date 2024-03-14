@@ -22,6 +22,7 @@ const StyledAppLayout = styled.div`
   min-height: 100dvh;
   transition: ease-in-out 0.3s;
   ${(props) => sidebar[props.sidebar]}
+  /* overflow-x: hidden; */
 `;
 
 const Main = styled.main`

@@ -10,6 +10,8 @@ import { screenSizes } from "../utils/constants";
 
 import { HiOutlineQueueList } from "react-icons/hi2";
 
+import { useAutoFocus } from "../hooks/useAutoFocus";
+
 const StyledHeader = styled.header`
   background-color: var(--color-grey-0);
   padding: 1.2rem 4.8rem;
@@ -29,9 +31,11 @@ const StyledHeader = styled.header`
 
 function Header() {
   const { toggleSidebar, headerRef } = useOpenSidebar();
+  const sidebarButtonRef = useAutoFocus();
+
   return (
     <StyledHeader ref={headerRef}>
-      <ButtonIcon onClick={toggleSidebar}>
+      <ButtonIcon onClick={toggleSidebar} ref={sidebarButtonRef}>
         <HiOutlineQueueList />
       </ButtonIcon>
       <UserAvatar />
