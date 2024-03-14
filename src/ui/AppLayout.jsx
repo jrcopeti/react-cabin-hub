@@ -7,21 +7,9 @@ import Header from "./Header";
 import Sidebar from "./Sidebar";
 import { screenSizes } from "../utils/constants";
 
-const sidebar = {
-  open: css`
-    grid-template-columns: 26rem 1fr;
-  `,
-  closed: css`
-    grid-template-columns: 0rem 1fr;
-  `,
-};
 const StyledAppLayout = styled.div`
-  display: grid;
-  grid-template-rows: auto 1fr;
   min-height: 100dvh;
-  transition: ease-in-out 0.3s;
-  ${(props) => sidebar[props.sidebar]}
-  /* overflow-x: hidden; */
+  transition: ease-in-out 0.35s;
   margin-top: 6rem;
 
   @media (max-width: ${screenSizes.tablet}) {
@@ -29,11 +17,28 @@ const StyledAppLayout = styled.div`
   }
 `;
 
+const transform = {
+  open: css`
+    @media (max-width: ${screenSizes.tablet}) {
+      transform: translateX(26rem);
+      transition: ease-in-out 0.35s;
+    }
+  `,
+  closed: css`
+    @media (max-width: ${screenSizes.tablet}) {
+      transform: translateX(0rem);
+      transition: ease-in-out 0.35s;
+    }
+  `,
+};
+
 const Main = styled.main`
   background-color: var(--color-grey-50);
   padding: 4rem 4.8rem 6.4rem;
   min-height: 100dvh;
-  /* overflow: auto; */
+  overflow: auto;
+
+  ${(props) => transform[props.transform]}
 
   @media (max-width: ${screenSizes.tablet}) {
     padding: 2rem 2.4rem 3.2rem;
@@ -46,9 +51,6 @@ const Container = styled.div`
   display: grid;
   gap: 3.2rem;
 
-  @media (max-width: ${screenSizes.laptop}) {
-  }
-
   @media (max-width: ${screenSizes.tablet}) {
     gap: 1.6rem;
   }
@@ -59,10 +61,10 @@ function AppLayout() {
 
   return (
     <>
-      <StyledAppLayout sidebar={isSidebarOpen ? "open" : "closed"}>
+      <StyledAppLayout>
         <Header />
         <Sidebar />
-        <Main>
+        <Main transform={isSidebarOpen ? "open" : "closed"}>
           <Container>
             <Outlet />
           </Container>

@@ -2,8 +2,25 @@
 import Logo from "./Logo";
 import MainNav from "./MainNav";
 
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { useOpenSidebar } from "../context/useOpenSideBar";
+
+const transform = {
+  open: css`
+    position: fixed;
+    z-index: 10;
+    transform: translate(0);
+    transition: ease-in-out 0.35s;
+  `,
+
+  closed: css`
+    position: fixed;
+    z-index: 10;
+    transition: ease-in-out 0.35s;
+    transform: translate(-26rem);
+
+  `,
+};
 
 const StyledSidebar = styled.aside`
   background-color: var(--color-grey-0);
@@ -13,13 +30,15 @@ const StyledSidebar = styled.aside`
   grid-template-rows: auto 1fr;
   grid-template-columns: 1fr;
   gap: 2rem;
-  transition: ease-in-out 0.3s;
+  width: 26rem;
+  height: 100%;
+  ${(props) => transform[props.transform]}
 `;
 
 function Sidebar() {
-  const { sidebarRef } = useOpenSidebar();
+  const { sidebarRef, isSidebarOpen } = useOpenSidebar();
   return (
-    <StyledSidebar ref={sidebarRef}>
+    <StyledSidebar ref={sidebarRef} transform={isSidebarOpen ? "open" : "closed"}>
       <Logo />
       <MainNav />
       {/* <Uploader /> */}
