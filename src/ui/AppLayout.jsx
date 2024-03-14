@@ -28,10 +28,8 @@ const Main = styled.main`
   padding: 4rem 4.8rem 6.4rem;
   height: 100%;
 
-
   @media (max-width: ${screenSizes.tablet}) {
     padding: 2rem 2.4rem 3.2rem;
-
   }
 `;
 
