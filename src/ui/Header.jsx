@@ -37,6 +37,7 @@ const StyledHeader = styled.header`
 function Header() {
   const { toggleSidebar, headerRef } = useOpenSidebar();
   const sidebarButtonRef = useAutoFocus();
+  
 
   return (
     <StyledHeader ref={headerRef}>
