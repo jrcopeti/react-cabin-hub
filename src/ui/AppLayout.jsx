@@ -18,7 +18,7 @@ const sidebar = {
 const StyledAppLayout = styled.div`
   display: grid;
   grid-template-rows: auto 1fr;
-
+  height: auto;
   transition: ease-in-out 0.3s;
   ${(props) => sidebar[props.sidebar]}
 `;
@@ -30,6 +30,7 @@ const Main = styled.main`
 
   @media (max-width: ${screenSizes.tablet}) {
     padding: 2rem 2.4rem 3.2rem;
+    height: 100dvh;
   }
 `;
 
