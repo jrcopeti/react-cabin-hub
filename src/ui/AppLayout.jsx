@@ -18,7 +18,7 @@ const sidebar = {
 const StyledAppLayout = styled.div`
   display: grid;
   grid-template-rows: auto 1fr;
-  height: 100dvh;
+
   transition: ease-in-out 0.3s;
   ${(props) => sidebar[props.sidebar]}
 `;
@@ -40,12 +40,10 @@ const Container = styled.div`
   gap: 3.2rem;
 
   @media (max-width: ${screenSizes.laptop}) {
-    max-width: 75rem;
   }
 
   @media (max-width: ${screenSizes.tablet}) {
     gap: 1.6rem;
-    max-width: 40rem;
   }
 `;
 

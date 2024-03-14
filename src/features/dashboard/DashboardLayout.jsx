@@ -19,6 +19,8 @@ const StyledDashboardLayout = styled.div`
     flex-direction: column;
     display: flex;
     gap: 1.2rem;
+    column-gap: 2rem;
+
   }
 `;
 

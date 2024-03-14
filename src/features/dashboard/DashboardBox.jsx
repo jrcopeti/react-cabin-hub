@@ -17,7 +17,7 @@ const DashboardBox = styled.div`
     width: 90dvw;
     align-self: center;
     padding: 1.6rem;
-    
+
 
 
   }
