@@ -36,12 +36,12 @@ const StyledHeader = styled.header`
 
 function Header() {
   const { toggleSidebar, headerRef } = useOpenSidebar();
-  const sidebarButtonRef = useAutoFocus();
-  
+  const sidebarButtonFocus = useAutoFocus();
+
 
   return (
     <StyledHeader ref={headerRef}>
-      <ButtonIcon onClick={toggleSidebar} ref={sidebarButtonRef}>
+      <ButtonIcon onClick={toggleSidebar} ref={sidebarButtonFocus}>
         <HiOutlineQueueList />
       </ButtonIcon>
       <UserAvatar />
