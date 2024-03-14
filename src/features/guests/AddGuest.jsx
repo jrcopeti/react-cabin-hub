@@ -10,7 +10,7 @@ function AddGuest() {
     <StyledDiv>
       <Modal>
         <Modal.Open opens="guest-form">
-          <Button>New Guest</Button>
+          <Button>+ New Guest</Button>
         </Modal.Open>
         <Modal.Window name="guest-form">
           <CreateGuestForm />

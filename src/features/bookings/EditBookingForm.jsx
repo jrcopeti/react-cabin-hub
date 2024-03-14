@@ -223,16 +223,20 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
                     isValid(parseISO(value)) || "Invalid date",
 
                   isAfterStartDate: (value) => {
-                    !isBefore(
-                      parseISO(value),
-                      parseISO(getValues("startDate"))
-                    ) || "End date cannot be before start date";
+                    return (
+                      !isBefore(
+                        parseISO(value),
+                        parseISO(getValues("startDate"))
+                      ) || "End date cannot be before start date"
+                    );
                   },
 
                   isSameDate: (value) => {
-                    parseISO(value).getTime() !==
-                      parseISO(getValues("startDate")).getTime() ||
-                      "End date cannot be the same as start date";
+                    return (
+                      parseISO(value).getTime() !==
+                        parseISO(getValues("startDate")).getTime() ||
+                      "End date cannot be the same as start date"
+                    );
                   },
                 },
               })}

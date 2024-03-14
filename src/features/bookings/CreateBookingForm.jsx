@@ -1,7 +1,6 @@
 import { Controller, useForm } from "react-hook-form";
 
 import { useCreateBookings } from "./useCreateBookings";
-import CreateGuestForm from "../guests/CreateGuestForm";
 import { useSettings } from "../settings/useSettings";
 import { useAllCabins } from "../cabins/useAllCabins";
 import { useAllGuests } from "../guests/useAllGuests";
@@ -12,10 +11,10 @@ import Form from "../../ui/Form";
 import Button from "../../ui/Button";
 import Textarea from "../../ui/Textarea";
 import FormRow from "../../ui/FormRow";
+import FormRowVertical from "../../ui/FormRowVertical";
 import Spinner from "../../ui/Spinner";
 import Select from "../../ui/Select";
 import Checkbox from "../../ui/Checkbox";
-import Modal from "../../ui/Modal";
 
 import { useMoveBack } from "../../hooks/useMoveBack";
 import { formatCurrency, subtractDates } from "../../utils/helpers";
@@ -25,26 +24,7 @@ import Heading from "../../ui/Heading";
 import styled from "styled-components";
 import { screenSizes } from "../../utils/constants";
 import ButtonText from "../../ui/ButtonText";
-
-const StyledDiv = styled.div`
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1.3rem;
-  white-space: nowrap;
-
-  & p {
-    font-size: 1.5rem;
-    color: var(--color-grey-500);
-    line-height: 1.6;
-    letter-spacing: 0.4px;
-    font-weight: 400;
-
-    @media (max-width: ${screenSizes.tablet}) {
-      font-size: 1rem;
-      line-height: 1.4;
-    }
-  }
-`;
+import { HiNoSymbol, HiOutlineMapPin } from "react-icons/hi2";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -53,7 +33,7 @@ const HeadingGroup = styled.div`
   align-items: flex-start;
 
   & div {
-    background-color: var(--color-grey-0);
+    background-color: var(--color-grey-50);
     border: 1px solid var(--color-grey-100);
     border-radius: var(--border-radius-md);
     padding: 1.6rem 2.4rem;
@@ -65,6 +45,32 @@ const HeadingGroup = styled.div`
   @media (max-width: ${screenSizes.tablet}) {
     gap: 1rem;
   }
+`;
+
+const Message = styled.div`
+  background-color: var(--color-grey-0);
+  color: var(--color-grey-500);
+  padding: 1.6rem 2.4rem;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--color-grey-100);
+  font-weight: 500;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+`;
+
+const RedMessage = styled.div`
+  background-color: var(--color-grey-50);
+  color: var(--color-red-700);
+  padding: 1rem 2rem;
+  border-radius: var(--border-radius-md);
+  border: 1px solid var(--color-grey-100);
+  font-weight: 500;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 `;
 
 function CreateBookingForm() {
@@ -97,11 +103,17 @@ function CreateBookingForm() {
     },
   });
 
-  const { availability, checkAvailability, resetAvailability } =
-    useAvailability(watch);
-
+  const cabinIdInput = watch("cabinId");
   const startDateInput = watch("startDate");
   const endDateInput = watch("endDate");
+
+  const { availability, resetAvailability } = useAvailability(
+    cabinIdInput,
+    startDateInput,
+    endDateInput
+  );
+
+  const { isAvailable, message: messageAvailable } = availability;
 
   const numNightsInput =
     startDateInput && endDateInput && endDateInput > startDateInput
@@ -131,13 +143,12 @@ function CreateBookingForm() {
       })),
   ];
 
-  const cabinPriceWatch = watch("cabinId");
   const numGuestInput = watch("numGuests");
   const hasBreakfast = watch("hasBreakfast");
   const isPaid = watch("isPaid");
 
   const cabinInput = cabins.find(
-    (cabinInput) => cabinInput.id === Number(cabinPriceWatch)
+    (cabinInput) => cabinInput.id === Number(cabinIdInput)
   );
 
   const cabinPriceInput = cabinInput
@@ -207,20 +218,26 @@ function CreateBookingForm() {
             First check if the cabin is available for the selected dates.
             <br />
             If the cabin is available, fill in the form to create a new booking.
-            <br />
-            For new guests, click the button below.
           </span>
         </div>
-        <Modal>
-          <Modal.Open opens="guest-form">
-            <Button type="button">New Guest</Button>
-          </Modal.Open>
-          <Modal.Window name="guest-form">
-            <CreateGuestForm />
-          </Modal.Window>
-        </Modal>
       </HeadingGroup>
 
+      {isAvailable === false && (
+        <FormRowVertical>
+          {messageAvailable === "Please select a cabin and dates" ? (
+            <Message>
+              {" "}
+              <HiOutlineMapPin /> {messageAvailable}
+            </Message>
+          ) : (
+            <RedMessage>
+              {" "}
+              <HiNoSymbol />
+              {messageAvailable}
+            </RedMessage>
+          )}
+        </FormRowVertical>
+      )}
       <Form type="regular" onSubmit={handleSubmit(onSubmit, onError)}>
         <FormRow label="Cabin" error={errors?.cabinId?.message}>
           <Controller
@@ -270,34 +287,27 @@ function CreateBookingForm() {
                   isValid(parseISO(value)) || "Invalid date",
 
                 isAfterStartDate: (value) => {
-                  !isBefore(
-                    parseISO(value),
-                    parseISO(getValues("startDate"))
-                  ) || "End date cannot be before start date";
+                  return (
+                    !isBefore(
+                      parseISO(value),
+                      parseISO(getValues("startDate"))
+                    ) || "End date cannot be before start date"
+                  );
                 },
 
                 isSameDate: (value) => {
-                  parseISO(value).getTime() !==
-                    parseISO(getValues("startDate")).getTime() ||
-                    "End date cannot be the same as start date";
+                  return (
+                    parseISO(value).getTime() !==
+                      parseISO(getValues("startDate")).getTime() ||
+                    "End date cannot be the same as start date"
+                  );
                 },
               },
             })}
           />
         </FormRow>
 
-        {availability.isAvailable === false && (
-          <FormRow>
-            <Button type="reset" variation="secondary" onClick={moveBack}>
-              Back
-            </Button>
-            <Button type="button" onClick={checkAvailability}>
-              Check Availability
-            </Button>
-          </FormRow>
-        )}
-
-        {availability.isAvailable === true && (
+        {isAvailable === true && (
           <>
             <FormRow label="Number of Nights">
               <Input disabled value={numNightsInput} />

@@ -1,81 +1,85 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { checkForOverlappingBookings } from "../../services/apiBookings";
 import toast from "react-hot-toast";
 import { isBefore, parseISO, startOfToday } from "date-fns";
 
-export function useAvailability(watch) {
+export function useAvailability(cabinId, startDate, endDate) {
   const [availability, setAvailability] = useState({
     isAvailable: false,
+    message: "",
   });
 
-  const checkAvailability = async () => {
-    const cabinId = watch("cabinId");
-    const startDate = watch("startDate");
-    const endDate = watch("endDate");
+  useEffect(() => {
+    const checkAvailability = async () => {
+      if (!cabinId || !startDate || !endDate) {
+        return setAvailability({
+          isAvailable: false,
+          message: "Please select a cabin and dates",
+        });
+      }
 
-    if (!cabinId || !startDate || !endDate) {
-      setAvailability({
-        isAvailable: false,
-      });
-      toast.error("Please fill in all fields before checking availability.");
-      return;
-    }
-
-    if (isBefore(parseISO(startDate), startOfToday())) {
-      setAvailability({
-        isAvailable: false,
-      });
-      toast.error("Start date cannot be before today");
-      return;
-    }
-
-    if (isBefore(parseISO(endDate), parseISO(startDate))) {
-      setAvailability({
-        isAvailable: false,
-      });
-      toast.error("End date cannot be before start date");
-      return;
-    }
-
-    if (parseISO(endDate).getTime() === parseISO(startDate).getTime()) {
-      setAvailability({
-        isAvailable: false,
-      });
-      toast.error("End date cannot be the same as start date");
-      return;
-    }
-
-    try {
-      const hasOverlap = await checkForOverlappingBookings(
-        cabinId,
-        startDate,
-        endDate
-      );
-      if (hasOverlap) {
+      if (isBefore(parseISO(startDate), startOfToday())) {
         setAvailability({
           isAvailable: false,
+          message: "Start date cannot be before today",
         });
-        toast.error("The cabin is already booked for the selected dates.");
-      } else {
-        setAvailability({
-          isAvailable: true,
-        });
-        toast.success("The cabin is available for the selected dates!");
+
+        return;
       }
-    } catch (error) {
-      console.error(error);
-      setAvailability({
-        isAvailable: false,
-        message: "Failed to check availability. Please try again.",
-      });
-    }
-  };
+
+      if (isBefore(parseISO(endDate), parseISO(startDate))) {
+        setAvailability({
+          isAvailable: false,
+          message: "End date cannot be before start date",
+        });
+
+        return;
+      }
+
+      if (parseISO(endDate).getTime() === parseISO(startDate).getTime()) {
+        setAvailability({
+          isAvailable: false,
+          message: "End date cannot be the same as start date",
+        });
+
+        return;
+      }
+
+      try {
+        const hasOverlap = await checkForOverlappingBookings(
+          cabinId,
+          startDate,
+          endDate
+        );
+        if (hasOverlap) {
+          setAvailability({
+            isAvailable: false,
+            message: "The cabin is already booked. Try different dates.",
+          });
+        } else {
+          setAvailability({
+            isAvailable: true,
+            message: "The cabin is available for the selected dates!",
+          });
+          toast.success("The cabin is available for the selected dates!");
+        }
+      } catch (error) {
+        console.error(error);
+        setAvailability({
+          isAvailable: false,
+          message: "Failed to check availability. Please try again.",
+        });
+      }
+    };
+    checkAvailability();
+  }, [cabinId, startDate, endDate]);
 
   const resetAvailability = () => {
     setAvailability({
       isAvailable: false,
+      message: "Please select a cabin and dates",
     });
   };
 
-  return { availability, checkAvailability, resetAvailability };
+  return { availability, resetAvailability };
 }

@@ -2,12 +2,15 @@ import Button from "../../ui/Button";
 import CreateBookingForm from "./CreateBookingForm";
 import Modal from "../../ui/Modal";
 import { NavLink } from "react-router-dom";
+import { HiOutlinePlus, HiOutlinePlusSmall } from "react-icons/hi2";
 
 function AddBooking() {
   return (
     <div>
       <NavLink to="/bookings/new">
-        <Button>New Booking</Button>
+        <Button>
+          + New Booking
+        </Button>
       </NavLink>
       {/* <Modal>
         <Modal.Open opens="booking-form">

@@ -1,6 +1,10 @@
-import styled, {css} from "styled-components";
+import styled, { css } from "styled-components";
 
 const Heading = styled.h1`
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+
   ${(props) =>
     props.as === "h1" &&
     css`
@@ -13,7 +17,7 @@ const Heading = styled.h1`
     css`
       font-size: 2rem;
       font-weight: 600;
-  `}
+    `}
 
   ${(props) =>
     props.as === "h3" &&
@@ -30,8 +34,19 @@ const Heading = styled.h1`
       text-align: center;
     `}
 
-    line-height: 1.5;
 
-  `;
+
+  & span {
+    display: flex;
+
+    align-items: center;
+
+    font-size: 2.8rem;
+
+
+  }
+
+  line-height: 1.5;
+`;
 
 export default Heading;

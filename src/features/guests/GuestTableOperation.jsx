@@ -3,6 +3,7 @@ import TableOperations from "../../ui/TableOperations";
 import SortBy from "../../ui/SortBy";
 import Filter from "../../ui/Filter";
 import { getToday } from "../../utils/helpers";
+import { HiOutlineMagnifyingGlass } from "react-icons/hi2";
 
 function GuestTableOperations() {
   return (
@@ -19,15 +20,19 @@ function GuestTableOperations() {
           },
         ]}
       />
-
-      <SortBy
-        options={[
-          { value: "fullName-asc", label: "Name (A-Z)" },
-          { value: "fullName-desc", label: "Name (Z-A)" },
-          { value: "id-asc", label: "ID # (asc)" },
-          { value: "id-desc", label: "ID # (desc)" },
-        ]}
-      />
+      <div>
+        <span>
+          <HiOutlineMagnifyingGlass />
+        </span>
+        <SortBy
+          options={[
+            { value: "fullName-asc", label: "Name (A-Z)" },
+            { value: "fullName-desc", label: "Name (Z-A)" },
+            { value: "id-asc", label: "ID # (asc)" },
+            { value: "id-desc", label: "ID # (desc)" },
+          ]}
+        />
+      </div>
     </TableOperations>
   );
 }

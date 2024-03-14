@@ -9,6 +9,7 @@ const Row = styled.div`
       justify-content: space-between;
       align-items: center;
       min-width: 120rem;
+      font-size: 3rem;
 
       @media (max-width: ${screenSizes.laptop}) {
         min-width: 88rem;
@@ -20,6 +21,8 @@ const Row = styled.div`
         justify-content: center;
         min-width: 30rem;
       }
+
+   
     `}
 
   ${(props) =>

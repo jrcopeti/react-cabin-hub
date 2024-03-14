@@ -20,14 +20,14 @@ const StyledAppLayout = styled.div`
 const transform = {
   open: css`
     @media (max-width: ${screenSizes.tablet}) {
-      transform: translateX(26rem);
-      transition: ease-in-out 0.35s;
+      /* transform: translateX(26rem);
+      transition: ease-in-out 0.35s; */
     }
   `,
   closed: css`
     @media (max-width: ${screenSizes.tablet}) {
-      transform: translateX(0rem);
-      transition: ease-in-out 0.35s;
+      /* transform: translateX(0rem);
+      transition: ease-in-out 0.35s; */
     }
   `,
 };

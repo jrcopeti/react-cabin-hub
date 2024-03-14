@@ -7,6 +7,20 @@ const TableOperations = styled.div`
   gap: 1.6rem;
   min-width: 34rem;
 
+& div {
+  display: flex;
+  align-items: center;
+  gap: 1.6rem;
+
+}
+
+  & span {
+    display: flex;
+    
+    font-size: 2.5rem;
+
+  }
+
 
   @media (max-width: ${screenSizes.tablet}) {
     flex-direction: column;
