@@ -8,7 +8,8 @@ const StyledFormRow = styled.div`
   padding: 1.2rem 0;
 
   @media (max-width: ${screenSizes.tablet}) {
-    padding: 1.2rem 1rem;
+    padding: 0.5rem 0rem;
+    font-size: 1.6rem;
   }
 `;
 
