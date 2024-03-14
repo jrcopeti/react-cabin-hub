@@ -18,17 +18,26 @@ const sidebar = {
 const StyledAppLayout = styled.div`
   display: grid;
   grid-template-rows: auto 1fr;
-  height: 100dvh;
   min-height: 100dvh;
   transition: ease-in-out 0.3s;
   ${(props) => sidebar[props.sidebar]}
   /* overflow-x: hidden; */
+  margin-top: 6rem;
+
+  @media (max-width: ${screenSizes.tablet}) {
+    margin-top: 4.8rem;
+  }
 `;
 
 const Main = styled.main`
   background-color: var(--color-grey-50);
   padding: 4rem 4.8rem 6.4rem;
-  height: 100%;
+  min-height: 100dvh;
+  overflow: auto;
+
+  @media (max-width: ${screenSizes.tablet}) {
+    min-height: calc(100vh - 4.8rem);
+  }
 
   @media (max-width: ${screenSizes.tablet}) {
     padding: 2rem 2.4rem 3.2rem;
@@ -37,7 +46,6 @@ const Main = styled.main`
 
 const Container = styled.div`
   max-width: 120rem;
-
   margin: 0 auto;
   display: grid;
   gap: 3.2rem;
