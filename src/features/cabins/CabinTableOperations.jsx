@@ -1,6 +1,7 @@
 import TableOperations from "../../ui/TableOperations";
 import Filter from "../../ui/Filter";
 import SortBy from "../../ui/SortBy";
+import { HiOutlineMagnifyingGlass } from "react-icons/hi2";
 function CabinTableOperations() {
   return (
     <TableOperations>
@@ -12,6 +13,10 @@ function CabinTableOperations() {
           { value: "with-discount", label: "With Discount" },
         ]}
       />
+      <div>
+        <span>
+          <HiOutlineMagnifyingGlass />
+        </span>
       <SortBy
         options={[
           { value: "name-asc", label: "Name (A-Z)" },
@@ -21,7 +26,8 @@ function CabinTableOperations() {
           { value: "maxCapacity-asc", label: "Capacity (low first)" },
           { value: "maxCapacity-desc", label: "Capacity (high first)" },
         ]}
-      />
+        />
+        </div>
     </TableOperations>
   );
 }

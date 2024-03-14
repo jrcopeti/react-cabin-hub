@@ -3,12 +3,18 @@ import Row from "../ui/Row";
 import BookingTable from "../features/bookings/BookingTable";
 import BookingTableOperations from "../features/bookings/BookingTableOperations";
 import AddBooking from "../features/bookings/AddBooking";
+import { HiOutlineCalendarDays } from "react-icons/hi2";
 
 function Bookings() {
   return (
     <>
       <Row type="horizontal">
-        <Heading as="h1">All bookings</Heading>
+        <Heading as="h1">
+          <span>
+            <HiOutlineCalendarDays />
+          </span>
+          All bookings
+        </Heading>
         <AddBooking />
         <BookingTableOperations />
       </Row>
