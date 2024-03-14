@@ -18,7 +18,7 @@ const sidebar = {
 const StyledAppLayout = styled.div`
   display: grid;
   grid-template-rows: auto 1fr;
-  height: 100%;
+  height: 100dvh;
   transition: ease-in-out 0.3s;
   ${(props) => sidebar[props.sidebar]}
 `;
