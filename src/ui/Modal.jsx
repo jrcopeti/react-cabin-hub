@@ -15,7 +15,7 @@ const StyledModal = styled.div`
   border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-lg);
   padding: 3.2rem 4rem;
-  transition: all 0.5s;
+  transition: all 1.5s;
   overflow: auto;
 
   &::-webkit-scrollbar {

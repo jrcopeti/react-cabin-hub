@@ -11,8 +11,7 @@ const StyledAppLayout = styled.div`
   min-height: 100dvh;
   transition: ease-in-out 0.35s;
   margin-top: 6rem;
-
-
+  transition: all 0.5s;
 
   @media (max-width: ${screenSizes.tablet}) {
     margin-top: 4.8rem;
