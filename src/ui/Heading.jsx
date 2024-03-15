@@ -38,12 +38,8 @@ const Heading = styled.h1`
 
   & span {
     display: flex;
-
     align-items: center;
-
     font-size: 2.8rem;
-
-
   }
 
   line-height: 1.5;

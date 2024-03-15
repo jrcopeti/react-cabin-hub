@@ -18,6 +18,7 @@ const LoginLayout = styled.main`
   justify-content: center;
   gap: 3.2rem;
   background-color: var(--color-grey-50);
+  white-space: nowrap;
 
   @media (max-width: ${screenSizes.tablet}) {
     grid-template-columns: 1fr;
@@ -43,10 +44,10 @@ function Login() {
       <LogoLogin />
       <Heading as="h4">
         <span>
-        <HiOutlineArrowLeftOnRectangle />
+          <HiOutlineArrowLeftOnRectangle />
         </span>
         Login to your account
-        </Heading>
+      </Heading>
       <LoginForm />
       <StyledDiv>
         <NavLink to={"/signup"}>
