@@ -21,6 +21,7 @@ import { format, isBefore, isValid, parseISO, startOfToday } from "date-fns";
 import { useUpdateBooking } from "./useUpdateBooking";
 import Heading from "../../ui/Heading";
 import toast from "react-hot-toast";
+import { HiOutlinePencilSquare } from "react-icons/hi2";
 
 const StyledDiv = styled.div`
   display: flex;
@@ -168,7 +169,12 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
   return (
     <StyledDiv>
       <>
-        <Heading as="h2">{`Edit Booking # ${id}`}</Heading>
+        <Heading as="h2">
+          <span>
+            <HiOutlinePencilSquare />
+          </span>
+          {`Edit Booking # ${id}`}
+        </Heading>
         <p>Booked on {format(new Date(created_at), "EEE, dd/MM/yyyy, p")}</p>
         <br />
         <Form

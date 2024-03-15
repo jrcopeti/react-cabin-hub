@@ -24,7 +24,11 @@ import Heading from "../../ui/Heading";
 import styled from "styled-components";
 import { screenSizes } from "../../utils/constants";
 import ButtonText from "../../ui/ButtonText";
-import { HiNoSymbol, HiOutlineMapPin } from "react-icons/hi2";
+import {
+  HiNoSymbol,
+  HiOutlineMapPin,
+  HiOutlineSquaresPlus,
+} from "react-icons/hi2";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -33,7 +37,7 @@ const HeadingGroup = styled.div`
   align-items: flex-start;
 
   & div {
-    background-color: var(--color-grey-50);
+    background-color: var(--color-grey-100);
     border: 1px solid var(--color-grey-100);
     border-radius: var(--border-radius-md);
     padding: 1.6rem 2.4rem;
@@ -48,29 +52,43 @@ const HeadingGroup = styled.div`
 `;
 
 const Message = styled.div`
-  background-color: var(--color-grey-0);
+  background-color: var(--color-grey-50);
   color: var(--color-grey-500);
   padding: 1.6rem 2.4rem;
   border-radius: var(--border-radius-md);
   border: 1px solid var(--color-grey-100);
   font-weight: 500;
-  width: fit-content;
+  font-size: 1.6rem;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 0.5rem;
+
+  & span {
+    font-size: 2.5rem;
+    display: flex;
+    align-items: center;
+  }
 `;
 
 const RedMessage = styled.div`
-  background-color: var(--color-grey-50);
+  background-color: var(--color-grey-0);
   color: var(--color-red-700);
   padding: 1rem 2rem;
   border-radius: var(--border-radius-md);
   border: 1px solid var(--color-grey-100);
   font-weight: 500;
-  width: fit-content;
+  font-size: 1.6rem;
   display: flex;
+  justify-content: center;
   align-items: center;
   gap: 0.5rem;
+
+  & span {
+    font-size: 2.5rem;
+    display: flex;
+    align-items: center;
+  }
 `;
 
 function CreateBookingForm() {
@@ -212,32 +230,21 @@ function CreateBookingForm() {
     <>
       <HeadingGroup>
         <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
-        <Heading as="h1">Create New Booking</Heading>
+        <Heading as="h1">
+          <span>
+            <HiOutlineSquaresPlus />
+          </span>
+          Create New Booking
+        </Heading>
         <div>
           <span>
-            First check if the cabin is available for the selected dates.
+            First, check if the cabin is available for the selected dates.
             <br />
             If the cabin is available, fill in the form to create a new booking.
           </span>
         </div>
       </HeadingGroup>
 
-      {isAvailable === false && (
-        <FormRowVertical>
-          {messageAvailable === "Please select a cabin and dates" ? (
-            <Message>
-              {" "}
-              <HiOutlineMapPin /> {messageAvailable}
-            </Message>
-          ) : (
-            <RedMessage>
-              {" "}
-              <HiNoSymbol />
-              {messageAvailable}
-            </RedMessage>
-          )}
-        </FormRowVertical>
-      )}
       <Form type="regular" onSubmit={handleSubmit(onSubmit, onError)}>
         <FormRow label="Cabin" error={errors?.cabinId?.message}>
           <Controller
@@ -306,6 +313,28 @@ function CreateBookingForm() {
             })}
           />
         </FormRow>
+
+        {isAvailable === false && (
+          <FormRowVertical>
+            {messageAvailable === "Please select a cabin and dates" ? (
+              <Message>
+                {" "}
+                <span>
+                  <HiOutlineMapPin />
+                </span>
+                {messageAvailable}
+              </Message>
+            ) : (
+              <RedMessage>
+                {" "}
+                <span>
+                  <HiNoSymbol />
+                </span>
+                {messageAvailable}
+              </RedMessage>
+            )}
+          </FormRowVertical>
+        )}
 
         {isAvailable === true && (
           <>

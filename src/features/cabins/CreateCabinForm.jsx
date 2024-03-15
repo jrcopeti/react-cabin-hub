@@ -10,6 +10,7 @@ import FormRow from "../../ui/FormRow";
 import { useCreateCabin } from "./useCreateCabin";
 import { useUpdateCabin } from "./useUpdateCabin";
 import Heading from "../../ui/Heading";
+import { HiOutlinePencilSquare, HiOutlineSquaresPlus } from "react-icons/hi2";
 
 function CreateCabinForm({ onCloseModal, cabinToEdit = {} }) {
   const { id: editId, ...editValues } = cabinToEdit;
@@ -65,9 +66,19 @@ function CreateCabinForm({ onCloseModal, cabinToEdit = {} }) {
   return (
     <>
       {isEditSession ? (
-        <Heading as="h2">Edit Cabin</Heading>
+        <Heading as="h2">
+          <span>
+            <HiOutlinePencilSquare />
+          </span>
+          Edit Cabin
+        </Heading>
       ) : (
-        <Heading as="h2">Create new Cabin</Heading>
+        <Heading as="h2">
+          <span>
+            <HiOutlineSquaresPlus />
+          </span>
+          Create new Cabin
+        </Heading>
       )}
       <br />
       <Form

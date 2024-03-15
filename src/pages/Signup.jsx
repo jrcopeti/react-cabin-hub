@@ -2,6 +2,7 @@ import Heading from "../ui/Heading";
 import SignupForm from "../features/authentication/SignupForm";
 import styled from "styled-components";
 import { screenSizes } from "../utils/constants";
+import { HiOutlineUser } from "react-icons/hi2";
 
 const StyledNewUsers = styled.main`
   min-height: 80dvh;
@@ -22,7 +23,11 @@ const StyledNewUsers = styled.main`
 function Signup() {
   return (
     <StyledNewUsers>
-      <Heading as="h1">Create an account to get started</Heading>
+      <Heading as="h1"> <span>
+      <HiOutlineUser />
+
+      </span>
+        Create an account to get started</Heading>
       <SignupForm />
     </StyledNewUsers>
   );
