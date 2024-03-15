@@ -41,7 +41,7 @@ async function createCabins() {
 }
 
 async function createBookings() {
-  // Bookings need a guestId and a cabinId. We can't tell Supabase IDs for each objecit will calculate them on its own
+  // Bookings need a guestId and a cabinId. We can't tell Supabase IDs for each object, it will calculate them on its own. So it might be different for different people, especially after multiple uploads. Therefore, we need to first get all guestIds and cabinIds, and then replace the original IDs in the booking data with the actual ones from the DB
   const { data: guestsIds } = await supabase
     .from("guests")
     .select("id")
@@ -105,12 +105,12 @@ function Uploader() {
 
   async function uploadAll() {
     setIsLoading(true);
-    // Bookings to be deleted FIRST
+    // Bookings need to be deleted FIRST
     await deleteBookings();
     await deleteGuests();
     await deleteCabins();
 
-    // Bookings to be created LAST
+    // Bookings need to be created LAST
     await createGuests();
     await createCabins();
     await createBookings();
