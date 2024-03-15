@@ -10,6 +10,7 @@ Cabin Hub is a full-stack application designed to manage the operations of hotel
 
 - **Authentication**: Secure login and authentication system for users.
 - **Bookings Management**: Create, update, and delete bookings with ease.
+- **Real-Time Booking Validation**: Validate bookings in real-time to prevent overbooking.
 - **Guest Management**: Register guests on the system for easy management and access.
 - **Guest Check-In and Check-Out**: Simplify the check-in and check-out process for guests.
 - **Cabin Management**: Manage cabin details.
@@ -37,3 +38,5 @@ The application is designed with a focus on reusability, scalability, and perfor
 - **Reusable Components**: Designed with reusability in mind, components can be easily integrated and adapted across the application.
 - **Compound Components**: A pattern to build more complex UIs such as modals and tables.
 - **Custom Hooks**: Utilize custom hooks to manage state and logic across the application.
+
+

@@ -7,18 +7,18 @@ import { screenSizes } from "../../utils/constants";
 import { formatCurrency } from "../../utils/helpers";
 import Spinner from "../../ui/Spinner";
 
-
 const StyledCabinDetails = styled.div`
   display: flex;
   flex-direction: column;
   min-width: 40rem;
   max-width: 50rem;
+  max-height: 60rem;
 
   background-color: var(--color-grey-0);
   border: 1px solid var(--color-grey-100);
   border-radius: var(--border-radius-md);
-  padding: 3.2rem 4rem;
-  gap: 0.5rem;
+  padding: 1.6rem 2rem;
+  gap: 1rem;
   overflow: hidden;
   justify-content: center;
 
@@ -77,8 +77,9 @@ const Discount = styled.p`
 `;
 
 const Img = styled.img`
-  width: 100%;
+  width: 80%;
   height: auto;
+  margin: 0 auto;
   aspect-ratio: 3 / 2;
   border-radius: var(--border-radius-md);
 `;
@@ -103,16 +104,16 @@ function CabinDetails({ cabin, onCloseModal, isLoading }) {
   const { name, maxCapacity, regularPrice, discount, image, description } =
     cabin;
 
-    if (isLoading) {
-      return <Spinner />;
-    }
+  if (isLoading) {
+    return <Spinner />;
+  }
 
   return (
     <>
       <StyledCabinDetails>
-        <div>
+        <>
           <Img src={image} alt={name} />
-        </div>
+        </>
 
         <Section>
           <Stacked>
