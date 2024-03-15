@@ -1,3 +1,5 @@
+import React from "react";
+
 import { Controller, useForm } from "react-hook-form";
 
 import { useCreateBookings } from "./useCreateBookings";
@@ -21,13 +23,14 @@ import { formatCurrency, subtractDates } from "../../utils/helpers";
 
 import { isBefore, isValid, parseISO, startOfToday } from "date-fns";
 import Heading from "../../ui/Heading";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { screenSizes } from "../../utils/constants";
 import ButtonText from "../../ui/ButtonText";
 import {
-  HiNoSymbol,
-  HiOutlineMapPin,
+  HiOutlineEllipsisHorizontalCircle,
+  HiOutlineExclamationTriangle,
   HiOutlineSquaresPlus,
+  HiOutlineXCircle,
 } from "react-icons/hi2";
 
 const HeadingGroup = styled.div`
@@ -51,9 +54,27 @@ const HeadingGroup = styled.div`
   }
 `;
 
+const color = {
+  red: css`
+    background-color: var(--color-red-100);
+    color: var(--color-red-700);
+    text-shadow: 2px 2px 2px var(--color-red-100);
+  `,
+  grey: css`
+    background-color: var(--color-grey-50);
+    color: var(--color-grey-500);
+    text-shadow: 2px 2px 2px var(--color-grey-100);
+  `,
+
+  yellow: css`
+    background-color: var(--color-yellow-100);
+    color: var(--color-yellow-700);
+    text-shadow: 2px 2px 2px var(--color-yellow-100);
+  `,
+};
+
 const Message = styled.div`
-  background-color: var(--color-grey-50);
-  color: var(--color-grey-500);
+  ${(props) => color[props.color]}
   padding: 1.6rem 2.4rem;
   border-radius: var(--border-radius-md);
   border: 1px solid var(--color-grey-100);
@@ -62,32 +83,14 @@ const Message = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
+  gap: 0.8rem;
+  transition: ease-in-out 0.35s;
 
   & span {
     font-size: 2.5rem;
     display: flex;
     align-items: center;
-  }
-`;
-
-const RedMessage = styled.div`
-  background-color: var(--color-grey-0);
-  color: var(--color-red-700);
-  padding: 1rem 2rem;
-  border-radius: var(--border-radius-md);
-  border: 1px solid var(--color-grey-100);
-  font-weight: 500;
-  font-size: 1.6rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 0.5rem;
-
-  & span {
-    font-size: 2.5rem;
-    display: flex;
-    align-items: center;
+    text-align: center;
   }
 `;
 
@@ -125,11 +128,8 @@ function CreateBookingForm() {
   const startDateInput = watch("startDate");
   const endDateInput = watch("endDate");
 
-  const { availability, resetAvailability } = useAvailability(
-    cabinIdInput,
-    startDateInput,
-    endDateInput
-  );
+  const { availability, resetAvailability, handleMessageStyle } =
+    useAvailability(cabinIdInput, startDateInput, endDateInput);
 
   const { isAvailable, message: messageAvailable } = availability;
 
@@ -316,23 +316,12 @@ function CreateBookingForm() {
 
         {isAvailable === false && (
           <FormRowVertical>
-            {messageAvailable === "Please select a cabin and dates" ? (
-              <Message>
-                {" "}
-                <span>
-                  <HiOutlineMapPin />
-                </span>
-                {messageAvailable}
-              </Message>
-            ) : (
-              <RedMessage>
-                {" "}
-                <span>
-                  <HiNoSymbol />
-                </span>
-                {messageAvailable}
-              </RedMessage>
-            )}
+            <Message color={handleMessageStyle(messageAvailable).color}>
+              <span>
+                {React.createElement(handleMessageStyle(messageAvailable).Icon)}
+              </span>
+              {messageAvailable}
+            </Message>
           </FormRowVertical>
         )}
 

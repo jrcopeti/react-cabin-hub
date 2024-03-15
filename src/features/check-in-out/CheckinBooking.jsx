@@ -16,7 +16,8 @@ import { useSettings } from "../settings/useSettings";
 import { useCheckin } from "./useCheckin";
 
 import { formatCurrency } from "../../utils/helpers";
-import { screenSizes } from "../../utils/constants";
+import { screenSizes, windowSizes } from "../../utils/constants";
+import { useWindowSize } from "../../hooks/useWindowSize";
 
 const Box = styled.div`
   /* Box */
@@ -34,7 +35,6 @@ const HeadingGroup = styled.div`
   @media (max-width: ${screenSizes.tablet}) {
     gap: 1rem;
     align-items: flex-end;
-
   }
 `;
 
@@ -48,6 +48,8 @@ function CheckinBooking() {
   const moveBack = useMoveBack();
 
   const { checkin, isCheckingIn } = useCheckin();
+
+  const { width } = useWindowSize();
 
   useEffect(() => setConfirmPaid(booking?.isPaid ?? false), [booking]);
 
@@ -85,9 +87,23 @@ function CheckinBooking() {
   return (
     <>
       <Row type="horizontal">
+        {width <= windowSizes.tablet && (
+          <div>
+            <ButtonText className="button-back" onClick={moveBack}>
+              &larr; Back
+            </ButtonText>
+          </div>
+        )}
         <HeadingGroup>
+          {width >= windowSizes.tablet && (
+            <div>
+              <ButtonText className="button-back" onClick={moveBack}>
+                &larr; Back
+              </ButtonText>
+            </div>
+          )}
+
           <Heading as="h1">Check in booking #{bookingId}</Heading>
-          <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
         </HeadingGroup>
       </Row>
 

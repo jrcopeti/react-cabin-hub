@@ -11,7 +11,7 @@ export async function getBookings({ filter, sortBy, page }) {
 
   // Filter
   if (filter) {
-    console.log(filter, filter.field, filter.value, filter.method)
+    console.log(filter, filter.field, filter.value, filter.method);
     query = query[filter.method || "eq"](filter.field, filter.value);
   }
 
@@ -53,7 +53,7 @@ export async function getBooking(id) {
   return data;
 }
 
-// Returns all BOOKINGS that are were created after the given date. Useful to get bookings created in the last 30 days, for example.
+// Returns all BOOKINGS that are were created after the given date.
 export async function getBookingsAfterDate(date) {
   const { data, error } = await supabase
     .from("bookings")
@@ -96,10 +96,6 @@ export async function getStaysTodayActivity() {
     )
     .order("created_at");
 
-  // Equivalent to this. But by querying this, we only download the data we actually need, otherwise we would need ALL bookings ever created
-  // (stay.status === 'unconfirmed' && isToday(new Date(stay.startDate))) ||
-  // (stay.status === 'checked-in' && isToday(new Date(stay.endDate)))
-
   if (error) {
     console.error(error);
     throw new Error("Bookings could not get loaded");
@@ -107,6 +103,7 @@ export async function getStaysTodayActivity() {
   return data;
 }
 
+// To update by checkin, checkout, etc
 export async function updateBooking(id, obj) {
   const { data, error } = await supabase
     .from("bookings")
@@ -185,6 +182,7 @@ export async function createBooking(newBooking) {
   }
 }
 
+// update with edit booking form
 export async function updateAllColumnsBooking(bookingId, newBookingData) {
   const { cabinId, startDate, endDate } = newBookingData;
   const hasOverlap = await checkForOverlappingBookings(

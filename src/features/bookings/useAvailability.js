@@ -2,11 +2,17 @@ import { useEffect, useState } from "react";
 import { checkForOverlappingBookings } from "../../services/apiBookings";
 import toast from "react-hot-toast";
 import { isBefore, parseISO, startOfToday } from "date-fns";
+import {
+  HiOutlineEllipsisHorizontalCircle,
+  HiOutlineExclamationTriangle,
+  HiOutlineXCircle,
+} from "react-icons/hi2";
 
 export function useAvailability(cabinId, startDate, endDate) {
   const [availability, setAvailability] = useState({
     isAvailable: false,
     message: "",
+    color: "grey",
   });
 
   useEffect(() => {
@@ -54,7 +60,7 @@ export function useAvailability(cabinId, startDate, endDate) {
         if (hasOverlap) {
           setAvailability({
             isAvailable: false,
-            message: "The cabin is already booked. Try different dates.",
+            message: "The cabin is already booked. Try different dates",
           });
         } else {
           setAvailability({
@@ -81,5 +87,33 @@ export function useAvailability(cabinId, startDate, endDate) {
     });
   };
 
-  return { availability, resetAvailability };
+  const handleMessageStyle = (messageAvailable) => {
+    switch (messageAvailable) {
+      case "Please select a cabin and dates":
+      case "Failed to check availability. Please try again":
+        return {
+          color: "grey",
+          Icon: HiOutlineEllipsisHorizontalCircle,
+        };
+      case "Start date cannot be before today":
+      case "End date cannot be before start date":
+      case "End date cannot be the same as start date":
+        return {
+          color: "red",
+          Icon: HiOutlineXCircle,
+        };
+      case "The cabin is already booked. Try different dates":
+        return {
+          color: "yellow",
+          Icon: HiOutlineExclamationTriangle, 
+        };
+      default:
+        return {
+          color: "grey",
+          Icon: HiOutlineEllipsisHorizontalCircle, // Return the component itself, not an instance
+        };
+    }
+  };
+
+  return { availability, resetAvailability, handleMessageStyle };
 }
