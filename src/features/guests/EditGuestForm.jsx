@@ -13,6 +13,7 @@ import toast from "react-hot-toast";
 
 import { useUpdateGuest } from "./useUpdateGuest";
 import Heading from "../../ui/Heading";
+import { HiOutlinePencilSquare } from "react-icons/hi2";
 
 function CreateGuestForm({ onCloseModal, guestToEdit = {} }) {
   const { id, ...editValues } = guestToEdit;
@@ -75,7 +76,12 @@ function CreateGuestForm({ onCloseModal, guestToEdit = {} }) {
 
   return (
     <>
-      <Heading as="h2">{`Edit Guest # ${id} - ${fullName}`}</Heading>
+      <Heading as="h2">
+        <span>
+          <HiOutlinePencilSquare />
+        </span>
+        {`Edit Guest # ${id} - ${fullName}`}
+      </Heading>
       <br />
       <Form
         onSubmit={handleSubmit(onSubmit, onError)}

@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useMoveBack } from "../hooks/useMoveBack";
 import Heading from "../ui/Heading";
 import Button from "../ui/Button";
+import { HiOutlineHandRaised } from "react-icons/hi2";
 
 const StyledPageNotFound = styled.main`
   height: 100vh;
@@ -35,7 +36,10 @@ function PageNotFound() {
     <StyledPageNotFound>
       <Box>
         <Heading as="h1">
-          The page you are looking for could not be found 😢
+          <span>
+            <HiOutlineHandRaised />
+          </span>
+          The page you are looking for could not be found
         </Heading>
         <Button onClick={moveBack} size="large">
           &larr; Go back

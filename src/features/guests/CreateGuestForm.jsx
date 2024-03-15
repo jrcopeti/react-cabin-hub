@@ -14,6 +14,7 @@ import toast from "react-hot-toast";
 import Heading from "../../ui/Heading";
 import FormRow from "../../ui/FormRow";
 import styled from "styled-components";
+import { HiOutlineUserPlus } from "react-icons/hi2";
 
 const StyledDiv = styled.div``;
 
@@ -76,7 +77,12 @@ function CreateGuestForm({ onCloseModal }) {
 
   return (
     <StyledDiv>
-      <Heading as="h2">Create new Guest</Heading>
+      <Heading as="h2">
+        <span>
+          <HiOutlineUserPlus />
+        </span>
+        Add New Guest
+      </Heading>
       <br />
       <Form
         onSubmit={handleSubmit(onSubmit, onError)}

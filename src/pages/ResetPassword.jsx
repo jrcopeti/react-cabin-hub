@@ -3,6 +3,7 @@ import Heading from "../ui/Heading";
 
 import ResetPasswordForm from "../features/authentication/ResetPasswordForm";
 import { screenSizes } from "../utils/constants";
+import { HiOutlineExclamationCircle } from "react-icons/hi2";
 
 const LoginLayout = styled.main`
   min-height: 80dvh;
@@ -27,7 +28,12 @@ const LoginLayout = styled.main`
 function ResetPassword() {
   return (
     <LoginLayout>
-      <Heading as="h1">Reset Password</Heading>
+      <Heading as="h1">
+        <span>
+          <HiOutlineExclamationCircle />
+        </span>
+        Reset Password
+      </Heading>
       <p>
         Enter your email address and we will send you a link to reset your
         password.
