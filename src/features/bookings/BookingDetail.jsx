@@ -58,11 +58,19 @@ function BookingDetail() {
     <>
       <Row type="horizontal">
         {width <= windowSizes.tablet && (
-          <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
+          <div>
+            <ButtonText className="button-back" onClick={moveBack}>
+              &larr; Back
+            </ButtonText>
+          </div>
         )}
         <HeadingGroup>
           {width >= windowSizes.tablet && (
-            <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
+            <div>
+              <ButtonText className="button-back" onClick={moveBack}>
+                &larr; Back
+              </ButtonText>
+            </div>
           )}
 
           <Heading as="h1">Booking #{bookingId}</Heading>

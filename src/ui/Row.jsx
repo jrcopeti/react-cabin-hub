@@ -22,7 +22,16 @@ const Row = styled.div`
         min-width: 30rem;
       }
 
-   
+      & div .button-back {
+        font-size: 1.8rem;
+        display: flex;
+        align-items: center;
+        align-self: center;
+        justify-self: flex-start;
+        place-self: flex-start;
+
+
+      }
     `}
 
   ${(props) =>

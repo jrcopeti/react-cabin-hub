@@ -12,7 +12,7 @@ const StyledCabinDetails = styled.div`
   flex-direction: column;
   min-width: 40rem;
   max-width: 50rem;
-  max-height: 60rem;
+  max-height: 70rem;
 
   background-color: var(--color-grey-0);
   border: 1px solid var(--color-grey-100);

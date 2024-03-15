@@ -3,7 +3,7 @@ import styled, { css } from "styled-components";
 const Heading = styled.h1`
   display: flex;
   align-items: center;
-  gap: 1.6rem;
+  gap: 0.4rem;
 
   ${(props) =>
     props.as === "h1" &&

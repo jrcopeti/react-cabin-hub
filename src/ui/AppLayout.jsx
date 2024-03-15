@@ -12,6 +12,8 @@ const StyledAppLayout = styled.div`
   transition: ease-in-out 0.35s;
   margin-top: 6rem;
 
+
+
   @media (max-width: ${screenSizes.tablet}) {
     margin-top: 4.8rem;
   }
@@ -36,6 +38,7 @@ const Main = styled.main`
   background-color: var(--color-grey-50);
   padding: 4rem 4.8rem 6.4rem;
   min-height: 100dvh;
+
   overflow: auto;
 
   ${(props) => transform[props.transform]}
