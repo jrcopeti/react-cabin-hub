@@ -27,9 +27,9 @@ import styled, { css } from "styled-components";
 import { screenSizes } from "../../utils/constants";
 import ButtonText from "../../ui/ButtonText";
 import {
+  HiOutlineSquaresPlus,
   HiOutlineEllipsisHorizontalCircle,
   HiOutlineExclamationTriangle,
-  HiOutlineSquaresPlus,
   HiOutlineXCircle,
 } from "react-icons/hi2";
 
