@@ -32,6 +32,7 @@ const StyledSidebar = styled.aside`
   gap: 2rem;
   width: 26rem;
   height: 100%;
+  box-shadow: var(--shadow-md);
   ${(props) => transform[props.transform]}
 `;
 

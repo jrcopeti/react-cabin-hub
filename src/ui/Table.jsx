@@ -19,11 +19,11 @@ const CommonRow = styled.div`
   transition: none;
 
   &:nth-child(odd) {
-    background-color: var(--color-grey-50);
+    background-color: var(--color-grey-0);
   }
 
   &:nth-child(even) {
-    background-color: var(--color-grey-0);
+    background-color: var(--color-grey-50);
   }
 
   .not-important-mobile {
@@ -54,7 +54,7 @@ const StyledHeader = styled(CommonRow)`
   color: var(--color-grey-600);
 
   &:nth-child(odd) {
-    background-color: var(--color-indigo-100);
+    background-color: var(--color-grey-100);
   }
 
   @media (max-width: ${screenSizes.tablet}) {
@@ -75,11 +75,11 @@ const StyledRow = styled(CommonRow)`
 `;
 
 const StyledBody = styled.section`
-  margin: 0.4rem 0;
+  margin: 0rem 0;
 `;
 
 const Footer = styled.footer`
-  background-color: var(--color-grey-50);
+  background-color: var(--color-grey-100);
   display: flex;
   justify-content: center;
   padding: 1.2rem;

@@ -33,6 +33,7 @@ function UpdateSettingsForm() {
         <Input
           type="number"
           id="min-nights"
+          min={1}
           defaultValue={minBookingLength}
           onBlur={(e) => handleUpdate(e, "minBookingLength")}
           disabled={isUpdating}
@@ -42,6 +43,7 @@ function UpdateSettingsForm() {
         <Input
           type="number"
           id="max-nights"
+          min={1}
           defaultValue={maxBookingLength}
           onBlur={(e) => handleUpdate(e, "maxBookingLength")}
           disabled={isUpdating}
@@ -51,6 +53,7 @@ function UpdateSettingsForm() {
         <Input
           type="number"
           id="max-guests"
+          min={1}
           defaultValue={maxGuestsPerBooking}
           onBlur={(e) => handleUpdate(e, "maxGuestsPerBooking")}
           disabled={isUpdating}
@@ -60,6 +63,7 @@ function UpdateSettingsForm() {
         <Input
           type="number"
           id="breakfast-price"
+          min={1}
           defaultValue={breakfastPrice}
           onBlur={(e) => handleUpdate(e, "breakfastPrice")}
           disabled={isUpdating}

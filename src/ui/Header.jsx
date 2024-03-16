@@ -26,6 +26,7 @@ const StyledHeader = styled.header`
   top: 0;
   left: 0;
   z-index: 100;
+  box-shadow: var(--shadow-sm);
 
   @media (max-width: ${screenSizes.tablet}) {
     display: grid;

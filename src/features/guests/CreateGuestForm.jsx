@@ -15,6 +15,7 @@ import Heading from "../../ui/Heading";
 import FormRow from "../../ui/FormRow";
 import styled from "styled-components";
 import { HiOutlineUserPlus } from "react-icons/hi2";
+import Row from "../../ui/Row";
 
 const StyledDiv = styled.div``;
 
@@ -77,12 +78,15 @@ function CreateGuestForm({ onCloseModal }) {
 
   return (
     <StyledDiv>
+      <Row type="form">
+
       <Heading as="h2">
         <span>
           <HiOutlineUserPlus />
         </span>
         Add New Guest
       </Heading>
+      </Row>
       <br />
       <Form
         onSubmit={handleSubmit(onSubmit, onError)}
@@ -150,7 +154,7 @@ function CreateGuestForm({ onCloseModal }) {
             Cancel
           </Button>
           <Button disabled={isCreating} type="submit">
-            Add New Guest
+            Add Guest
           </Button>
         </FormRow>
       </Form>

@@ -1,5 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 import styled, { css } from "styled-components";
+import { screenSizes } from "../utils/constants";
 
 const StyledFilter = styled.div`
   border: 1px solid var(--color-grey-100);
@@ -29,6 +30,11 @@ const FilterButton = styled.button`
   /* To give the same height as select */
   padding: 0.44rem 0.8rem;
   transition: all 0.3s;
+
+  @media (max-width: ${screenSizes.tablet}) {
+    padding: 0.4rem 0.6rem;
+    font-size: 1.2rem;
+  }
 
   &:hover:not(:disabled) {
     background-color: var(--color-brand-600);

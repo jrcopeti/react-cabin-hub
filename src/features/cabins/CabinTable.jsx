@@ -47,7 +47,9 @@ function CabinTable() {
         </Table.Header>
         <Table.Body
           data={sortedCabins}
-          render={(cabin) => <CabinRow cabin={cabin} key={cabin.id} isLoading={isLoading}/>}
+          render={(cabin) => (
+            <CabinRow cabin={cabin} key={cabin.id} isLoading={isLoading} />
+          )}
         />
         <Table.Footer>
           <Pagination count={count} />

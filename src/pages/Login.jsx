@@ -9,6 +9,7 @@ import Button from "../ui/Button";
 
 import { screenSizes } from "../utils/constants";
 import { HiOutlineArrowLeftOnRectangle } from "react-icons/hi2";
+import Row from "../ui/Row";
 
 const LoginLayout = styled.main`
   min-height: 80dvh;
@@ -42,12 +43,15 @@ function Login() {
   return (
     <LoginLayout>
       <LogoLogin />
+      <Row>
+
       <Heading as="h4">
         <span>
           <HiOutlineArrowLeftOnRectangle />
         </span>
         Login to your account
       </Heading>
+      </Row>
       <LoginForm />
       <StyledDiv>
         <NavLink to={"/signup"}>

@@ -3,11 +3,12 @@ import SignupForm from "../features/authentication/SignupForm";
 import styled from "styled-components";
 import { screenSizes } from "../utils/constants";
 import { HiOutlineUser } from "react-icons/hi2";
+import Row from "../ui/Row";
 
 const StyledNewUsers = styled.main`
-  min-height: 80dvh;
+  min-height: 90dvh;
   display: grid;
-  grid-template-columns: 1fr 48;
+  grid-template-columns: 48rem;
   align-content: center;
   justify-content: center;
   gap: 3.2rem;
@@ -23,11 +24,14 @@ const StyledNewUsers = styled.main`
 function Signup() {
   return (
     <StyledNewUsers>
-      <Heading as="h1"> <span>
-      <HiOutlineUser />
-
-      </span>
-        Create an account to get started</Heading>
+      <Row>
+        <Heading as="h1">
+          <span>
+            <HiOutlineUser />
+          </span>
+          Create an account
+        </Heading>
+      </Row>
       <SignupForm />
     </StyledNewUsers>
   );

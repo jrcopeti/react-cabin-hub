@@ -20,6 +20,8 @@ const StyledToday = styled.div`
   grid-column: 1 / span 2;
   padding-top: 2.4rem;
 
+  justify-content: center;
+
   @media (max-width: ${screenSizes.tablet}) {
     width: 90dvw;
     align-self: center;
@@ -50,7 +52,7 @@ function TodayActivity() {
 
   return (
     <StyledToday>
-      <Row type="horizontal">
+      <Row type="dashboard">
         <Heading as="h2">Today</Heading>
       </Row>
       {!isLoading ? (
