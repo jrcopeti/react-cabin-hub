@@ -1,7 +1,7 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { Suspense, lazy } from "react";
+import { Suspense } from "react";
 import { Toaster } from "react-hot-toast";
 import { DarkModeProvider } from "./context/DarkModeContext";
 import { OpenSidebarProvider } from "./context/OpenSidebarContext";
@@ -65,6 +65,7 @@ function App() {
                 <Route path="bookings" element={<Bookings />} />
                 <Route path="bookings/:bookingId" element={<Booking />} />
                 <Route path="bookings/new" element={<NewBooking />} />
+                <Route path="bookings/new/:cabinId" element={<NewBooking />} />
                 <Route path="checkin/:bookingId" element={<Checkin />} />
                 <Route path="cabins" element={<Cabins />} />
 

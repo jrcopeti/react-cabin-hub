@@ -17,21 +17,22 @@ import FormRowVertical from "../../ui/FormRowVertical";
 import Spinner from "../../ui/Spinner";
 import Select from "../../ui/Select";
 import Checkbox from "../../ui/Checkbox";
+import ButtonText from "../../ui/ButtonText";
+import Heading from "../../ui/Heading";
 
 import { useMoveBack } from "../../hooks/useMoveBack";
 import { formatCurrency, subtractDates } from "../../utils/helpers";
 
 import { isBefore, isValid, parseISO, startOfToday } from "date-fns";
-import Heading from "../../ui/Heading";
 import styled, { css } from "styled-components";
 import { screenSizes } from "../../utils/constants";
-import ButtonText from "../../ui/ButtonText";
 import {
   HiOutlineSquaresPlus,
   HiOutlineEllipsisHorizontalCircle,
   HiOutlineExclamationTriangle,
   HiOutlineXCircle,
 } from "react-icons/hi2";
+import { useNavigate, useParams } from "react-router-dom";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -105,6 +106,10 @@ function CreateBookingForm() {
 
   const moveBack = useMoveBack();
 
+  const navigate = useNavigate();
+
+  const { cabinId: cabinIdUrl } = useParams();
+
   const {
     register,
     handleSubmit,
@@ -115,6 +120,7 @@ function CreateBookingForm() {
     formState: { errors },
   } = useForm({
     defaultValues: {
+      cabinId: cabinIdUrl ?? "",
       numGuests: 1,
       cabinPrice: 0,
       extraPrice: 0,
@@ -128,10 +134,13 @@ function CreateBookingForm() {
   const startDateInput = watch("startDate");
   const endDateInput = watch("endDate");
 
-  const { availability, resetAvailability, handleMessageStyle } =
-    useAvailability(cabinIdInput, startDateInput, endDateInput);
+  const { availability, resetAvailability } = useAvailability(
+    cabinIdInput,
+    startDateInput,
+    endDateInput
+  );
 
-  const { isAvailable, message: messageAvailable } = availability;
+  const { isAvailable, message: messageAvailable, color, Icon } = availability;
 
   const numNightsInput =
     startDateInput && endDateInput && endDateInput > startDateInput
@@ -181,6 +190,11 @@ function CreateBookingForm() {
 
   const totalPriceInput = cabinPriceInput + extraPriceInput - discountInput;
 
+  function handleReset() {
+    resetAvailability();
+    reset();
+  }
+
   function onSubmit(data) {
     // selected Cabin
     const cabinIdNum = Number(data.cabinId);
@@ -216,8 +230,7 @@ function CreateBookingForm() {
 
     createBooking(finalData, {
       onSuccess: () => {
-        resetAvailability();
-        reset();
+        handleReset();
       },
     });
   }
@@ -229,12 +242,14 @@ function CreateBookingForm() {
   return (
     <>
       <HeadingGroup>
-        <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
+        <span>
+          <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
+        </span>
         <Heading as="h1">
           <span>
             <HiOutlineSquaresPlus />
           </span>
-          Create New Booking
+          {cabinIdInput ? `Book Cabin ${cabinInput?.name}` : "Book Cabin"}
         </Heading>
         <div>
           <span>
@@ -316,12 +331,22 @@ function CreateBookingForm() {
 
         {isAvailable === false && (
           <FormRowVertical>
-            <Message color={handleMessageStyle(messageAvailable).color}>
-              <span>
-                {React.createElement(handleMessageStyle(messageAvailable).Icon)}
-              </span>
+            <Message color={color}>
+              <span>{React.createElement(Icon)}</span>
               {messageAvailable}
             </Message>
+
+            {!!(cabinIdInput || startDateInput || endDateInput) && (
+              <span style={{ placeSelf: "flex-end" }}>
+                <Button
+                  type="reset"
+                  variation="secondary"
+                  onClick={handleReset}
+                >
+                  Reset
+                </Button>
+              </span>
+            )}
           </FormRowVertical>
         )}
 
@@ -437,11 +462,7 @@ function CreateBookingForm() {
             </FormRow>
 
             <FormRow>
-              <Button
-                variation="secondary"
-                type="reset"
-                onClick={() => resetAvailability()}
-              >
+              <Button variation="secondary" type="reset" onClick={handleReset}>
                 Cancel
               </Button>
               <Button disabled={isCreating} type="submit" variation="primary">

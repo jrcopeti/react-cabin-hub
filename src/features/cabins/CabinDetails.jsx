@@ -101,8 +101,15 @@ const StyledNavLink = styled(NavLink)`
 `;
 
 function CabinDetails({ cabin, onCloseModal, isLoading }) {
-  const { name, maxCapacity, regularPrice, discount, image, description } =
-    cabin;
+  const {
+    id: cabinId,
+    name,
+    maxCapacity,
+    regularPrice,
+    discount,
+    image,
+    description,
+  } = cabin;
 
   if (isLoading) {
     return <Spinner />;
@@ -142,7 +149,7 @@ function CabinDetails({ cabin, onCloseModal, isLoading }) {
 
           <Description>{description}</Description>
         </Section>
-        <StyledNavLink to={"/bookings/new"}>
+        <StyledNavLink to={`/bookings/new/${cabinId}`}>
           <Button>Book</Button>
         </StyledNavLink>
         <Button
