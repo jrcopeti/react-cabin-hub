@@ -5,15 +5,17 @@ import Row from "../ui/Row";
 
 function Settings() {
   return (
-    <Row>
+    <>
+    <Row type="horizontal" >
       <Heading as="h1">
         <span>
           <HiOutlineCog6Tooth />
         </span>
         Update Hotel Settings
       </Heading>
-      <UpdateSettingsForm />
     </Row>
+      <UpdateSettingsForm />
+    </>
   );
 }
 

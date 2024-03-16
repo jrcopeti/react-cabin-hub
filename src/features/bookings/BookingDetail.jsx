@@ -58,22 +58,22 @@ function BookingDetail() {
     <>
       <Row type="horizontal">
         {width <= windowSizes.tablet && (
-          <div>
-            <ButtonText className="button-back" onClick={moveBack}>
+          <div className="button-back" >
+            <ButtonText onClick={moveBack}>
               &larr; Back
             </ButtonText>
           </div>
         )}
         <HeadingGroup>
           {width >= windowSizes.tablet && (
-            <div>
-              <ButtonText className="button-back" onClick={moveBack}>
+            <div className="button-back" >
+              <ButtonText  onClick={moveBack}>
                 &larr; Back
               </ButtonText>
             </div>
           )}
 
-          <Heading as="h1">Booking #{bookingId}</Heading>
+          <Heading as="h5">Booking #{bookingId}</Heading>
           <Tag type={statusToTagName[status]}>{status.replace("-", " ")}</Tag>
         </HeadingGroup>
       </Row>

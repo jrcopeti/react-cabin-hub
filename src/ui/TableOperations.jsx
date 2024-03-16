@@ -5,27 +5,25 @@ const TableOperations = styled.div`
   display: flex;
   align-items: center;
   gap: 1.6rem;
-  min-width: 34rem;
+  min-width: 30rem;
 
-& div {
-  display: flex;
-  align-items: center;
-  gap: 1.6rem;
-
-}
+  & div {
+    display: flex;
+    align-items: center;
+    gap: 1.6rem;
+  }
 
   & span {
     display: flex;
-    
+
     font-size: 2.5rem;
-
   }
-
 
   @media (max-width: ${screenSizes.tablet}) {
     flex-direction: column;
     gap: 0.8rem;
 
+    width: 10rem;
   }
 `;
 

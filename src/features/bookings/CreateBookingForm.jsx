@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 
+import { useNavigate, useParams } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
 
 import { useCreateBookings } from "./useCreateBookings";
@@ -12,6 +13,7 @@ import Input from "../../ui/Input";
 import Form from "../../ui/Form";
 import Button from "../../ui/Button";
 import Textarea from "../../ui/Textarea";
+import Row from "../../ui/Row";
 import FormRow from "../../ui/FormRow";
 import FormRowVertical from "../../ui/FormRowVertical";
 import Spinner from "../../ui/Spinner";
@@ -19,41 +21,25 @@ import Select from "../../ui/Select";
 import Checkbox from "../../ui/Checkbox";
 import ButtonText from "../../ui/ButtonText";
 import Heading from "../../ui/Heading";
+import PopoverContent from "../../ui/PopoverContent";
 
 import { useMoveBack } from "../../hooks/useMoveBack";
 import { formatCurrency, subtractDates } from "../../utils/helpers";
 
 import { isBefore, isValid, parseISO, startOfToday } from "date-fns";
 import styled, { css } from "styled-components";
-import { screenSizes } from "../../utils/constants";
+import {windowSizes } from "../../utils/constants";
 import {
   HiOutlineSquaresPlus,
+  HiOutlineQuestionMarkCircle,
   HiOutlineEllipsisHorizontalCircle,
   HiOutlineExclamationTriangle,
   HiOutlineXCircle,
 } from "react-icons/hi2";
-import { useNavigate, useParams } from "react-router-dom";
 
-const HeadingGroup = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1.6rem;
-  align-items: flex-start;
-
-  & div {
-    background-color: var(--color-grey-100);
-    border: 1px solid var(--color-grey-100);
-    border-radius: var(--border-radius-md);
-    padding: 1.6rem 2.4rem;
-    color: var(--color-grey-600);
-    min-width: 36rem;
-    white-space: pre-line;
-  }
-
-  @media (max-width: ${screenSizes.tablet}) {
-    gap: 1rem;
-  }
-`;
+import { ArrowContainer, Popover } from "react-tiny-popover";
+import { usePopover } from "../../hooks/usePopover";
+import { useWindowSize } from "../../hooks/useWindowSize";
 
 const color = {
   red: css`
@@ -109,6 +95,17 @@ function CreateBookingForm() {
   const navigate = useNavigate();
 
   const { cabinId: cabinIdUrl } = useParams();
+
+  const { isPopoverOpen, openPopover, closePopover } = usePopover();
+
+  const boxContainerPopoverRef = useRef();
+
+  const { width } = useWindowSize();
+
+  const positionPopover =
+    width >= windowSizes.tablet
+      ? ["right", "bottom", "left", "top"]
+      : ["bottom", "right", "left", "top"];
 
   const {
     register,
@@ -256,27 +253,54 @@ function CreateBookingForm() {
 
   return (
     <>
-      <HeadingGroup>
-        <span>
-          <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
-        </span>
-        <Heading as="h1">
-          <span>
-            <HiOutlineSquaresPlus />
-          </span>
-          {cabinIdInput ? `Book Cabin ${cabinInput?.name}` : "Book Cabin"}
-        </Heading>
-        <div>
-          <span>
-            First, check if the cabin is available for the selected dates.
-            <br />
-            If the cabin is available, fill in the form to create a new booking.
-          </span>
-        </div>
-      </HeadingGroup>
+      <>
+        <Row type="form">
+          <ButtonText className="button-back" onClick={moveBack}>
+            &larr; Back
+          </ButtonText>
+          <Heading as="h1">
+            <span>
+              <HiOutlineSquaresPlus />
+            </span>
+            {cabinIdInput ? `Book Cabin ${cabinInput?.name}` : "Book Cabin"}
+            <span>
+              <Popover
+                isOpen={isPopoverOpen}
+                positions={positionPopover}
+                padding={10}
+                reposition={false}
+                onClickOutside={closePopover}
+                parentElement={boxContainerPopoverRef.current}
+                content={({ position, childRect, popoverRect }) => (
+                  <ArrowContainer
+                    position={position}
+                    childRect={childRect}
+                    popoverRect={popoverRect}
+                    arrowColor={"var(--color-brand-200)"}
+                    arrowSize={8}
+                  >
+                    <PopoverContent>
+                      &#10095; First, check if the cabin is available for the
+                      selected dates. If it's available, fill out the rest form
+                      to complete your booking.
+                    </PopoverContent>
+                  </ArrowContainer>
+                )}
+              >
+                <ButtonText
+                  onClick={openPopover}
+                  onMouseEnter={openPopover}
+                  onMouseLeave={closePopover}
+                >
+                  <HiOutlineQuestionMarkCircle />
+                </ButtonText>
+              </Popover>
+            </span>
+          </Heading>
+        </Row>
+      </>
 
       <Form type="regular" onSubmit={handleSubmit(onSubmit, onError)}>
-
         <FormRow label="Cabin" error={errors?.cabinId?.message}>
           <Controller
             name="cabinId"

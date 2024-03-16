@@ -6,7 +6,7 @@ const Form = styled.form`
     props.type === "regular" &&
     css`
       padding: 2.4rem 4rem;
-   
+
 
       /* Box */
       background-color: var(--color-grey-0);
@@ -18,6 +18,7 @@ const Form = styled.form`
     props.type === "modal" &&
     css`
       width: 80rem;
+      
       @media (max-width: ${screenSizes.tablet}) {
         width: 100%;
       }

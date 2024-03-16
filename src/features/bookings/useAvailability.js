@@ -145,7 +145,13 @@ export function useAvailability(cabinId, startDate, endDate) {
       }
     };
     checkAvailability();
-  }, [cabinId, startDate, endDate, settings?.minBookingLength, settings?.maxBookingLength]);
+  }, [
+    cabinId,
+    startDate,
+    endDate,
+    settings?.minBookingLength,
+    settings?.maxBookingLength,
+  ]);
 
   const resetAvailability = () => {
     setAvailability({

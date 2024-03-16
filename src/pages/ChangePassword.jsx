@@ -1,12 +1,11 @@
-
-
 import styled from "styled-components";
 import Heading from "../ui/Heading";
 import ChangePasswordForm from "../features/authentication/ChangePasswordForm";
 import { screenSizes } from "../utils/constants";
+import Row from "../ui/Row";
 
 const LoginLayout = styled.main`
-  min-height: 80dvh;
+  min-height: 100dvh;
   display: grid;
   grid-template-columns: 52rem;
   align-content: center;
@@ -24,7 +23,9 @@ const LoginLayout = styled.main`
 function ChangePassword() {
   return (
     <LoginLayout>
-      <Heading as="h1">Change Password</Heading>
+      <Row>
+        <Heading as="h1">Change Password</Heading>
+      </Row>
       <ChangePasswordForm />
     </LoginLayout>
   );

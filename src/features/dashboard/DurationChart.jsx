@@ -11,6 +11,7 @@ import {
 import { useDarkMode } from "../../context/useDarkMode";
 import { screenSizes, windowSizes } from "../../utils/constants";
 import { useWindowSize } from "../../hooks/useWindowSize";
+import Row from "../../ui/Row";
 
 const ChartBox = styled.div`
   /* Box */
@@ -161,7 +162,9 @@ function DurationChart({ confirmedStays }) {
 
   return (
     <ChartBox>
-      <Heading as="h2">Stays Per Night Summary</Heading>
+      <Row type="dashboard">
+        <Heading as="h2">Stays Per Night Summary</Heading>
+      </Row>
       <ResponsiveContainer width={"100%"} height={240}>
         <PieChart>
           <Pie

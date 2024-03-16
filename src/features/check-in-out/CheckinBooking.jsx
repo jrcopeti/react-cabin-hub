@@ -18,6 +18,7 @@ import { useCheckin } from "./useCheckin";
 import { formatCurrency } from "../../utils/helpers";
 import { screenSizes, windowSizes } from "../../utils/constants";
 import { useWindowSize } from "../../hooks/useWindowSize";
+import { HiOutlineArrowDownOnSquareStack } from "react-icons/hi2";
 
 const Box = styled.div`
   /* Box */
@@ -88,22 +89,23 @@ function CheckinBooking() {
     <>
       <Row type="horizontal">
         {width <= windowSizes.tablet && (
-          <div>
-            <ButtonText className="button-back" onClick={moveBack}>
-              &larr; Back
-            </ButtonText>
+          <div className="button-back">
+            <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
           </div>
         )}
         <HeadingGroup>
           {width >= windowSizes.tablet && (
-            <div>
-              <ButtonText className="button-back" onClick={moveBack}>
-                &larr; Back
-              </ButtonText>
+            <div className="button-back">
+              <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
             </div>
           )}
 
-          <Heading as="h1">Check in booking #{bookingId}</Heading>
+          <Heading as="h5">
+            <span>
+              <HiOutlineArrowDownOnSquareStack />
+            </span>
+            Check in booking #{bookingId}
+          </Heading>
         </HeadingGroup>
       </Row>
 

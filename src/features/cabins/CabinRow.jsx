@@ -1,5 +1,11 @@
 import styled from "styled-components";
-import { HiEye, HiPencil, HiSquare2Stack, HiTrash } from "react-icons/hi2";
+import {
+  HiArrowDownOnSquareStack,
+  HiEye,
+  HiPencil,
+  HiSquare2Stack,
+  HiTrash,
+} from "react-icons/hi2";
 
 import { useDeleteCabin } from "./useDeleteCabin";
 import { useCreateCabin } from "./useCreateCabin";
@@ -14,6 +20,7 @@ import { formatCurrency } from "../../utils/helpers";
 import { screenSizes, windowSizes } from "../../utils/constants";
 import CabinDetails from "./CabinDetails";
 import { useWindowSize } from "../../hooks/useWindowSize";
+import { useNavigate } from "react-router-dom";
 
 const Img = styled.img`
   display: block;
@@ -58,6 +65,7 @@ const Discount = styled.div`
 function CabinRow({ cabin, isLoading }) {
   const { isDeleting, deleteCabin } = useDeleteCabin();
   const { isCreating, createCabin } = useCreateCabin();
+  const navigate = useNavigate();
 
   const {
     id: cabinId,
@@ -104,6 +112,14 @@ function CabinRow({ cabin, isLoading }) {
                   <Modal.Open opens="cabin-details">
                     <Menus.Button icon={<HiEye />}>See Details</Menus.Button>
                   </Modal.Open>
+
+                  <Menus.Button
+                    icon={<HiArrowDownOnSquareStack />}
+                    onClick={() => navigate(`/bookings/new/${cabinId}`)}
+                    disabled={isCreating}
+                  >
+                    Book Cabin
+                  </Menus.Button>
 
                   <Menus.Button
                     icon={<HiSquare2Stack />}

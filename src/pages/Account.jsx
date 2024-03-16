@@ -7,22 +7,24 @@ import Row from "../ui/Row";
 function Account() {
   return (
     <>
-      <Heading as="h1">
-        <span>
-          <HiOutlineIdentification />
-        </span>
-        Update your account
-      </Heading>
-
-      <Row>
-        <Heading as="h3">Update user data</Heading>
-        <UpdateUserDataForm />
+      <Row type="horizontal">
+        <Heading as="h1">
+          <span>
+            <HiOutlineIdentification />
+          </span>
+          Update your account
+        </Heading>
       </Row>
 
-      <Row>
-        <Heading as="h3">Update password</Heading>
-        <UpdatePasswordForm />
+      <Row type="form">
+        <Heading as="h2">Update user data</Heading>
       </Row>
+      <UpdateUserDataForm />
+
+      <Row type="form">
+        <Heading as="h2">Update password</Heading>
+      </Row>
+      <UpdatePasswordForm />
     </>
   );
 }
