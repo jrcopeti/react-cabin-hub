@@ -10,7 +10,7 @@ const Row = styled.div`
       align-items: center;
       min-width: 120rem;
       font-size: 3rem;
-      padding: 1.6rem 1.2rem;
+      padding: 1.6rem;
 
       background-color: var(--color-brand-200);
       border: 1px solid var(--color-grey-100);
