@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import { Controller, useForm } from "react-hook-form";
 
@@ -120,7 +120,7 @@ function CreateBookingForm() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      cabinId: cabinIdUrl ?? "",
+      cabinId: cabinIdUrl || "",
       numGuests: 1,
       cabinPrice: 0,
       extraPrice: 0,
@@ -129,6 +129,12 @@ function CreateBookingForm() {
       isPaid: false,
     },
   });
+
+  useEffect(() => {
+    reset({
+      cabinId: cabinIdUrl || "",
+    });
+  }, [cabinIdUrl, reset]);
 
   const cabinIdInput = watch("cabinId");
   const startDateInput = watch("startDate");
@@ -156,7 +162,7 @@ function CreateBookingForm() {
       .sort((a, b) => a.name.localeCompare(b.name))
       .map((cabin) => ({
         value: cabin.id,
-        label: `${cabin.name} - max. ${cabin.maxCapacity} guests`,
+        label: `${cabin.name}  (${cabin.maxCapacity} guests)`,
       })),
   ];
 
@@ -178,6 +184,14 @@ function CreateBookingForm() {
     (cabinInput) => cabinInput.id === Number(cabinIdInput)
   );
 
+  const numGuestOptions = [
+    { value: "", label: "Select a number" },
+    ...Array.from({ length: cabinInput?.maxCapacity }, (_, i) => ({
+      value: i + 1,
+      label: `${i + 1} guest${i > 0 ? "s" : ""}`,
+    })),
+  ];
+
   const cabinPriceInput = cabinInput
     ? cabinInput.regularPrice * numNightsInput
     : 0;
@@ -193,6 +207,7 @@ function CreateBookingForm() {
   function handleReset() {
     resetAvailability();
     reset();
+    navigate("/bookings/new", { replace: true });
   }
 
   function onSubmit(data) {
@@ -261,11 +276,12 @@ function CreateBookingForm() {
       </HeadingGroup>
 
       <Form type="regular" onSubmit={handleSubmit(onSubmit, onError)}>
+
         <FormRow label="Cabin" error={errors?.cabinId?.message}>
           <Controller
             name="cabinId"
             control={control}
-            rules={{ required: "This field is required" }}
+            rules={{ required: "Cabin is required" }}
             render={({ field: { ref, value, onChange } }) => (
               <Select
                 ref={ref}
@@ -278,32 +294,32 @@ function CreateBookingForm() {
           />
         </FormRow>
 
-        <FormRow label="Start Date" error={errors?.startDate?.message}>
+        <FormRow label="Check in" error={errors?.startDate?.message}>
           <Input
             disabled={isCreating}
             type="date"
             id="startDate"
             {...register("startDate", {
-              required: "This field is required",
+              required: "Check in date is required",
               validate: {
                 isValidDate: (value) =>
                   isValid(parseISO(value)) || "Invalid date",
 
                 isFutureDate: (value) =>
                   !isBefore(parseISO(value), startOfToday()) ||
-                  "Start date cannot be before today",
+                  "Check in cannot be before today",
               },
             })}
           />
         </FormRow>
 
-        <FormRow label="End Date" error={errors?.endDate?.message}>
+        <FormRow label="Check out" error={errors?.endDate?.message}>
           <Input
             disabled={isCreating}
             type="date"
             id="endDate"
             {...register("endDate", {
-              required: "This field is required",
+              required: "Check out date is required",
               validate: {
                 isValidDate: (value) =>
                   isValid(parseISO(value)) || "Invalid date",
@@ -313,7 +329,7 @@ function CreateBookingForm() {
                     !isBefore(
                       parseISO(value),
                       parseISO(getValues("startDate"))
-                    ) || "End date cannot be before start date"
+                    ) || "Check out cannot be before check in"
                   );
                 },
 
@@ -321,8 +337,21 @@ function CreateBookingForm() {
                   return (
                     parseISO(value).getTime() !==
                       parseISO(getValues("startDate")).getTime() ||
-                    "End date cannot be the same as start date"
+                    "Check out cannot be the same date as check in"
                   );
+                },
+                isMinBookingLength: (value) => {
+                  return subtractDates(value, getValues("startDate")) >=
+                    settings?.minBookingLength
+                    ? true
+                    : `Minimum number of nights per booking is ${settings?.minBookingLength}`;
+                },
+
+                ismaxBookingLength: (value) => {
+                  return subtractDates(value, getValues("startDate")) <=
+                    settings?.maxBookingLength
+                    ? true
+                    : `Maximum number of nights per booking is ${settings?.maxBookingLength}`;
                 },
               },
             })}
@@ -356,6 +385,23 @@ function CreateBookingForm() {
               <Input disabled value={numNightsInput} />
             </FormRow>
 
+            <FormRow label="Guest Name" error={errors?.guestId?.message}>
+              <Controller
+                name="guestId"
+                control={control}
+                rules={{ required: "The booking must have a guest" }}
+                render={({ field: { ref, value, onChange } }) => (
+                  <Select
+                    ref={ref}
+                    options={guestOptions}
+                    value={value}
+                    onChange={(e) => onChange(e.target.value)}
+                    disabled={isCreating}
+                  />
+                )}
+              />
+            </FormRow>
+
             <FormRow
               label="Number of Guests"
               error={errors?.numGuests?.message}
@@ -364,7 +410,7 @@ function CreateBookingForm() {
                 name="numGuests"
                 control={control}
                 rules={{
-                  required: "This field is required",
+                  required: "Number of guests is required",
                   min: {
                     value: 1,
                     message: "Minimum number of guests must be 1",
@@ -375,11 +421,9 @@ function CreateBookingForm() {
                   },
                 }}
                 render={({ field: { ref, value, onChange } }) => (
-                  <Input
-                    type="number"
-                    id="numGuests"
-                    min={1}
+                  <Select
                     ref={ref}
+                    options={numGuestOptions}
                     value={value}
                     onChange={(e) => onChange(e.target.value)}
                     disabled={isCreating}
@@ -394,23 +438,6 @@ function CreateBookingForm() {
 
             <FormRow label="Discount">
               <Input disabled value={formatCurrency(discountInput)} />
-            </FormRow>
-
-            <FormRow label="Guest Name" error={errors?.guestId?.message}>
-              <Controller
-                name="guestId"
-                control={control}
-                rules={{ required: "This field is required" }}
-                render={({ field: { ref, value, onChange } }) => (
-                  <Select
-                    ref={ref}
-                    options={guestOptions}
-                    value={value}
-                    onChange={(e) => onChange(e.target.value)}
-                    disabled={isCreating}
-                  />
-                )}
-              />
             </FormRow>
 
             <FormRow label="Observations">

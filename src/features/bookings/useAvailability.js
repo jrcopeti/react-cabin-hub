@@ -7,6 +7,8 @@ import {
   HiOutlineExclamationTriangle,
   HiOutlineXCircle,
 } from "react-icons/hi2";
+import { useSettings } from "../settings/useSettings";
+import { subtractDates } from "../../utils/helpers";
 
 export function useAvailability(cabinId, startDate, endDate) {
   const initialState = {
@@ -17,6 +19,8 @@ export function useAvailability(cabinId, startDate, endDate) {
   };
 
   const [availability, setAvailability] = useState({ initialState });
+
+  const { settings } = useSettings();
 
   useEffect(() => {
     const checkAvailability = async () => {
@@ -89,6 +93,27 @@ export function useAvailability(cabinId, startDate, endDate) {
         return;
       }
 
+      if (subtractDates(endDate, startDate) < settings?.minBookingLength) {
+        setAvailability({
+          isAvailable: false,
+          message: `Minimum number of nights is ${settings?.minBookingLength}`,
+          color: "red",
+          Icon: HiOutlineXCircle,
+        });
+
+        return;
+      }
+
+      if (subtractDates(endDate, startDate) > settings?.maxBookingLength) {
+        setAvailability({
+          isAvailable: false,
+          message: `Maximum number of nights is ${settings?.maxBookingLength}`,
+          color: "red",
+          Icon: HiOutlineXCircle,
+        });
+        return;
+      }
+
       try {
         const hasOverlap = await checkForOverlappingBookings(
           cabinId,
@@ -120,7 +145,7 @@ export function useAvailability(cabinId, startDate, endDate) {
       }
     };
     checkAvailability();
-  }, [cabinId, startDate, endDate]);
+  }, [cabinId, startDate, endDate, settings?.minBookingLength, settings?.maxBookingLength]);
 
   const resetAvailability = () => {
     setAvailability({

@@ -63,6 +63,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
     formState: { errors },
   } = useForm({ defaultValues: editValues });
 
+  const cabinIdInput = watch("cabinId");
   const startDateInput = watch("startDate");
   const endDateInput = watch("endDate");
 
@@ -94,17 +95,24 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
       })),
   ];
 
-  const cabinPriceWatch = watch("cabinId");
   const numGuestInput = watch("numGuests");
   const hasBreakfast = watch("hasBreakfast");
   const isPaid = watch("isPaid");
 
   const cabinInput = cabins.find(
-    (cabinInput) => cabinInput.id === Number(cabinPriceWatch)
+    (cabinInput) => cabinInput.id === Number(cabinIdInput)
   );
   const cabinPriceInput = cabinInput
     ? cabinInput.regularPrice * numNightsInput
     : 0;
+
+  const numGuestOptions = [
+    { value: "", label: "Select a number" },
+    ...Array.from({ length: cabinInput?.maxCapacity }, (_, i) => ({
+      value: i + 1,
+      label: `${i + 1} guest${i > 0 ? "s" : ""}`,
+    })),
+  ];
 
   const extraPriceInput = hasBreakfast
     ? numNightsInput * settings.breakfastPrice * Number(numGuestInput)
@@ -185,7 +193,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             <Controller
               name="cabinId"
               control={control}
-              rules={{ required: "This field is required" }}
+              rules={{ required: "Cabin is required" }}
               render={({ field: { ref, value, onChange } }) => (
                 <Select
                   ref={ref}
@@ -198,32 +206,32 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             />
           </FormRow>
 
-          <FormRow label="Start Date" error={errors?.startDate?.message}>
+          <FormRow label="Check in" error={errors?.startDate?.message}>
             <Input
               disabled={isUpdating}
               type="date"
               id="startDate"
               {...register("startDate", {
-                required: "This field is required",
+                required: "Check in date is required",
                 validate: {
                   isValidDate: (value) =>
                     isValid(parseISO(value)) || "Invalid date",
 
                   isFutureDate: (value) =>
                     !isBefore(parseISO(value), startOfToday()) ||
-                    "Start date cannot be before today",
+                    "Check in cannot be before today",
                 },
               })}
             />
           </FormRow>
 
-          <FormRow label="End Date" error={errors?.endDate?.message}>
+          <FormRow label="Check out" error={errors?.endDate?.message}>
             <Input
               disabled={isUpdating}
               type="date"
               id="endDate"
               {...register("endDate", {
-                required: "This field is required",
+                required: "Check out date is required",
                 validate: {
                   isValidDate: (value) =>
                     isValid(parseISO(value)) || "Invalid date",
@@ -233,7 +241,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
                       !isBefore(
                         parseISO(value),
                         parseISO(getValues("startDate"))
-                      ) || "End date cannot be before start date"
+                      ) || "Check out cannot be before check in"
                     );
                   },
 
@@ -241,8 +249,21 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
                     return (
                       parseISO(value).getTime() !==
                         parseISO(getValues("startDate")).getTime() ||
-                      "End date cannot be the same as start date"
+                      "Check out cannot be the same date as check in"
                     );
+                  },
+                  isMinBookingLength: (value) => {
+                    return subtractDates(value, getValues("startDate")) >=
+                      settings?.minBookingLength
+                      ? true
+                      : `Minimum number of nights per booking is ${settings?.minBookingLength}`;
+                  },
+
+                  ismaxBookingLength: (value) => {
+                    return subtractDates(value, getValues("startDate")) <=
+                      settings?.maxBookingLength
+                      ? true
+                      : `Maximum number of nights per booking is ${settings?.maxBookingLength}`;
                   },
                 },
               })}
@@ -253,39 +274,11 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             <Input disabled value={numNightsInput} />
           </FormRow>
 
-          <FormRow label="Number of Guests" error={errors?.numGuests?.message}>
-            <Input
-              disabled={isUpdating}
-              type="number"
-              id="numGuests"
-              min={1}
-              {...register("numGuests", {
-                required: "This field is required",
-                min: {
-                  value: 1,
-                  message: "Minimum number of guests must be 1",
-                },
-                max: {
-                  value: settings.maxGuestsPerBooking,
-                  message: `Maximum number of guests must be ${settings.maxGuestsPerBooking}`,
-                },
-              })}
-            />
-          </FormRow>
-
-          <FormRow label="Price">
-            <Input disabled value={formatCurrency(cabinPriceInput)} />
-          </FormRow>
-
-          <FormRow label="Discount">
-            <Input disabled value={formatCurrency(discountInput)} />
-          </FormRow>
-
           <FormRow label="Guest Name" error={errors?.guestId?.message}>
             <Controller
               name="guestId"
               control={control}
-              rules={{ required: "This field is required" }}
+              rules={{ required: "The booking must have a guest" }}
               render={({ field: { ref, value, onChange } }) => (
                 <Select
                   ref={ref}
@@ -296,6 +289,41 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
                 />
               )}
             />
+          </FormRow>
+
+          <FormRow label="Number of Guests" error={errors?.numGuests?.message}>
+            <Controller
+              name="numGuests"
+              control={control}
+              rules={{
+                required: "Number of guests is required",
+                min: {
+                  value: 1,
+                  message: "Minimum number of guests must be 1",
+                },
+                max: {
+                  value: cabinInput?.maxCapacity,
+                  message: `Maximum number of guests must be ${cabinInput?.maxCapacity}`,
+                },
+              }}
+              render={({ field: { ref, value, onChange } }) => (
+                <Select
+                  ref={ref}
+                  options={numGuestOptions}
+                  value={value}
+                  onChange={(e) => onChange(e.target.value)}
+                  disabled={isUpdating}
+                />
+              )}
+            />
+          </FormRow>
+
+          <FormRow label="Price">
+            <Input disabled value={formatCurrency(cabinPriceInput)} />
+          </FormRow>
+
+          <FormRow label="Discount">
+            <Input disabled value={formatCurrency(discountInput)} />
           </FormRow>
 
           <FormRow label="Observations">

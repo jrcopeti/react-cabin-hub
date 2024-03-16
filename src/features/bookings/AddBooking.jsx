@@ -2,7 +2,6 @@ import Button from "../../ui/Button";
 import CreateBookingForm from "./CreateBookingForm";
 import Modal from "../../ui/Modal";
 import { NavLink } from "react-router-dom";
-import { HiOutlinePlus, HiOutlinePlusSmall } from "react-icons/hi2";
 
 function AddBooking() {
   return (
