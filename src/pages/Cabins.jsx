@@ -13,14 +13,14 @@ function Cabins() {
           <span>
             <HiOutlineHomeModern />
           </span>
-          All cabins
+          Cabins
         </Heading>
         <AddCabin />
         <CabinTableOperations />
       </Row>
 
         <CabinTable />
-      
+
     </>
   );
 }

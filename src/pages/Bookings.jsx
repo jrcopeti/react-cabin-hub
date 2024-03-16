@@ -13,7 +13,7 @@ function Bookings() {
           <span>
             <HiOutlineCalendarDays />
           </span>
-          All bookings
+          Bookings
         </Heading>
         <AddBooking />
         <BookingTableOperations />
