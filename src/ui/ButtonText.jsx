@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from "styled-components";
 
 const ButtonText = styled.button`
   color: var(--color-brand-600);
@@ -9,10 +9,29 @@ const ButtonText = styled.button`
   border: none;
   border-radius: var(--border-radius-sm);
 
-  &:hover,
-  &:active {
-    color: var(--color-brand-700);
-  }
+  ${(props) =>
+    props.type === "normal" &&
+    css`
+      color: var(--color-brand-600);
+      &:hover,
+      &:active {
+        color: var(--color-brand-700);
+      }
+    `}
+
+  ${(props) =>
+    props.type === "form" &&
+    css`
+      color: var(--color-indigo-700);
+      &:hover,
+      &:active {
+        color: var(--color-indigo-100);
+      }
+    `}
 `;
+
+ButtonText.defaultProps = {
+  type: "normal",
+};
 
 export default ButtonText;

@@ -255,7 +255,7 @@ function CreateBookingForm() {
     <>
       <>
         <Row type="form">
-          <ButtonText className="button-back" onClick={moveBack}>
+          <ButtonText type="form" className="button-back" onClick={moveBack}>
             &larr; Back
           </ButtonText>
           <Heading as="h1">
@@ -287,7 +287,7 @@ function CreateBookingForm() {
                   </ArrowContainer>
                 )}
               >
-                <ButtonText
+                <ButtonText type="form"
                   onClick={openPopover}
                   onMouseEnter={openPopover}
                   onMouseLeave={closePopover}
