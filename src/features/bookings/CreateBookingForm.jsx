@@ -28,7 +28,7 @@ import { formatCurrency, subtractDates } from "../../utils/helpers";
 
 import { isBefore, isValid, parseISO, startOfToday } from "date-fns";
 import styled, { css } from "styled-components";
-import {windowSizes } from "../../utils/constants";
+import { windowSizes } from "../../utils/constants";
 import {
   HiOutlineSquaresPlus,
   HiOutlineQuestionMarkCircle,
@@ -253,52 +253,53 @@ function CreateBookingForm() {
 
   return (
     <>
-      <>
-        <Row type="form">
-          <ButtonText type="form" className="button-back" onClick={moveBack}>
-            &larr; Back
-          </ButtonText>
-          <Heading as="h1">
-            <span>
-              <HiOutlineSquaresPlus />
-            </span>
-            {cabinIdInput ? `Book Cabin ${cabinInput?.name}` : "Book Cabin"}
-            <span>
-              <Popover
-                isOpen={isPopoverOpen}
-                positions={positionPopover}
-                padding={10}
-                reposition={false}
-                onClickOutside={closePopover}
-                parentElement={boxContainerPopoverRef.current}
-                content={({ position, childRect, popoverRect }) => (
-                  <ArrowContainer
-                    position={position}
-                    childRect={childRect}
-                    popoverRect={popoverRect}
-                    arrowColor={"var(--color-brand-200)"}
-                    arrowSize={8}
-                  >
-                    <PopoverContent>
-                      &#10095; First, check if the cabin is available for the
-                      selected dates. If it's available, fill out the rest form
-                      to complete your booking.
-                    </PopoverContent>
-                  </ArrowContainer>
-                )}
-              >
-                <ButtonText type="form"
-                  onClick={openPopover}
-                  onMouseEnter={openPopover}
-                  onMouseLeave={closePopover}
+      <div>
+        <ButtonText className="button-back" onClick={moveBack}>
+          &larr; Back
+        </ButtonText>
+      </div>
+      <Row type="form">
+        <Heading as="h1">
+          <span>
+            <HiOutlineSquaresPlus />
+          </span>
+          {cabinIdInput ? `Book Cabin ${cabinInput?.name}` : "Book Cabin"}
+          <span>
+            <Popover
+              isOpen={isPopoverOpen}
+              positions={positionPopover}
+              padding={10}
+              reposition={false}
+              onClickOutside={closePopover}
+              parentElement={boxContainerPopoverRef.current}
+              content={({ position, childRect, popoverRect }) => (
+                <ArrowContainer
+                  position={position}
+                  childRect={childRect}
+                  popoverRect={popoverRect}
+                  arrowColor={"var(--color-brand-200)"}
+                  arrowSize={8}
                 >
-                  <HiOutlineQuestionMarkCircle />
-                </ButtonText>
-              </Popover>
-            </span>
-          </Heading>
-        </Row>
-      </>
+                  <PopoverContent>
+                    &#10095; First, check if the cabin is available for the
+                    selected dates. If it's available, fill out the rest form to
+                    complete your booking.
+                  </PopoverContent>
+                </ArrowContainer>
+              )}
+            >
+              <ButtonText
+                type="form"
+                onClick={openPopover}
+                onMouseEnter={openPopover}
+                onMouseLeave={closePopover}
+              >
+                <HiOutlineQuestionMarkCircle />
+              </ButtonText>
+            </Popover>
+          </span>
+        </Heading>
+      </Row>
 
       <Form type="regular" onSubmit={handleSubmit(onSubmit, onError)}>
         <FormRow label="Cabin" error={errors?.cabinId?.message}>

@@ -161,7 +161,7 @@ function BookingRow({ booking }) {
                       icon={<HiArrowDownOnSquare />}
                       onClick={() => navigate(`/checkin/${bookingId}`)}
                     >
-                      Checkin
+                      Check in
                     </Menus.Button>
 
                     <Modal.Open opens="edit-booking">
@@ -218,7 +218,7 @@ function BookingRow({ booking }) {
                       icon={<HiArrowDownOnSquare />}
                       onClick={() => navigate(`/checkin/${bookingId}`)}
                     >
-                      Checkin
+                      Check in
                     </Menus.Button>
 
                     <Modal.Open opens="edit-booking">
