@@ -13,12 +13,11 @@ function Guests() {
           <span>
             <HiOutlineUserGroup />
           </span>
-          All Guests
-          </Heading>
+          Guests
+        </Heading>
         <AddGuest />
         <GuestTableOperations />
       </Row>
-
       <GuestTable />
     </>
   );

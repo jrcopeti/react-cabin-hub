@@ -170,6 +170,14 @@ function CabinRow({ cabin, isLoading }) {
                   </Modal.Open>
 
                   <Menus.Button
+                    icon={<HiArrowDownOnSquareStack />}
+                    onClick={() => navigate(`/bookings/new/${cabinId}`)}
+                    disabled={isCreating}
+                  >
+                    Book Cabin
+                  </Menus.Button>
+
+                  <Menus.Button
                     icon={<HiSquare2Stack />}
                     onClick={handleDuplicate}
                     disabled={isCreating}
