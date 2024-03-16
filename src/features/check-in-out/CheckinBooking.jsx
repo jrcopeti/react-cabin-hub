@@ -16,8 +16,8 @@ import { useSettings } from "../settings/useSettings";
 import { useCheckin } from "./useCheckin";
 
 import { formatCurrency } from "../../utils/helpers";
-import { screenSizes, windowSizes } from "../../utils/constants";
-import { useWindowSize } from "../../hooks/useWindowSize";
+import { screenSizes } from "../../utils/constants";
+
 import { HiOutlineArrowDownOnSquareStack } from "react-icons/hi2";
 
 const Box = styled.div`
@@ -49,8 +49,6 @@ function CheckinBooking() {
   const moveBack = useMoveBack();
 
   const { checkin, isCheckingIn } = useCheckin();
-
-  const { width } = useWindowSize();
 
   useEffect(() => setConfirmPaid(booking?.isPaid ?? false), [booking]);
 
@@ -87,19 +85,12 @@ function CheckinBooking() {
 
   return (
     <>
-      <Row type="horizontal">
-        {width <= windowSizes.tablet && (
-          <div className="button-back">
-            <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
-          </div>
-        )}
-        <HeadingGroup>
-          {width >= windowSizes.tablet && (
-            <div className="button-back">
-              <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
-            </div>
-          )}
+      <div className="button-back">
+        <ButtonText onClick={moveBack}>&larr; Back</ButtonText>
+      </div>
 
+      <Row type="horizontal">
+        <HeadingGroup>
           <Heading as="h5">
             <span>
               <HiOutlineArrowDownOnSquareStack />

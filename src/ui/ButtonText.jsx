@@ -12,20 +12,20 @@ const ButtonText = styled.button`
   ${(props) =>
     props.type === "normal" &&
     css`
-      color: var(--color-brand-600);
+      color: var(--color-brand-500);
       &:hover,
       &:active {
-        color: var(--color-brand-700);
+        color: var(--color-brand-600);
       }
     `}
 
   ${(props) =>
     props.type === "form" &&
     css`
-      color: var(--color-indigo-700);
+      color: var(--color-grey-500);
       &:hover,
       &:active {
-        color: var(--color-indigo-100);
+        color: var(--color-grey-700);
       }
     `}
 `;
