@@ -385,13 +385,8 @@ function CreateBookingForm() {
 
         {isAvailable === false && (
           <FormRowVertical>
-            <Message color={color}>
-              <span>{React.createElement(Icon)}</span>
-              {messageAvailable}
-            </Message>
-
             {!!(cabinIdInput || startDateInput || endDateInput) && (
-              <span style={{ placeSelf: "flex-end" }}>
+              <span style={{ placeSelf: "flex-start" }}>
                 <Button
                   type="reset"
                   variation="secondary"
@@ -401,6 +396,10 @@ function CreateBookingForm() {
                 </Button>
               </span>
             )}
+            <Message color={color}>
+              <span>{React.createElement(Icon)}</span>
+              {messageAvailable}
+            </Message>
           </FormRowVertical>
         )}
 
