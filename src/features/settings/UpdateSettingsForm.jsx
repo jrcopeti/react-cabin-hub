@@ -1,5 +1,5 @@
 import Form from "../../ui/Form";
-import FormRow from "../../ui/FormRow";
+import FormRowVertical from "../../ui/FormRowVertical";
 import Input from "../../ui/Input";
 import { useSettings } from "./useSettings";
 import Spinner from "../../ui/Spinner";
@@ -28,8 +28,8 @@ function UpdateSettingsForm() {
   }
 
   return (
-    <Form>
-      <FormRow label="Minimum nights/booking">
+    <Form type="regular">
+      <FormRowVertical label="Minimum nights/booking">
         <Input
           type="number"
           id="min-nights"
@@ -38,8 +38,8 @@ function UpdateSettingsForm() {
           onBlur={(e) => handleUpdate(e, "minBookingLength")}
           disabled={isUpdating}
         />
-      </FormRow>
-      <FormRow label="Maximum nights/booking">
+      </FormRowVertical>
+      <FormRowVertical label="Maximum nights/booking">
         <Input
           type="number"
           id="max-nights"
@@ -48,8 +48,8 @@ function UpdateSettingsForm() {
           onBlur={(e) => handleUpdate(e, "maxBookingLength")}
           disabled={isUpdating}
         />
-      </FormRow>
-      <FormRow label="Maximum guests/booking">
+      </FormRowVertical>
+      <FormRowVertical label="Maximum guests/booking">
         <Input
           type="number"
           id="max-guests"
@@ -58,8 +58,8 @@ function UpdateSettingsForm() {
           onBlur={(e) => handleUpdate(e, "maxGuestsPerBooking")}
           disabled={isUpdating}
         />
-      </FormRow>
-      <FormRow label="Breakfast price">
+      </FormRowVertical>
+      <FormRowVertical label="Breakfast price">
         <Input
           type="number"
           id="breakfast-price"
@@ -68,7 +68,7 @@ function UpdateSettingsForm() {
           onBlur={(e) => handleUpdate(e, "breakfastPrice")}
           disabled={isUpdating}
         />
-      </FormRow>
+      </FormRowVertical>
     </Form>
   );
 }

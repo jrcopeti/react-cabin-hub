@@ -11,6 +11,10 @@ import toast from "react-hot-toast";
 import Modal from "../../ui/Modal";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import { useLogout } from "./useLogout";
+import { useWindowSize } from "../../hooks/useWindowSize";
+import { windowSizes } from "../../utils/constants";
+import FormRowVertical from "../../ui/FormRowVertical";
+import ButtonGroup from "../../ui/ButtonGroup";
 
 function UpdatePasswordForm() {
   const { register, handleSubmit, formState, getValues, reset } = useForm();
@@ -19,6 +23,8 @@ function UpdatePasswordForm() {
   const { updateUser, isUpdating } = useUpdateUser();
 
   const { logout, isLoading: isDeleting } = useLogout();
+
+  const { width } = useWindowSize();
 
   function onSubmit({ password }) {
     updateUser(
@@ -35,7 +41,7 @@ function UpdatePasswordForm() {
     toast.success("Account was successfully deleted. Hope to see you soon!");
   }
 
-  return (
+  return width >= windowSizes.tablet ? (
     <>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <FormRow
@@ -74,11 +80,79 @@ function UpdatePasswordForm() {
           />
         </FormRow>
         <FormRow>
-          <Button onClick={reset} type="reset" variation="secondary">
-            Cancel
-          </Button>
-          <Button disabled={isUpdating}>Update password</Button>
+          <ButtonGroup>
+            <Button onClick={reset} type="reset" variation="secondary">
+              Cancel
+            </Button>
+            <Button disabled={isUpdating}>Update password</Button>
+          </ButtonGroup>
         </FormRow>
+      </Form>
+      <FormRow>
+        Do you want to delete your account?
+        <Modal>
+          <Modal.Open opens="delete">
+            <Button variation="danger">Delete Account</Button>
+          </Modal.Open>
+
+          <Modal.Window name="delete">
+            <ConfirmDelete
+              resourceName="account"
+              disabled={isDeleting}
+              onConfirm={() => {
+                handleDeleteAccount();
+              }}
+            />
+          </Modal.Window>
+        </Modal>
+      </FormRow>
+    </>
+  ) : (
+    <>
+      <Form onSubmit={handleSubmit(onSubmit)}>
+        <FormRowVertical
+          label="New Password (min 8 characters)"
+          error={errors?.password?.message}
+        >
+          <Input
+            type="password"
+            id="password"
+            autoComplete="current-password"
+            disabled={isUpdating}
+            {...register("password", {
+              required: "This field is required",
+              minLength: {
+                value: 8,
+                message: "Password needs a minimum of 8 characters",
+              },
+            })}
+          />
+        </FormRowVertical>
+
+        <FormRowVertical
+          label="Confirm password"
+          error={errors?.passwordConfirm?.message}
+        >
+          <Input
+            type="password"
+            autoComplete="new-password"
+            id="passwordConfirm"
+            disabled={isUpdating}
+            {...register("passwordConfirm", {
+              required: "This field is required",
+              validate: (value) =>
+                getValues().password === value || "Passwords need to match",
+            })}
+          />
+        </FormRowVertical>
+        <FormRowVertical>
+          <ButtonGroup>
+            <Button onClick={reset} type="reset" variation="secondary">
+              Cancel
+            </Button>
+            <Button disabled={isUpdating}>Update password</Button>
+          </ButtonGroup>
+        </FormRowVertical>
       </Form>
       <FormRow>
         Do you want to delete your account?
