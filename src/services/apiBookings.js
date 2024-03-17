@@ -35,6 +35,7 @@ export async function getBookings({ filter, sortBy, page }) {
     console.error(error);
     throw new Error("Bookings could not be loaded");
   }
+  console.log("bookings", data);
   return { data, count };
 }
 
@@ -77,6 +78,7 @@ export async function getStaysAfterDate(date) {
     .select("*, guests(fullName)")
     .gte("startDate", date)
     .lte("startDate", getToday());
+  console.log("data stays", data);
 
   if (error) {
     console.error(error);
@@ -207,4 +209,21 @@ export async function updateAllColumnsBooking(bookingId, newBookingData) {
     }
     return data;
   }
+}
+
+export async function getBookingsByCabin(cabinId) {
+  const query = supabase
+    .from("bookings")
+    .select("*")
+    .eq("cabinId", cabinId)
+    .not("status", "eq", "checked-out");
+
+  const { data, error } = await query;
+  console.log("data", data);
+
+  if (error) {
+    console.error(error);
+    throw new Error("Bookings could not be loaded");
+  }
+  return data;
 }

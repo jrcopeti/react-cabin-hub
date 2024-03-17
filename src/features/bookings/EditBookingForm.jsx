@@ -4,6 +4,8 @@ import { Controller, useForm } from "react-hook-form";
 import { useSettings } from "../settings/useSettings";
 import { useAllCabins } from "../cabins/useAllCabins";
 import { useAllGuests } from "../guests/useAllGuests";
+import { useUpdateBooking } from "./useUpdateBooking";
+import { useGetBookingsByCabin } from "./useGetBookingsByCabin";
 
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
@@ -13,20 +15,29 @@ import FormRow from "../../ui/FormRow";
 import Spinner from "../../ui/Spinner";
 import Select from "../../ui/Select";
 import Checkbox from "../../ui/Checkbox";
+import ButtonGroup from "../../ui/ButtonGroup";
+import Heading from "../../ui/Heading";
+import Row from "../../ui/Row";
+import FormRowVertical from "../../ui/FormRowVertical";
 
 import { formatCurrency, subtractDates } from "../../utils/helpers";
 
-import { format, isBefore, isValid, parseISO, startOfToday } from "date-fns";
-
-import { useUpdateBooking } from "./useUpdateBooking";
-import Heading from "../../ui/Heading";
+import {
+  eachDayOfInterval,
+  format,
+  isBefore,
+  isValid,
+  parseISO,
+  startOfToday,
+} from "date-fns";
 import toast from "react-hot-toast";
+
 import { HiOutlinePencilSquare } from "react-icons/hi2";
-import FormRowVertical from "../../ui/FormRowVertical";
-import Row from "../../ui/Row";
 import { useWindowSize } from "../../hooks/useWindowSize";
+
 import { windowSizes } from "../../utils/constants";
-import ButtonGroup from "../../ui/ButtonGroup";
+import { DayPicker } from "react-day-picker";
+import { useDatePicker } from "../../hooks/useDatePicker";
 
 const StyledDiv = styled.div`
   display: flex;
@@ -67,6 +78,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
     watch,
     control,
     getValues,
+    setValue,
     formState: { errors },
   } = useForm({ defaultValues: editValues });
 
@@ -74,12 +86,22 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
   const startDateInput = watch("startDate");
   const endDateInput = watch("endDate");
 
+  const { range, setRange, footer, handleDayClick } = useDatePicker();
+
+  const { bookings: bookedDates, isLoading: isLoadingBookedDates } =
+    useGetBookingsByCabin(Number(cabinIdInput));
+
   const numNightsInput =
     startDateInput && endDateInput && endDateInput > startDateInput
       ? subtractDates(endDateInput, startDateInput)
       : 0;
 
-  if (isLoadingSettings || isLoadingCabins || isLoadingGuests)
+  if (
+    isLoadingSettings ||
+    isLoadingCabins ||
+    isLoadingGuests ||
+    isLoadingBookedDates
+  )
     return <Spinner />;
 
   const cabinOptions = [
@@ -128,6 +150,15 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
   const discountInput = cabinInput ? cabinInput.discount : 0;
 
   const totalPriceInput = cabinPriceInput + extraPriceInput - discountInput;
+
+  const allBookedDates = bookedDates?.flatMap(({ startDate, endDate }) => {
+    console.log("StartDate:", startDate, "EndDate:", endDate);
+    const start = parseISO(startDate);
+    const end = parseISO(endDate);
+    return eachDayOfInterval({ start, end });
+  });
+
+  const bookedStyle = { border: "2px solid currentColor" };
 
   function onSubmit(data) {
     // selected Cabin
@@ -216,31 +247,33 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             />
           </FormRow>
 
-          <FormRow label="Check in" error={errors?.startDate?.message}>
-            <Input
-              disabled={isUpdating}
-              type="date"
+          <FormRowVertical
+            label="Check in - Check out dates"
+            error={errors?.startDate?.message}
+          >
+            <Controller
+              name="startDate"
               id="startDate"
-              {...register("startDate", {
+              rules={{
                 required: "Check in date is required",
                 validate: {
                   isValidDate: (value) =>
                     isValid(parseISO(value)) || "Invalid date",
-
                   isFutureDate: (value) =>
-                    !isBefore(parseISO(value), startOfToday()) ||
-                    "Check in cannot be before today",
+                    isBefore(new Date(value), startOfToday())
+                      ? "Check in cannot be before today"
+                      : true,
                 },
-              })}
+              }}
+              control={control}
+              render={({ field }) => (
+                <input type="hidden" {...field} value={field.value || ""} />
+              )}
             />
-          </FormRow>
-
-          <FormRow label="Check out" error={errors?.endDate?.message}>
-            <Input
-              disabled={isUpdating}
-              type="date"
+            <Controller
+              name="endDate"
               id="endDate"
-              {...register("endDate", {
+              rules={{
                 required: "Check out date is required",
                 validate: {
                   isValidDate: (value) =>
@@ -276,9 +309,36 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
                       : `Maximum number of nights per booking is ${settings?.maxBookingLength}`;
                   },
                 },
-              })}
+              }}
+              control={control}
+              render={({ field }) => {
+                <input type="hidden" {...field} value={field.value || ""} />;
+              }}
             />
-          </FormRow>
+            <DayPicker
+              mode="range"
+              modifiers={{ booked: allBookedDates }}
+              modifiersStyles={{ booked: bookedStyle }}
+              onDayClick={handleDayClick}
+              selected={range}
+              onSelect={(range) => {
+                setRange(range);
+                setValue(
+                  "startDate",
+                  range?.from ? format(range?.from, "yyyy-MM-dd") : ""
+                );
+                setValue(
+                  "endDate",
+                  range?.to ? format(range?.to, "yyyy-MM-dd") : ""
+                );
+              }}
+              footer={footer}
+            />
+          </FormRowVertical>
+
+          <FormRowVertical error={errors?.endDate?.message}>
+            <input hidden name="endDate" id="endDate" />
+          </FormRowVertical>
 
           <FormRow label="Number of Nights">
             <Input disabled value={numNightsInput} />
@@ -423,31 +483,33 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             />
           </FormRowVertical>
 
-          <FormRowVertical label="Check in" error={errors?.startDate?.message}>
-            <Input
-              disabled={isUpdating}
-              type="date"
+          <FormRowVertical
+            label="Check in - Check out dates"
+            error={errors?.startDate?.message}
+          >
+            <Controller
+              name="startDate"
               id="startDate"
-              {...register("startDate", {
+              rules={{
                 required: "Check in date is required",
                 validate: {
                   isValidDate: (value) =>
                     isValid(parseISO(value)) || "Invalid date",
-
                   isFutureDate: (value) =>
-                    !isBefore(parseISO(value), startOfToday()) ||
-                    "Check in cannot be before today",
+                    isBefore(new Date(value), startOfToday())
+                      ? "Check in cannot be before today"
+                      : true,
                 },
-              })}
+              }}
+              control={control}
+              render={({ field }) => (
+                <input type="hidden" {...field} value={field.value || ""} />
+              )}
             />
-          </FormRowVertical>
-
-          <FormRowVertical label="Check out" error={errors?.endDate?.message}>
-            <Input
-              disabled={isUpdating}
-              type="date"
+            <Controller
+              name="endDate"
               id="endDate"
-              {...register("endDate", {
+              rules={{
                 required: "Check out date is required",
                 validate: {
                   isValidDate: (value) =>
@@ -483,8 +545,38 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
                       : `Maximum number of nights per booking is ${settings?.maxBookingLength}`;
                   },
                 },
-              })}
+              }}
+              control={control}
+              render={({ field }) => {
+                {
+                  console.log("Field value: ", field.value);
+                }
+                <input type="hidden" {...field} value={field.value || ""} />;
+              }}
             />
+            <DayPicker
+              mode="range"
+              modifiers={{ booked: allBookedDates }}
+              modifiersStyles={{ booked: bookedStyle }}
+              onDayClick={handleDayClick}
+              selected={range}
+              onSelect={(range) => {
+                setRange(range);
+                setValue(
+                  "startDate",
+                  range?.from ? format(range?.from, "yyyy-MM-dd") : ""
+                );
+                setValue(
+                  "endDate",
+                  range?.to ? format(range?.to, "yyyy-MM-dd") : ""
+                );
+              }}
+              footer={footer}
+            />
+          </FormRowVertical>
+
+          <FormRowVertical error={errors?.endDate?.message}>
+            <input hidden name="endDate" id="endDate" />
           </FormRowVertical>
 
           <FormRowVertical label="Number of Nights">
