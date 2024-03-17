@@ -12,7 +12,7 @@ const StyledCabinDetails = styled.div`
   flex-direction: column;
   min-width: 40rem;
   max-width: 50rem;
-  max-height: 70rem;
+  max-height: 85dvh;
 
   background-color: var(--color-grey-0);
   border: 1px solid var(--color-grey-100);
@@ -25,7 +25,6 @@ const StyledCabinDetails = styled.div`
   @media (max-width: ${screenSizes.tablet}) {
     padding: 1.6rem 2rem;
     min-width: 80dvw;
-    max-height: 85dvh;
   }
 `;
 

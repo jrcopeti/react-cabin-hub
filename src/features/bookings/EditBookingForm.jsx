@@ -22,11 +22,16 @@ import { useUpdateBooking } from "./useUpdateBooking";
 import Heading from "../../ui/Heading";
 import toast from "react-hot-toast";
 import { HiOutlinePencilSquare } from "react-icons/hi2";
+import FormRowVertical from "../../ui/FormRowVertical";
+import Row from "../../ui/Row";
+import { useWindowSize } from "../../hooks/useWindowSize";
+import { windowSizes } from "../../utils/constants";
+import ButtonGroup from "../../ui/ButtonGroup";
 
 const StyledDiv = styled.div`
   display: flex;
   flex-direction: column;
-  max-height: 80vh;
+  max-height: 85dvh;
   overflow: scroll;
 
   &::-webkit-scrollbar {
@@ -53,6 +58,8 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
   const { cabins, isLoading: isLoadingCabins } = useAllCabins();
 
   const { guests, isLoading: isLoadingGuests } = useAllGuests();
+
+  const { width } = useWindowSize();
 
   const {
     register,
@@ -176,7 +183,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
 
   return (
     <StyledDiv>
-      <>
+      <Row type="form">
         <Heading as="h2">
           <span>
             <HiOutlinePencilSquare />
@@ -184,7 +191,10 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
           {`Edit Booking # ${id}`}
         </Heading>
         <p>Booked on {format(new Date(created_at), "EEE, dd/MM/yyyy, p")}</p>
-        <br />
+      </Row>
+      <br />
+
+      {width >= windowSizes.tablet ? (
         <Form
           onSubmit={handleSubmit(onSubmit, onError)}
           type={onCloseModal ? "modal" : "regular"}
@@ -391,7 +401,219 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             </Button>
           </FormRow>
         </Form>
-      </>
+      ) : (
+        <Form
+          onSubmit={handleSubmit(onSubmit, onError)}
+          type={onCloseModal ? "modal" : "regular"}
+        >
+          <FormRowVertical label="Cabin" error={errors?.cabinId?.message}>
+            <Controller
+              name="cabinId"
+              control={control}
+              rules={{ required: "Cabin is required" }}
+              render={({ field: { ref, value, onChange } }) => (
+                <Select
+                  ref={ref}
+                  options={cabinOptions}
+                  value={value}
+                  onChange={(e) => onChange(e.target.value)}
+                  disabled={isUpdating}
+                />
+              )}
+            />
+          </FormRowVertical>
+
+          <FormRowVertical label="Check in" error={errors?.startDate?.message}>
+            <Input
+              disabled={isUpdating}
+              type="date"
+              id="startDate"
+              {...register("startDate", {
+                required: "Check in date is required",
+                validate: {
+                  isValidDate: (value) =>
+                    isValid(parseISO(value)) || "Invalid date",
+
+                  isFutureDate: (value) =>
+                    !isBefore(parseISO(value), startOfToday()) ||
+                    "Check in cannot be before today",
+                },
+              })}
+            />
+          </FormRowVertical>
+
+          <FormRowVertical label="Check out" error={errors?.endDate?.message}>
+            <Input
+              disabled={isUpdating}
+              type="date"
+              id="endDate"
+              {...register("endDate", {
+                required: "Check out date is required",
+                validate: {
+                  isValidDate: (value) =>
+                    isValid(parseISO(value)) || "Invalid date",
+
+                  isAfterStartDate: (value) => {
+                    return (
+                      !isBefore(
+                        parseISO(value),
+                        parseISO(getValues("startDate"))
+                      ) || "Check out cannot be before check in"
+                    );
+                  },
+
+                  isSameDate: (value) => {
+                    return (
+                      parseISO(value).getTime() !==
+                        parseISO(getValues("startDate")).getTime() ||
+                      "Check out cannot be the same date as check in"
+                    );
+                  },
+                  isMinBookingLength: (value) => {
+                    return subtractDates(value, getValues("startDate")) >=
+                      settings?.minBookingLength
+                      ? true
+                      : `Minimum number of nights per booking is ${settings?.minBookingLength}`;
+                  },
+
+                  ismaxBookingLength: (value) => {
+                    return subtractDates(value, getValues("startDate")) <=
+                      settings?.maxBookingLength
+                      ? true
+                      : `Maximum number of nights per booking is ${settings?.maxBookingLength}`;
+                  },
+                },
+              })}
+            />
+          </FormRowVertical>
+
+          <FormRowVertical label="Number of Nights">
+            <Input disabled value={numNightsInput} />
+          </FormRowVertical>
+
+          <FormRowVertical label="Guest Name" error={errors?.guestId?.message}>
+            <Controller
+              name="guestId"
+              control={control}
+              rules={{ required: "The booking must have a guest" }}
+              render={({ field: { ref, value, onChange } }) => (
+                <Select
+                  ref={ref}
+                  options={guestOptions}
+                  value={value}
+                  onChange={(e) => onChange(e.target.value)}
+                  disabled={isUpdating}
+                />
+              )}
+            />
+          </FormRowVertical>
+
+          <FormRowVertical
+            label="Number of Guests"
+            error={errors?.numGuests?.message}
+          >
+            <Controller
+              name="numGuests"
+              control={control}
+              rules={{
+                required: "Number of guests is required",
+                min: {
+                  value: 1,
+                  message: "Minimum number of guests must be 1",
+                },
+                max: {
+                  value: cabinInput?.maxCapacity,
+                  message: `Maximum number of guests must be ${cabinInput?.maxCapacity}`,
+                },
+              }}
+              render={({ field: { ref, value, onChange } }) => (
+                <Select
+                  ref={ref}
+                  options={numGuestOptions}
+                  value={value}
+                  onChange={(e) => onChange(e.target.value)}
+                  disabled={isUpdating}
+                />
+              )}
+            />
+          </FormRowVertical>
+
+          <FormRowVertical label="Price">
+            <Input disabled value={formatCurrency(cabinPriceInput)} />
+          </FormRowVertical>
+
+          <FormRowVertical label="Discount">
+            <Input disabled value={formatCurrency(discountInput)} />
+          </FormRowVertical>
+
+          <FormRowVertical label="Observations">
+            <Textarea
+              disabled={isUpdating}
+              id="observations"
+              defaultValue=""
+              {...register("observations")}
+            />
+          </FormRowVertical>
+
+          <FormRowVertical label="Extra Price">
+            <Input disabled value={formatCurrency(extraPriceInput)} />
+          </FormRowVertical>
+
+          <FormRowVertical label="Total Price">
+            <Input disabled value={formatCurrency(totalPriceInput)} />
+          </FormRowVertical>
+
+          <FormRowVertical>
+            <Controller
+              control={control}
+              name="hasBreakfast"
+              defaultValue={false}
+              render={({ field: { onChange, value } }) => (
+                <Checkbox
+                  id="hasBreakfast"
+                  disabled={isUpdating}
+                  checked={value}
+                  onChange={(e) => onChange(e.target.checked)}
+                >
+                  Includes breakfast?
+                </Checkbox>
+              )}
+            />
+
+            <Controller
+              control={control}
+              name="isPaid"
+              defaultValue={false}
+              render={({ field: { onChange, value } }) => (
+                <Checkbox
+                  id="isPaid"
+                  disabled={isUpdating}
+                  checked={value}
+                  onChange={(e) => onChange(e.target.checked)}
+                >
+                  Was paid?
+                </Checkbox>
+              )}
+            />
+          </FormRowVertical>
+
+          <FormRowVertical>
+            <ButtonGroup>
+              <Button
+                disabled={isUpdating}
+                variation="secondary"
+                type="reset"
+                onClick={() => onCloseModal?.()}
+              >
+                Cancel
+              </Button>
+              <Button disabled={isUpdating} type="submit" variation="primary">
+                Update Booking
+              </Button>
+            </ButtonGroup>
+          </FormRowVertical>
+        </Form>
+      )}
     </StyledDiv>
   );
 }

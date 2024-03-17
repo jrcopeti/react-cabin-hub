@@ -20,7 +20,6 @@ const LoginLayout = styled.main`
   gap: 3.2rem;
   background-color: var(--color-grey-50);
 
-
   @media (max-width: ${screenSizes.tablet}) {
     grid-template-columns: 1fr;
     padding: 2rem 2.4rem 3.2rem;
@@ -44,13 +43,12 @@ function Login() {
     <LoginLayout>
       <LogoLogin />
       <Row>
-
-      <Heading as="h4">
-        <span>
-          <HiOutlineArrowLeftOnRectangle />
-        </span>
-        Login to your account
-      </Heading>
+        <Heading as="h4">
+          <span>
+            <HiOutlineArrowLeftOnRectangle />
+          </span>
+          Login to your account
+        </Heading>
       </Row>
       <LoginForm />
       <StyledDiv>

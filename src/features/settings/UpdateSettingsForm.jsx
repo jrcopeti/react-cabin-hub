@@ -1,9 +1,10 @@
+import { useSettings } from "./useSettings";
+import { useUpdateSetting } from "./useUpdateSetting";
+
 import Form from "../../ui/Form";
 import FormRowVertical from "../../ui/FormRowVertical";
 import Input from "../../ui/Input";
-import { useSettings } from "./useSettings";
 import Spinner from "../../ui/Spinner";
-import { useUpdateSetting } from "./useUpdateSetting";
 
 function UpdateSettingsForm() {
   const {

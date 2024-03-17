@@ -21,6 +21,7 @@ import Select from "../../ui/Select";
 import Checkbox from "../../ui/Checkbox";
 import ButtonText from "../../ui/ButtonText";
 import Heading from "../../ui/Heading";
+import ButtonGroup from "../../ui/ButtonGroup";
 import PopoverContent from "../../ui/PopoverContent";
 
 import { useMoveBack } from "../../hooks/useMoveBack";
@@ -28,19 +29,19 @@ import { formatCurrency, subtractDates } from "../../utils/helpers";
 
 import { isBefore, isValid, parseISO, startOfToday } from "date-fns";
 import styled, { css } from "styled-components";
-import { windowSizes } from "../../utils/constants";
 import {
   HiOutlineSquaresPlus,
-  HiOutlineQuestionMarkCircle,
   HiOutlineEllipsisHorizontalCircle,
   HiOutlineExclamationTriangle,
   HiOutlineXCircle,
   HiOutlineSquare3Stack3D,
+  HiOutlineQuestionMarkCircle,
 } from "react-icons/hi2";
-
 import { ArrowContainer, Popover } from "react-tiny-popover";
+
 import { usePopover } from "../../hooks/usePopover";
 import { useWindowSize } from "../../hooks/useWindowSize";
+import { windowSizes } from "../../utils/constants";
 
 const color = {
   red: css`
@@ -112,7 +113,7 @@ function CreateBookingForm() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      cabinId: cabinIdUrl || "",
+      cabinId: cabinIdUrl ?? "",
       numGuests: 1,
       cabinPrice: 0,
       extraPrice: 0,
@@ -124,7 +125,7 @@ function CreateBookingForm() {
 
   useEffect(() => {
     reset({
-      cabinId: cabinIdUrl || "",
+      cabinId: "",
     });
   }, [cabinIdUrl, reset]);
 
@@ -307,13 +308,8 @@ function CreateBookingForm() {
             {messageAvailable}
           </Message>
           {!!(cabinIdInput || startDateInput || endDateInput) && (
-            <span  style={{ placeSelf: "center" }}>
-              <Button
-
-                type="reset"
-                variation="secondary"
-                onClick={handleReset}
-              >
+            <span style={{ placeSelf: "center" }}>
+              <Button type="reset" variation="secondary" onClick={handleReset}>
                 Reset
               </Button>
             </span>
@@ -321,208 +317,430 @@ function CreateBookingForm() {
         </FormRowVertical>
       )}
 
-      <Form type="regular" onSubmit={handleSubmit(onSubmit, onError)}>
-        <FormRow label="Cabin" error={errors?.cabinId?.message}>
-          <Controller
-            name="cabinId"
-            control={control}
-            rules={{ required: "Cabin is required" }}
-            render={({ field: { ref, value, onChange } }) => (
-              <Select
-                ref={ref}
-                options={cabinOptions}
-                value={value}
-                onChange={(e) => onChange(e.target.value)}
-                disabled={isCreating}
-              />
-            )}
-          />
-        </FormRow>
+      {width >= windowSizes.tablet ? (
+        <Form type="regular" onSubmit={handleSubmit(onSubmit, onError)}>
+          <FormRow label="Cabin" error={errors?.cabinId?.message}>
+            <Controller
+              name="cabinId"
+              control={control}
+              rules={{ required: "Cabin is required" }}
+              render={({ field: { ref, value, onChange } }) => (
+                <Select
+                  ref={ref}
+                  options={cabinOptions}
+                  value={value}
+                  onChange={(e) => onChange(e.target.value)}
+                  disabled={isCreating}
+                />
+              )}
+            />
+          </FormRow>
 
-        <FormRow label="Check in" error={errors?.startDate?.message}>
-          <Input
-            disabled={isCreating}
-            type="date"
-            id="startDate"
-            {...register("startDate", {
-              required: "Check in date is required",
-              validate: {
-                isValidDate: (value) =>
-                  isValid(parseISO(value)) || "Invalid date",
+          <FormRow label="Check in" error={errors?.startDate?.message}>
+            <Input
+              disabled={isCreating}
+              type="date"
+              id="startDate"
+              {...register("startDate", {
+                required: "Check in date is required",
+                validate: {
+                  isValidDate: (value) =>
+                    isValid(parseISO(value)) || "Invalid date",
 
-                isFutureDate: (value) =>
-                  !isBefore(parseISO(value), startOfToday()) ||
-                  "Check in cannot be before today",
-              },
-            })}
-          />
-        </FormRow>
-
-        <FormRow label="Check out" error={errors?.endDate?.message}>
-          <Input
-            disabled={isCreating}
-            type="date"
-            id="endDate"
-            {...register("endDate", {
-              required: "Check out date is required",
-              validate: {
-                isValidDate: (value) =>
-                  isValid(parseISO(value)) || "Invalid date",
-
-                isAfterStartDate: (value) => {
-                  return (
-                    !isBefore(
-                      parseISO(value),
-                      parseISO(getValues("startDate"))
-                    ) || "Check out cannot be before check in"
-                  );
+                  isFutureDate: (value) =>
+                    !isBefore(parseISO(value), startOfToday()) ||
+                    "Check in cannot be before today",
                 },
+              })}
+            />
+          </FormRow>
 
-                isSameDate: (value) => {
-                  return (
-                    parseISO(value).getTime() !==
-                      parseISO(getValues("startDate")).getTime() ||
-                    "Check out cannot be the same date as check in"
-                  );
-                },
-                isMinBookingLength: (value) => {
-                  return subtractDates(value, getValues("startDate")) >=
-                    settings?.minBookingLength
-                    ? true
-                    : `Minimum number of nights per booking is ${settings?.minBookingLength}`;
-                },
+          <FormRow label="Check out" error={errors?.endDate?.message}>
+            <Input
+              disabled={isCreating}
+              type="date"
+              id="endDate"
+              {...register("endDate", {
+                required: "Check out date is required",
+                validate: {
+                  isValidDate: (value) =>
+                    isValid(parseISO(value)) || "Invalid date",
 
-                ismaxBookingLength: (value) => {
-                  return subtractDates(value, getValues("startDate")) <=
-                    settings?.maxBookingLength
-                    ? true
-                    : `Maximum number of nights per booking is ${settings?.maxBookingLength}`;
-                },
-              },
-            })}
-          />
-        </FormRow>
-
-        {isAvailable === true && (
-          <>
-            <FormRow label="Number of Nights">
-              <Input disabled value={numNightsInput} />
-            </FormRow>
-
-            <FormRow label="Guest Name" error={errors?.guestId?.message}>
-              <Controller
-                name="guestId"
-                control={control}
-                rules={{ required: "The booking must have a guest" }}
-                render={({ field: { ref, value, onChange } }) => (
-                  <Select
-                    ref={ref}
-                    options={guestOptions}
-                    value={value}
-                    onChange={(e) => onChange(e.target.value)}
-                    disabled={isCreating}
-                  />
-                )}
-              />
-            </FormRow>
-
-            <FormRow
-              label="Number of Guests"
-              error={errors?.numGuests?.message}
-            >
-              <Controller
-                name="numGuests"
-                control={control}
-                rules={{
-                  required: "Number of guests is required",
-                  min: {
-                    value: 1,
-                    message: "Minimum number of guests must be 1",
+                  isAfterStartDate: (value) => {
+                    return (
+                      !isBefore(
+                        parseISO(value),
+                        parseISO(getValues("startDate"))
+                      ) || "Check out cannot be before check in"
+                    );
                   },
-                  max: {
-                    value: cabinInput?.maxCapacity,
-                    message: `Maximum number of guests must be ${cabinInput?.maxCapacity}`,
+
+                  isSameDate: (value) => {
+                    return (
+                      parseISO(value).getTime() !==
+                        parseISO(getValues("startDate")).getTime() ||
+                      "Check out cannot be the same date as check in"
+                    );
                   },
-                }}
-                render={({ field: { ref, value, onChange } }) => (
-                  <Select
-                    ref={ref}
-                    options={numGuestOptions}
-                    value={value}
-                    onChange={(e) => onChange(e.target.value)}
-                    disabled={isCreating}
-                  />
-                )}
-              />
-            </FormRow>
+                  isMinBookingLength: (value) => {
+                    return subtractDates(value, getValues("startDate")) >=
+                      settings?.minBookingLength
+                      ? true
+                      : `Minimum number of nights per booking is ${settings?.minBookingLength}`;
+                  },
 
-            <FormRow label="Price">
-              <Input disabled value={formatCurrency(cabinPriceInput)} />
-            </FormRow>
+                  ismaxBookingLength: (value) => {
+                    return subtractDates(value, getValues("startDate")) <=
+                      settings?.maxBookingLength
+                      ? true
+                      : `Maximum number of nights per booking is ${settings?.maxBookingLength}`;
+                  },
+                },
+              })}
+            />
+          </FormRow>
 
-            <FormRow label="Discount">
-              <Input disabled value={formatCurrency(discountInput)} />
-            </FormRow>
+          {isAvailable === true && (
+            <>
+              <FormRow label="Number of Nights">
+                <Input disabled value={numNightsInput} />
+              </FormRow>
 
-            <FormRow label="Observations">
-              <Textarea
-                disabled={isCreating}
-                id="observations"
-                {...register("observations")}
-              />
-            </FormRow>
+              <FormRow label="Guest Name" error={errors?.guestId?.message}>
+                <Controller
+                  name="guestId"
+                  control={control}
+                  rules={{ required: "The booking must have a guest" }}
+                  render={({ field: { ref, value, onChange } }) => (
+                    <Select
+                      ref={ref}
+                      options={guestOptions}
+                      value={value}
+                      onChange={(e) => onChange(e.target.value)}
+                      disabled={isCreating}
+                    />
+                  )}
+                />
+              </FormRow>
 
-            <FormRow label="Extra Price">
-              <Input disabled value={formatCurrency(extraPriceInput)} />
-            </FormRow>
+              <FormRow
+                label="Number of Guests"
+                error={errors?.numGuests?.message}
+              >
+                <Controller
+                  name="numGuests"
+                  control={control}
+                  rules={{
+                    required: "Number of guests is required",
+                    min: {
+                      value: 1,
+                      message: "Minimum number of guests must be 1",
+                    },
+                    max: {
+                      value: cabinInput?.maxCapacity,
+                      message: `Maximum number of guests must be ${cabinInput?.maxCapacity}`,
+                    },
+                  }}
+                  render={({ field: { ref, value, onChange } }) => (
+                    <Select
+                      ref={ref}
+                      options={numGuestOptions}
+                      value={value}
+                      onChange={(e) => onChange(e.target.value)}
+                      disabled={isCreating}
+                    />
+                  )}
+                />
+              </FormRow>
 
-            <FormRow label="Total Price">
-              <Input disabled value={formatCurrency(totalPriceInput)} />
-            </FormRow>
+              <FormRow label="Price">
+                <Input disabled value={formatCurrency(cabinPriceInput)} />
+              </FormRow>
 
-            <FormRow>
-              <Controller
-                control={control}
-                name="hasBreakfast"
-                render={({ field: { onChange, value } }) => (
-                  <Checkbox
-                    id="hasBreakfast"
-                    disabled={isCreating}
-                    checked={value}
-                    onChange={(e) => onChange(e.target.checked)}
+              <FormRow label="Discount">
+                <Input disabled value={formatCurrency(discountInput)} />
+              </FormRow>
+
+              <FormRow label="Observations">
+                <Textarea
+                  disabled={isCreating}
+                  id="observations"
+                  {...register("observations")}
+                />
+              </FormRow>
+
+              <FormRow label="Extra Price">
+                <Input disabled value={formatCurrency(extraPriceInput)} />
+              </FormRow>
+
+              <FormRow label="Total Price">
+                <Input disabled value={formatCurrency(totalPriceInput)} />
+              </FormRow>
+
+              <FormRow>
+                <Controller
+                  control={control}
+                  name="hasBreakfast"
+                  render={({ field: { onChange, value } }) => (
+                    <Checkbox
+                      id="hasBreakfast"
+                      disabled={isCreating}
+                      checked={value}
+                      onChange={(e) => onChange(e.target.checked)}
+                    >
+                      Includes breakfast?
+                    </Checkbox>
+                  )}
+                />
+
+                <Controller
+                  control={control}
+                  name="isPaid"
+                  render={({ field: { onChange, value } }) => (
+                    <Checkbox
+                      id="isPaid"
+                      disabled={isCreating}
+                      checked={value}
+                      onChange={(e) => onChange(e.target.checked)}
+                    >
+                      Was paid?
+                    </Checkbox>
+                  )}
+                />
+              </FormRow>
+
+              <FormRow>
+                <Button
+                  variation="secondary"
+                  type="reset"
+                  onClick={handleReset}
+                >
+                  Cancel
+                </Button>
+                <Button disabled={isCreating} type="submit" variation="primary">
+                  Create Booking
+                </Button>
+              </FormRow>
+            </>
+          )}
+        </Form>
+      ) : (
+        <Form type="regular" onSubmit={handleSubmit(onSubmit, onError)}>
+          <FormRowVertical label="Cabin" error={errors?.cabinId?.message}>
+            <Controller
+              name="cabinId"
+              control={control}
+              rules={{ required: "Cabin is required" }}
+              render={({ field: { ref, value, onChange } }) => (
+                <Select
+                  ref={ref}
+                  options={cabinOptions}
+                  value={value}
+                  onChange={(e) => onChange(e.target.value)}
+                  disabled={isCreating}
+                />
+              )}
+            />
+          </FormRowVertical>
+
+          <FormRowVertical label="Check in" error={errors?.startDate?.message}>
+            <Input
+              disabled={isCreating}
+              type="date"
+              id="startDate"
+              {...register("startDate", {
+                required: "Check in date is required",
+                validate: {
+                  isValidDate: (value) =>
+                    isValid(parseISO(value)) || "Invalid date",
+
+                  isFutureDate: (value) =>
+                    !isBefore(parseISO(value), startOfToday()) ||
+                    "Check in cannot be before today",
+                },
+              })}
+            />
+          </FormRowVertical>
+
+          <FormRowVertical label="Check out" error={errors?.endDate?.message}>
+            <Input
+              disabled={isCreating}
+              type="date"
+              id="endDate"
+              {...register("endDate", {
+                required: "Check out date is required",
+                validate: {
+                  isValidDate: (value) =>
+                    isValid(parseISO(value)) || "Invalid date",
+
+                  isAfterStartDate: (value) => {
+                    return (
+                      !isBefore(
+                        parseISO(value),
+                        parseISO(getValues("startDate"))
+                      ) || "Check out cannot be before check in"
+                    );
+                  },
+
+                  isSameDate: (value) => {
+                    return (
+                      parseISO(value).getTime() !==
+                        parseISO(getValues("startDate")).getTime() ||
+                      "Check out cannot be the same date as check in"
+                    );
+                  },
+                  isMinBookingLength: (value) => {
+                    return subtractDates(value, getValues("startDate")) >=
+                      settings?.minBookingLength
+                      ? true
+                      : `Minimum number of nights per booking is ${settings?.minBookingLength}`;
+                  },
+
+                  ismaxBookingLength: (value) => {
+                    return subtractDates(value, getValues("startDate")) <=
+                      settings?.maxBookingLength
+                      ? true
+                      : `Maximum number of nights per booking is ${settings?.maxBookingLength}`;
+                  },
+                },
+              })}
+            />
+          </FormRowVertical>
+
+          {isAvailable === true && (
+            <>
+              <FormRowVertical label="Number of Nights">
+                <Input disabled value={numNightsInput} />
+              </FormRowVertical>
+
+              <FormRowVertical
+                label="Guest Name"
+                error={errors?.guestId?.message}
+              >
+                <Controller
+                  name="guestId"
+                  control={control}
+                  rules={{ required: "The booking must have a guest" }}
+                  render={({ field: { ref, value, onChange } }) => (
+                    <Select
+                      ref={ref}
+                      options={guestOptions}
+                      value={value}
+                      onChange={(e) => onChange(e.target.value)}
+                      disabled={isCreating}
+                    />
+                  )}
+                />
+              </FormRowVertical>
+
+              <FormRowVertical
+                label="Number of Guests"
+                error={errors?.numGuests?.message}
+              >
+                <Controller
+                  name="numGuests"
+                  control={control}
+                  rules={{
+                    required: "Number of guests is required",
+                    min: {
+                      value: 1,
+                      message: "Minimum number of guests must be 1",
+                    },
+                    max: {
+                      value: cabinInput?.maxCapacity,
+                      message: `Maximum number of guests must be ${cabinInput?.maxCapacity}`,
+                    },
+                  }}
+                  render={({ field: { ref, value, onChange } }) => (
+                    <Select
+                      ref={ref}
+                      options={numGuestOptions}
+                      value={value}
+                      onChange={(e) => onChange(e.target.value)}
+                      disabled={isCreating}
+                    />
+                  )}
+                />
+              </FormRowVertical>
+
+              <FormRowVertical label="Price">
+                <Input disabled value={formatCurrency(cabinPriceInput)} />
+              </FormRowVertical>
+
+              <FormRowVertical label="Discount">
+                <Input disabled value={formatCurrency(discountInput)} />
+              </FormRowVertical>
+
+              <FormRowVertical label="Observations">
+                <Textarea
+                  disabled={isCreating}
+                  id="observations"
+                  {...register("observations")}
+                />
+              </FormRowVertical>
+
+              <FormRowVertical label="Extra Price">
+                <Input disabled value={formatCurrency(extraPriceInput)} />
+              </FormRowVertical>
+
+              <FormRowVertical label="Total Price">
+                <Input disabled value={formatCurrency(totalPriceInput)} />
+              </FormRowVertical>
+
+              <FormRowVertical>
+                <Controller
+                  control={control}
+                  name="hasBreakfast"
+                  render={({ field: { onChange, value } }) => (
+                    <Checkbox
+                      id="hasBreakfast"
+                      disabled={isCreating}
+                      checked={value}
+                      onChange={(e) => onChange(e.target.checked)}
+                    >
+                      Includes breakfast?
+                    </Checkbox>
+                  )}
+                />
+
+                <Controller
+                  control={control}
+                  name="isPaid"
+                  render={({ field: { onChange, value } }) => (
+                    <Checkbox
+                      id="isPaid"
+                      disabled={isCreating}
+                      checked={value}
+                      onChange={(e) => onChange(e.target.checked)}
+                    >
+                      Was paid?
+                    </Checkbox>
+                  )}
+                />
+              </FormRowVertical>
+
+              <FormRowVertical>
+                <ButtonGroup>
+                  <Button
+                    variation="secondary"
+                    type="reset"
+                    onClick={handleReset}
                   >
-                    Includes breakfast?
-                  </Checkbox>
-                )}
-              />
-
-              <Controller
-                control={control}
-                name="isPaid"
-                render={({ field: { onChange, value } }) => (
-                  <Checkbox
-                    id="isPaid"
+                    Cancel
+                  </Button>
+                  <Button
                     disabled={isCreating}
-                    checked={value}
-                    onChange={(e) => onChange(e.target.checked)}
+                    type="submit"
+                    variation="primary"
                   >
-                    Was paid?
-                  </Checkbox>
-                )}
-              />
-            </FormRow>
-
-            <FormRow>
-              <Button variation="secondary" type="reset" onClick={handleReset}>
-                Cancel
-              </Button>
-              <Button disabled={isCreating} type="submit" variation="primary">
-                Create Booking
-              </Button>
-            </FormRow>
-          </>
-        )}
-      </Form>
+                    Create Booking
+                  </Button>
+                </ButtonGroup>
+              </FormRowVertical>
+            </>
+          )}
+        </Form>
+      )}
     </>
   );
 }
