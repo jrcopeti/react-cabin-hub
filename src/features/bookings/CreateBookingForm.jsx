@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 
 import { useNavigate, useParams } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
@@ -35,6 +35,7 @@ import {
   HiOutlineEllipsisHorizontalCircle,
   HiOutlineExclamationTriangle,
   HiOutlineXCircle,
+  HiOutlineSquare3Stack3D,
 } from "react-icons/hi2";
 
 import { ArrowContainer, Popover } from "react-tiny-popover";
@@ -96,16 +97,10 @@ function CreateBookingForm() {
 
   const { cabinId: cabinIdUrl } = useParams();
 
-  const { isPopoverOpen, openPopover, closePopover } = usePopover();
-
-  const boxContainerPopoverRef = useRef();
+  const { isPopoverOpen, openPopover, closePopover, boxContainerPopoverRef } =
+    usePopover();
 
   const { width } = useWindowSize();
-
-  const positionPopover =
-    width >= windowSizes.tablet
-      ? ["right", "bottom", "left", "top"]
-      : ["bottom", "right", "left", "top"];
 
   const {
     register,
@@ -261,13 +256,17 @@ function CreateBookingForm() {
       <Row type="form">
         <Heading as="h1">
           <span>
-            <HiOutlineSquaresPlus />
+            <HiOutlineSquare3Stack3D />
           </span>
           {cabinIdInput ? `Book Cabin ${cabinInput?.name}` : "Book Cabin"}
           <span>
             <Popover
               isOpen={isPopoverOpen}
-              positions={positionPopover}
+              positions={
+                width >= windowSizes.tablet
+                  ? ["right", "bottom"]
+                  : ["bottom", "right"]
+              }
               padding={10}
               reposition={false}
               onClickOutside={closePopover}
@@ -277,7 +276,7 @@ function CreateBookingForm() {
                   position={position}
                   childRect={childRect}
                   popoverRect={popoverRect}
-                  arrowColor={"var(--color-brand-200)"}
+                  arrowColor={"var(--color-grey-400)"}
                   arrowSize={8}
                 >
                   <PopoverContent>
@@ -300,6 +299,27 @@ function CreateBookingForm() {
           </span>
         </Heading>
       </Row>
+
+      {isAvailable === false && (
+        <FormRowVertical>
+          <Message color={color}>
+            <span>{React.createElement(Icon)}</span>
+            {messageAvailable}
+          </Message>
+          {!!(cabinIdInput || startDateInput || endDateInput) && (
+            <span  style={{ placeSelf: "center" }}>
+              <Button
+
+                type="reset"
+                variation="secondary"
+                onClick={handleReset}
+              >
+                Reset
+              </Button>
+            </span>
+          )}
+        </FormRowVertical>
+      )}
 
       <Form type="regular" onSubmit={handleSubmit(onSubmit, onError)}>
         <FormRow label="Cabin" error={errors?.cabinId?.message}>
@@ -382,26 +402,6 @@ function CreateBookingForm() {
             })}
           />
         </FormRow>
-
-        {isAvailable === false && (
-          <FormRowVertical>
-            {!!(cabinIdInput || startDateInput || endDateInput) && (
-              <span style={{ placeSelf: "flex-start" }}>
-                <Button
-                  type="reset"
-                  variation="secondary"
-                  onClick={handleReset}
-                >
-                  Reset
-                </Button>
-              </span>
-            )}
-            <Message color={color}>
-              <span>{React.createElement(Icon)}</span>
-              {messageAvailable}
-            </Message>
-          </FormRowVertical>
-        )}
 
         {isAvailable === true && (
           <>

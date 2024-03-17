@@ -6,14 +6,16 @@ const StyledDiv = styled.div`
   align-items: center;
   text-align: center;
   transition: opacity 0.3s;
+  width: 30rem;
 
   & div {
-    background-color: var(--color-brand-200);
-    border: 1px solid var(--color-grey-100);
+    background-color: var(--color-grey-400);
+    border: 1px solid var(--color-grey-300);
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-md);
     padding: 1rem 1.8rem;
-    color: var(--color-grey-600);
+    opacity: 0.95;
+    color: var(--color-grey-700);
     width: 20rem;
     height: auto;
 
@@ -21,8 +23,14 @@ const StyledDiv = styled.div`
   }
 
   @media (max-width: ${screenSizes.tablet}) {
-    font-size: 1rem;
-    width: 30rem;
+
+
+
+    & div {
+
+      width: 20rem;
+
+    }
 
   }
 `;

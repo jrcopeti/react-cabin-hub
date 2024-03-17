@@ -10,7 +10,7 @@ import FormRow from "../../ui/FormRow";
 import { useCreateCabin } from "./useCreateCabin";
 import { useUpdateCabin } from "./useUpdateCabin";
 import Heading from "../../ui/Heading";
-import { HiOutlinePencilSquare, HiOutlineSquaresPlus } from "react-icons/hi2";
+import { HiOutlineChevronDoubleUp, HiOutlinePencilSquare} from "react-icons/hi2";
 import Row from "../../ui/Row";
 
 function CreateCabinForm({ onCloseModal, cabinToEdit = {} }) {
@@ -80,7 +80,8 @@ function CreateCabinForm({ onCloseModal, cabinToEdit = {} }) {
 
         <Heading as="h2">
           <span>
-            <HiOutlineSquaresPlus />
+          <HiOutlineChevronDoubleUp />
+
           </span>
           Create New Cabin
         </Heading>

@@ -11,6 +11,8 @@ const StyledFormRow = styled.div`
     padding: 0.5rem 0rem;
     font-size: 1.6rem;
   }
+
+
 `;
 
 const Label = styled.label`

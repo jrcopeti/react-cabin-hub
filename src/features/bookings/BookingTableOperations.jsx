@@ -2,8 +2,18 @@ import SortBy from "../../ui/SortBy";
 import Filter from "../../ui/Filter";
 import TableOperations from "../../ui/TableOperations";
 import { HiOutlineMagnifyingGlass } from "react-icons/hi2";
+import { ArrowContainer, Popover } from "react-tiny-popover";
+import { usePopover } from "../../hooks/usePopover";
+import { useWindowSize } from "../../hooks/useWindowSize";
+import { windowSizes } from "../../utils/constants";
+import PopoverContent from "../../ui/PopoverContent";
+import ButtonText from "../../ui/ButtonText";
 
 function BookingTableOperations() {
+  const { isPopoverOpen, openPopover, closePopover, boxContainerPopoverRef } =
+    usePopover();
+  const { width } = useWindowSize();
+
   return (
     <TableOperations>
       <Filter
@@ -16,9 +26,36 @@ function BookingTableOperations() {
         ]}
       />
       <div>
-        <span>
-          <HiOutlineMagnifyingGlass />
-        </span>
+        <Popover
+          isOpen={isPopoverOpen}
+          positions={width >= windowSizes.tablet ? ["bottom"] : ["right"]}
+          padding={10}
+          reposition={false}
+          onClickOutside={closePopover}
+          parentElement={boxContainerPopoverRef.current}
+          content={({ position, childRect, popoverRect }) => (
+            <ArrowContainer
+              position={position}
+              childRect={childRect}
+              popoverRect={popoverRect}
+              arrowColor={"var(--color-grey-400)"}
+              arrowSize={8}
+            >
+              <PopoverContent>
+                &#10095; Filter or order by categories
+              </PopoverContent>
+            </ArrowContainer>
+          )}
+        >
+          <ButtonText
+            type="form"
+            onClick={openPopover}
+            onMouseEnter={openPopover}
+            onMouseLeave={closePopover}
+          >
+            <HiOutlineMagnifyingGlass />
+          </ButtonText>
+        </Popover>
 
         <SortBy
           options={[

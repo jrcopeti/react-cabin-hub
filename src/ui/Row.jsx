@@ -77,7 +77,7 @@ const Row = styled.div`
       padding: 1.6rem 1.2rem;
       gap: 1.6rem;
 
-      background-color: var(--color-green-100);
+      background-color: var(--color-blue-100);
       border: 1px solid var(--color-grey-100);
       border-radius: var(--border-radius-md);
       box-shadow: var(--shadow-md);

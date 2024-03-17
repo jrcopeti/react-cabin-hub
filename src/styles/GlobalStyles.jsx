@@ -134,6 +134,11 @@ body {
   min-height: 100dvh;
   line-height: 1.5;
   font-size: 1.6rem;
+  -webkit-hyphens:manual;
+  -moz-hyphens:manual;
+  -webkit-hyphens: manual;
+  hyphens:manual;
+
 }
 
 input,
