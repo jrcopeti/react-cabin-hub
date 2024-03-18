@@ -6,6 +6,7 @@ import {
   HiOutlineEllipsisHorizontalCircle,
   HiOutlineExclamationTriangle,
   HiOutlineXCircle,
+  HiOutlineCheckCircle,
 } from "react-icons/hi2";
 import { useSettings } from "../settings/useSettings";
 import { subtractDates } from "../../utils/helpers";
@@ -14,8 +15,8 @@ export function useAvailability(cabinId, startDate, endDate) {
   const initialState = {
     isAvailable: false,
     message: "",
-    color: "grey",
-    Icon: HiOutlineEllipsisHorizontalCircle,
+    color: "",
+    Icon: null,
   };
 
   const [availability, setAvailability] = useState({ initialState });
@@ -54,7 +55,7 @@ export function useAvailability(cabinId, startDate, endDate) {
       if (!cabinId || !startDate || !endDate) {
         return setAvailability({
           isAvailable: false,
-          message: "Please select a cabin",
+          message: "Start by selecting a cabin",
           color: "grey",
           Icon: HiOutlineEllipsisHorizontalCircle,
         });
@@ -130,9 +131,10 @@ export function useAvailability(cabinId, startDate, endDate) {
         } else {
           setAvailability({
             isAvailable: true,
-            message: "The cabin is available for the selected dates!",
+            message: "The cabin is available for the selected dates",
+            color: "green",
+            Icon: HiOutlineCheckCircle,
           });
-          toast.success("The cabin is available for the selected dates!");
         }
       } catch (error) {
         console.error(error);

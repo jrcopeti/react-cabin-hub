@@ -1,15 +1,11 @@
 import styled from "styled-components";
+import { motion } from "framer-motion";
 
-const ButtonIcon = styled.button`
+const ButtonIcon = styled(motion.button)`
   background: none;
   border: none;
   padding: 0.6rem;
   border-radius: var(--border-radius-sm);
-  transition: all 0.3s;
-
-  &:hover {
-    scale: 1.4;
-  }
 
   & svg {
     width: 2.2rem;

@@ -8,7 +8,12 @@ import { HiArrowRightOnRectangle } from "react-icons/hi2";
 function Logout() {
   const { logout, isLoading } = useLogout();
   return (
-    <ButtonIcon disabled={isLoading} onClick={logout}>
+    <ButtonIcon
+      whileHover={{ scale: 1.4 }}
+      whileTap={{ scale: 0.8 }}
+      disabled={isLoading}
+      onClick={logout}
+    >
       {isLoading ? <SpinnerMini /> : <HiArrowRightOnRectangle />}
     </ButtonIcon>
   );

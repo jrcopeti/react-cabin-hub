@@ -245,7 +245,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             />
           </FormRow>
 
-          <FormRowVertical
+          <FormRow
             label="Check in - Check out dates"
             error={errors?.startDate?.message}
           >
@@ -348,7 +348,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
               }}
               footer={footer}
             />
-          </FormRowVertical>
+          </FormRow>
 
           <FormRowVertical error={errors?.endDate?.message}>
             <input hidden name="endDate" id="endDate" />

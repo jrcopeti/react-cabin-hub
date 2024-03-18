@@ -5,17 +5,42 @@ import { createPortal } from "react-dom";
 
 import { HiXMark } from "react-icons/hi2";
 import { useOutsideClick } from "../hooks/useOutsideClick";
+import { motion } from "framer-motion";
+import { screenSizes } from "../utils/constants";
 
-const StyledModal = styled.div`
+const modalVariants = {
+  hidden: {
+    y: "-100dvh",
+
+    opacity: 0,
+  },
+  visible: {
+    y: "0",
+
+    opacity: 1,
+    transition: {
+      duration: 0.1,
+      type: "spring",
+      damping: 25,
+      stiffness: 500,
+    },
+  },
+  exit: {
+    y: "100vh",
+    opacity: 0,
+  },
+};
+
+const StyledModal = styled(motion.div)`
   position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  top: 5dvh;
+  left: 20dvw;
+  max-width: max-content;
+  z-index: 100;
   background-color: var(--color-grey-0);
   border-radius: var(--border-radius-lg);
   box-shadow: var(--shadow-lg);
   padding: 3.2rem 4rem;
-  transition: all 1.5s;
   overflow: auto;
 
   &::-webkit-scrollbar {
@@ -23,9 +48,24 @@ const StyledModal = styled.div`
   }
   scrollbar-width: none;
   -ms-overflow-style: none;
+
+  @media (max-width: ${screenSizes.mobile}) {
+    top: 5dvh;
+    left: 0dvw;
+  }
+
+  @media (max-width: ${screenSizes.tablet}) {
+    top: 10dvh;
+    left: 5dvw;
+  }
+
+  @media (max-width: ${screenSizes.laptop}) {
+    top: 5dvh;
+    left: 5dvw;
+  }
 `;
 
-const Overlay = styled.div`
+const Overlay = styled(motion.div)`
   position: fixed;
   top: 0;
   left: 0;
@@ -56,7 +96,6 @@ const Button = styled.button`
   & svg {
     width: 2.4rem;
     height: 2.4rem;
-    /* Sometimes we need both */
     /* fill: var(--color-grey-500);
     stroke: var(--color-grey-500); */
     color: var(--color-grey-500);
@@ -92,7 +131,14 @@ function Window({ children, name }) {
   if (name !== openName) return null;
   return createPortal(
     <Overlay>
-      <StyledModal ref={ref}>
+      <StyledModal
+        ref={ref}
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+        variants={modalVariants}
+        transition={{ duration: 0.5 }}
+      >
         <Button onClick={close}>
           <HiXMark />
         </Button>

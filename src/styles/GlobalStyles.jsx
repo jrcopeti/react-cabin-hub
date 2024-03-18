@@ -50,6 +50,9 @@ const GlobalStyles = createGlobalStyle`
     /* For dark mode */
     --image-grayscale: 0;
   --image-opacity: 100%;
+
+
+
 }
   &.dark-mode {
 
@@ -103,6 +106,8 @@ const GlobalStyles = createGlobalStyle`
   --color-brand-700: #4338ca;
   --color-brand-800: #3730a3;
   --color-brand-900: #312e81;
+
+
 
   --border-radius-tiny: 3px;
   --border-radius-sm: 5px;
@@ -215,9 +220,10 @@ img {
 
   --rdp-outline: 2px solid var(--color-yellow-700); /* Outline border for focused elements */
   --rdp-outline-selected: 3px solid var(--color-grey-900); /* Outline border for focused _and_ selected elements */
-  --rdp-selected-color: var(--color-grey-50); /* Color of selected day text */
+  --rdp-selected-color: #f9fafb; /* Color of selected day text */
 
-  margin: 1em;
+  /* margin: 1em; */
+ margin: 2rem -0.3rem;
 }
 
 
@@ -240,6 +246,7 @@ img {
   overflow: hidden !important;
   clip: rect(1px, 1px, 1px, 1px) !important;
   border: 0 !important;
+
 }
 
 /* Buttons */
@@ -304,6 +311,8 @@ img {
   margin: 0;
   max-width: calc(var(--rdp-cell-size) * 7);
   border-collapse: collapse;
+  box-shadow: var(--shadow-md);
+  
 }
 
 .rdp-with_weeknumber .rdp-table {
@@ -317,6 +326,8 @@ img {
   justify-content: space-between;
   padding: 0;
   text-align: left;
+  background-color: var(--color-grey-100);
+  box-shadow: var(--shadow-md);
 }
 
 .rdp-multiple_months .rdp-caption {
@@ -441,6 +452,7 @@ img {
 
 .rdp-tbody {
   border: 0;
+
 }
 
 .rdp-tfoot {
@@ -472,6 +484,7 @@ img {
   margin: 0;
   border: 2px solid transparent;
   border-radius: 100%;
+
 }
 
 .rdp-day_today:not(.rdp-day_outside) {

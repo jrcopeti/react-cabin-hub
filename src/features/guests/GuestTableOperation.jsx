@@ -57,6 +57,9 @@ function GuestTableOperations() {
             onClick={openPopover}
             onMouseEnter={openPopover}
             onMouseLeave={closePopover}
+            whileHover={{ scale: [1, 1.1, 1.2] }}
+            whileTap={{ scale: 0.5 }}
+            transition={{ duration: 0.3 }}
           >
             <HiOutlineMagnifyingGlass />
           </ButtonText>

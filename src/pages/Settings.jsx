@@ -11,7 +11,6 @@ import Row from "../ui/Row";
 import PopoverContent from "../ui/PopoverContent";
 import ButtonText from "../ui/ButtonText";
 
-
 import { useWindowSize } from "../hooks/useWindowSize";
 import { usePopover } from "../hooks/usePopover";
 import { windowSizes } from "../utils/constants";
@@ -57,6 +56,9 @@ function Settings() {
                 onClick={openPopover}
                 onMouseEnter={openPopover}
                 onMouseLeave={closePopover}
+                whileHover={{ scale: [1, 1.1, 1.2] }}
+                whileTap={{ scale: 0.5 }}
+                transition={{ duration: 0.3 }}
               >
                 <HiOutlineQuestionMarkCircle />
               </ButtonText>
