@@ -23,7 +23,12 @@ const ButtonText = styled.button`
     props.type === "form" &&
     css`
       color: var(--color-grey-700);
-      &:hover,
+
+      &:hover {
+        scale: 1.4;
+        color: var(--color-grey-500);
+      }
+
       &:active {
         color: var(--color-grey-500);
       }

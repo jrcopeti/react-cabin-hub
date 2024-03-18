@@ -14,6 +14,11 @@ import toast from "react-hot-toast";
 import { useUpdateGuest } from "./useUpdateGuest";
 import Heading from "../../ui/Heading";
 import { HiOutlinePencilSquare } from "react-icons/hi2";
+import Row from "../../ui/Row";
+import { useWindowSize } from "../../hooks/useWindowSize";
+import { windowSizes } from "../../utils/constants";
+import FormRowVertical from "../../ui/FormRowVertical";
+import ButtonGroup from "../../ui/ButtonGroup";
 
 function CreateGuestForm({ onCloseModal, guestToEdit = {} }) {
   const { id, ...editValues } = guestToEdit;
@@ -31,6 +36,8 @@ function CreateGuestForm({ onCloseModal, guestToEdit = {} }) {
   const { updateGuest, isUpdating } = useUpdateGuest();
 
   const { countries, isLoading: isLoadingCountries } = useCountries();
+
+  const { width } = useWindowSize();
 
   if (isLoadingCountries) {
     return <Spinner />;
@@ -76,83 +83,167 @@ function CreateGuestForm({ onCloseModal, guestToEdit = {} }) {
 
   return (
     <>
-      <Heading as="h2">
-        <span>
-          <HiOutlinePencilSquare />
-        </span>
-        {`Edit Guest # ${id} - ${fullName}`}
-      </Heading>
+      <Row type="form">
+        <Heading as="h2">
+          <span>
+            <HiOutlinePencilSquare />
+          </span>
+          {`Edit Guest # ${id} - ${fullName}`}
+        </Heading>
+      </Row>
       <br />
-      <Form
-        onSubmit={handleSubmit(onSubmit, onError)}
-        type={onCloseModal ? "modal" : "regular"}
-      >
-        <FormRow label="Full Name" error={errors?.fullName?.message}>
-          <Input
-            disabled={isUpdating}
-            type="text"
-            id="fullName"
-            {...register("fullName", { required: "This field is required" })}
-          />
-        </FormRow>
+      {width >= windowSizes.tablet ? (
+        <Form
+          onSubmit={handleSubmit(onSubmit, onError)}
+          type={onCloseModal ? "modal" : "regular"}
+        >
+          <FormRow label="Full Name" error={errors?.fullName?.message}>
+            <Input
+              disabled={isUpdating}
+              type="text"
+              id="fullName"
+              {...register("fullName", { required: "This field is required" })}
+            />
+          </FormRow>
 
-        <FormRow label="Email" error={errors?.email?.message}>
-          <Input
-            disabled={isUpdating}
-            type="text"
-            id="email"
-            {...register("email", {
-              required: "Email is required",
-              pattern: {
-                value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                message: "Invalid email address",
-              },
-            })}
-          />
-        </FormRow>
+          <FormRow label="Email" error={errors?.email?.message}>
+            <Input
+              disabled={isUpdating}
+              type="text"
+              id="email"
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                  message: "Invalid email address",
+                },
+              })}
+            />
+          </FormRow>
 
-        <FormRow label="national ID" error={errors?.nationalID?.message}>
-          <Input
-            disabled={isUpdating}
-            type="text"
-            id="nationalID"
-            {...register("nationalID", {
-              required: "National ID is required",
-            })}
-          />
-        </FormRow>
+          <FormRow label="national ID" error={errors?.nationalID?.message}>
+            <Input
+              disabled={isUpdating}
+              type="text"
+              id="nationalID"
+              {...register("nationalID", {
+                required: "National ID is required",
+              })}
+            />
+          </FormRow>
 
-        <FormRow label="Nationality" error={errors?.nationality?.message}>
-          <Controller
-            name="nationality"
-            control={control}
-            rules={{ required: "This field is required" }}
-            render={({ field: { ref, value, onChange } }) => (
-              <Select
-                ref={ref}
-                options={countriesOptionsNationality}
-                value={value}
-                onChange={(e) => onChange(e.target.value)}
-                disabled={isUpdating}
-              />
-            )}
-          />
-        </FormRow>
+          <FormRow label="Nationality" error={errors?.nationality?.message}>
+            <Controller
+              name="nationality"
+              control={control}
+              rules={{ required: "This field is required" }}
+              render={({ field: { ref, value, onChange } }) => (
+                <Select
+                  ref={ref}
+                  options={countriesOptionsNationality}
+                  value={value}
+                  onChange={(e) => onChange(e.target.value)}
+                  disabled={isUpdating}
+                />
+              )}
+            />
+          </FormRow>
 
-        <FormRow>
-          <Button
-            disabled={isUpdating}
-            variation="secondary"
-            type="reset"
-            onClick={() => onCloseModal?.()}
+          <FormRow>
+            <Button
+              disabled={isUpdating}
+              variation="secondary"
+              type="reset"
+              onClick={() => onCloseModal?.()}
+            >
+              Cancel
+            </Button>
+            <Button disabled={isUpdating} type="submit">
+              Update Guest
+            </Button>
+          </FormRow>
+        </Form>
+      ) : (
+        <Form
+          onSubmit={handleSubmit(onSubmit, onError)}
+          type={onCloseModal ? "modal" : "regular"}
+        >
+          <FormRowVertical label="Full Name" error={errors?.fullName?.message}>
+            <Input
+              disabled={isUpdating}
+              type="text"
+              id="fullName"
+              {...register("fullName", { required: "This field is required" })}
+            />
+          </FormRowVertical>
+
+          <FormRowVertical label="Email" error={errors?.email?.message}>
+            <Input
+              disabled={isUpdating}
+              type="text"
+              id="email"
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                  message: "Invalid email address",
+                },
+              })}
+            />
+          </FormRowVertical>
+
+          <FormRowVertical
+            label="national ID"
+            error={errors?.nationalID?.message}
           >
-            Cancel
-          </Button>
-          <Button disabled={isUpdating} type="submit">
-            Update Guest
-          </Button>
-        </FormRow>
-      </Form>
+            <Input
+              disabled={isUpdating}
+              type="text"
+              id="nationalID"
+              {...register("nationalID", {
+                required: "National ID is required",
+              })}
+            />
+          </FormRowVertical>
+
+          <FormRowVertical
+            label="Nationality"
+            error={errors?.nationality?.message}
+          >
+            <Controller
+              name="nationality"
+              control={control}
+              rules={{ required: "This field is required" }}
+              render={({ field: { ref, value, onChange } }) => (
+                <Select
+                  ref={ref}
+                  options={countriesOptionsNationality}
+                  value={value}
+                  onChange={(e) => onChange(e.target.value)}
+                  disabled={isUpdating}
+                />
+              )}
+            />
+          </FormRowVertical>
+          
+
+          <FormRowVertical>
+            <ButtonGroup>
+              <Button
+                disabled={isUpdating}
+                variation="secondary"
+                type="reset"
+                onClick={() => onCloseModal?.()}
+              >
+                Cancel
+              </Button>
+              <Button disabled={isUpdating} type="submit">
+                Update Guest
+              </Button>
+            </ButtonGroup>
+          </FormRowVertical>
+        </Form>
+      )}
     </>
   );
 }

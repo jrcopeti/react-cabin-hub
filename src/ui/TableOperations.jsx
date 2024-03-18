@@ -13,11 +13,12 @@ const TableOperations = styled.div`
     gap: 1.6rem;
   }
 
-  & span {
+  & svg {
     display: flex;
+    font-size: 2.8rem;
 
-    font-size: 2.5rem;
   }
+
 
   @media (max-width: ${screenSizes.tablet}) {
     flex-direction: column;

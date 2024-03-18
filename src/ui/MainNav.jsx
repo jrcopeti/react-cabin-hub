@@ -46,9 +46,14 @@ const StyledNavLink = styled(NavLink)`
     height: 2.4rem;
     color: var(--color-grey-400);
     transition: all 0.3s;
+
   }
 
-  &:hover svg,
+  &:hover svg {
+    color: var(--color-brand-600);
+    scale: 1.4;
+  }
+
   &:active svg,
   &.active:link svg,
   &.active:visited svg {

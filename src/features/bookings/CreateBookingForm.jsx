@@ -8,6 +8,7 @@ import { useSettings } from "../settings/useSettings";
 import { useAllCabins } from "../cabins/useAllCabins";
 import { useAllGuests } from "../guests/useAllGuests";
 import { useAvailability } from "./useAvailability";
+import { useGetBookingsByCabin } from "./useGetBookingsByCabin";
 
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
@@ -24,9 +25,6 @@ import Heading from "../../ui/Heading";
 import ButtonGroup from "../../ui/ButtonGroup";
 import PopoverContent from "../../ui/PopoverContent";
 
-import { useMoveBack } from "../../hooks/useMoveBack";
-import { formatCurrency, subtractDates } from "../../utils/helpers";
-
 import {
   isBefore,
   isValid,
@@ -34,7 +32,9 @@ import {
   format,
   eachDayOfInterval,
   startOfToday,
+  endOfDay,
 } from "date-fns";
+
 import styled, { css } from "styled-components";
 import {
   HiOutlineEllipsisHorizontalCircle,
@@ -43,14 +43,16 @@ import {
   HiOutlineSquare3Stack3D,
   HiOutlineQuestionMarkCircle,
 } from "react-icons/hi2";
+
 import { ArrowContainer, Popover } from "react-tiny-popover";
 import { DayPicker } from "react-day-picker";
 
+import { useMoveBack } from "../../hooks/useMoveBack";
+import { formatCurrency, subtractDates } from "../../utils/helpers";
 import { usePopover } from "../../hooks/usePopover";
+import { useDatePicker } from "../../hooks/useDatePicker";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { windowSizes } from "../../utils/constants";
-import { useDatePicker } from "../../hooks/useDatePicker";
-import { useGetBookingsByCabin } from "./useGetBookingsByCabin";
 
 const color = {
   red: css`
@@ -123,7 +125,7 @@ function CreateBookingForm() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      cabinId: cabinIdUrl ?? "",
+      cabinId: cabinIdUrl || "",
       numGuests: 1,
       cabinPrice: 0,
       extraPrice: 0,
@@ -135,13 +137,12 @@ function CreateBookingForm() {
 
   useEffect(() => {
     reset({
-      cabinId: "",
+      cabinId: cabinIdUrl || "",
     });
   }, [cabinIdUrl, reset]);
 
   const cabinIdInput = watch("cabinId");
   const startDateInput = watch("startDate");
-
   const endDateInput = watch("endDate");
 
   const { availability, resetAvailability } = useAvailability(
@@ -158,11 +159,6 @@ function CreateBookingForm() {
   const { bookings: bookedDates, isLoading: isLoadingBookedDates } =
     useGetBookingsByCabin(Number(cabinIdInput));
 
-  const numNightsInput =
-    startDateInput && endDateInput && endDateInput > startDateInput
-      ? subtractDates(endDateInput, startDateInput)
-      : 0;
-
   if (
     isLoadingSettings ||
     isLoadingCabins ||
@@ -170,6 +166,11 @@ function CreateBookingForm() {
     isLoadingBookedDates
   )
     return <Spinner />;
+
+  const numNightsInput =
+    startDateInput && endDateInput && endDateInput > startDateInput
+      ? subtractDates(endDateInput, startDateInput)
+      : 0;
 
   const cabinOptions = [
     { value: "", label: "Select a Cabin" },
@@ -219,16 +220,13 @@ function CreateBookingForm() {
 
   const totalPriceInput = cabinPriceInput + extraPriceInput - discountInput;
 
-  const allBookedDates = bookedDates?.flatMap(({ startDate, endDate }) => {
-    console.log("StartDate:", startDate, "EndDate:", endDate);
+  const bookedDatesForCabin = bookedDates?.flatMap(({ startDate, endDate }) => {
     const start = parseISO(startDate);
-    const end = parseISO(endDate);
-    return eachDayOfInterval({ start, end });
+    const end = endOfDay(parseISO(endDate));
+    const startToday = isBefore(start, startOfToday()) ? startOfToday() : start;
+    const datesInRange = eachDayOfInterval({ start: startToday, end });
+    return datesInRange;
   });
-
-  const bookedStyle = { border: "2px solid currentColor" };
-
-  console.log("AllBookedDates: ", allBookedDates);
 
   function handleReset() {
     resetAvailability();
@@ -386,8 +384,13 @@ function CreateBookingForm() {
                 },
               }}
               control={control}
-              render={({ field }) => (
-                <input type="hidden" {...field} value={field.value || ""} />
+              render={({ field: { ref, value, onChange } }) => (
+                <input
+                  type="hidden"
+                  ref={ref}
+                  onChange={(e) => onChange(e.target.value)}
+                  value={value || ""}
+                />
               )}
             />
             <Controller
@@ -431,17 +434,26 @@ function CreateBookingForm() {
                 },
               }}
               control={control}
-              render={({ field }) => {
-                {
-                  console.log("Field value: ", field.value);
-                }
-                <input type="hidden" {...field} value={field.value || ""} />;
-              }}
+              render={({ field: { ref, value, onChange } }) => (
+                <input
+                  type="hidden"
+                  ref={ref}
+                  onChange={(e) => onChange(e.target.value)}
+                  value={value || ""}
+                />
+              )}
             />
+
             <DayPicker
               mode="range"
-              modifiers={{ booked: allBookedDates }}
-              modifiersStyles={{ booked: bookedStyle }}
+              modifiers={{ booked: bookedDatesForCabin }}
+              modifiersStyles={{
+                booked: {
+                  color: "var(--color-grey-400)",
+                  pointerEvents: "none",
+                  opacity: 0.5,
+                },
+              }}
               onDayClick={handleDayClick}
               selected={range}
               onSelect={(range) => {
@@ -584,6 +596,7 @@ function CreateBookingForm() {
           )}
         </Form>
       ) : (
+        // Mobile
         <Form type="regular" onSubmit={handleSubmit(onSubmit, onError)}>
           <FormRowVertical label="Cabin" error={errors?.cabinId?.message}>
             <Controller
@@ -664,16 +677,19 @@ function CreateBookingForm() {
               }}
               control={control}
               render={({ field }) => {
-                {
-                  console.log("Field value: ", field.value);
-                }
                 <input type="hidden" {...field} value={field.value || ""} />;
               }}
             />
             <DayPicker
               mode="range"
-              modifiers={{ booked: allBookedDates }}
-              modifiersStyles={{ booked: bookedStyle }}
+              modifiers={{ booked: bookedDatesForCabin }}
+              modifiersStyles={{
+                booked: {
+                  color: "var(--color-grey-400)",
+                  pointerEvents: "none",
+                  opacity: 0.5,
+                },
+              }}
               onDayClick={handleDayClick}
               selected={range}
               onSelect={(range) => {
