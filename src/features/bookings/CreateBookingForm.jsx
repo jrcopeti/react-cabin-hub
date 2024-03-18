@@ -32,6 +32,7 @@ import {
   format,
   eachDayOfInterval,
   startOfToday,
+  endOfDay,
 } from "date-fns";
 
 import styled, { css } from "styled-components";
@@ -158,19 +159,18 @@ function CreateBookingForm() {
   const { bookings: bookedDates, isLoading: isLoadingBookedDates } =
     useGetBookingsByCabin(Number(cabinIdInput));
 
-    if (
-      isLoadingSettings ||
-      isLoadingCabins ||
-      isLoadingGuests ||
-      isLoadingBookedDates
-    )
-      return <Spinner />;
+  if (
+    isLoadingSettings ||
+    isLoadingCabins ||
+    isLoadingGuests ||
+    isLoadingBookedDates
+  )
+    return <Spinner />;
 
   const numNightsInput =
     startDateInput && endDateInput && endDateInput > startDateInput
       ? subtractDates(endDateInput, startDateInput)
       : 0;
-
 
   const cabinOptions = [
     { value: "", label: "Select a Cabin" },
@@ -222,13 +222,11 @@ function CreateBookingForm() {
 
   const bookedDatesForCabin = bookedDates?.flatMap(({ startDate, endDate }) => {
     const start = parseISO(startDate);
-    const end = parseISO(endDate);
+    const end = endOfDay(parseISO(endDate));
     const startToday = isBefore(start, startOfToday()) ? startOfToday() : start;
     const datesInRange = eachDayOfInterval({ start: startToday, end });
     return datesInRange;
   });
-
-  console.log("AllBookedDates: ", bookedDatesForCabin);
 
   function handleReset() {
     resetAvailability();
@@ -386,8 +384,13 @@ function CreateBookingForm() {
                 },
               }}
               control={control}
-              render={({ field }) => (
-                <input type="hidden" {...field} value={field.value || ""} />
+              render={({ field: { ref, value, onChange } }) => (
+                <input
+                  type="hidden"
+                  ref={ref}
+                  onChange={(e) => onChange(e.target.value)}
+                  value={value || ""}
+                />
               )}
             />
             <Controller
@@ -431,12 +434,14 @@ function CreateBookingForm() {
                 },
               }}
               control={control}
-              render={({ field }) => {
-                {
-                  console.log("Field value: ", field.value);
-                }
-                <input type="hidden" {...field} value={field.value || ""} />;
-              }}
+              render={({ field: { ref, value, onChange } }) => (
+                <input
+                  type="hidden"
+                  ref={ref}
+                  onChange={(e) => onChange(e.target.value)}
+                  value={value || ""}
+                />
+              )}
             />
 
             <DayPicker
@@ -672,9 +677,6 @@ function CreateBookingForm() {
               }}
               control={control}
               render={({ field }) => {
-                {
-                  console.log("Field value: ", field.value);
-                }
                 <input type="hidden" {...field} value={field.value || ""} />;
               }}
             />

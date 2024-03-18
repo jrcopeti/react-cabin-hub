@@ -24,6 +24,7 @@ import { formatCurrency, subtractDates } from "../../utils/helpers";
 
 import {
   eachDayOfInterval,
+  endOfDay,
   format,
   isBefore,
   isValid,
@@ -151,14 +152,13 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
 
   const totalPriceInput = cabinPriceInput + extraPriceInput - discountInput;
 
-  const allBookedDates = bookedDates?.flatMap(({ startDate, endDate }) => {
-    console.log("StartDate:", startDate, "EndDate:", endDate);
+  const bookedDatesForCabin = bookedDates?.flatMap(({ startDate, endDate }) => {
     const start = parseISO(startDate);
-    const end = parseISO(endDate);
-    return eachDayOfInterval({ start, end });
+    const end = endOfDay(parseISO(endDate));
+    const startToday = isBefore(start, startOfToday()) ? startOfToday() : start;
+    const datesInRange = eachDayOfInterval({ start: startToday, end });
+    return datesInRange;
   });
-
-  const bookedStyle = { border: "2px solid currentColor" };
 
   function onSubmit(data) {
     // selected Cabin
@@ -194,8 +194,6 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
       totalPrice,
       status: "unconfirmed",
     };
-
-    console.log("bookingId:", id, "Data:", finalData);
 
     updateBooking(
       { id, editBookingData: finalData },
@@ -266,8 +264,13 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
                 },
               }}
               control={control}
-              render={({ field }) => (
-                <input type="hidden" {...field} value={field.value || ""} />
+              render={({ field: { ref, value, onChange } }) => (
+                <input
+                  type="hidden"
+                  ref={ref}
+                  onChange={(e) => onChange(e.target.value)}
+                  value={value || ""}
+                />
               )}
             />
             <Controller
@@ -311,14 +314,25 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
                 },
               }}
               control={control}
-              render={({ field }) => {
-                <input type="hidden" {...field} value={field.value || ""} />;
-              }}
+              render={({ field: { ref, value, onChange } }) => (
+                <input
+                  type="hidden"
+                  ref={ref}
+                  onChange={(e) => onChange(e.target.value)}
+                  value={value || ""}
+                />
+              )}
             />
             <DayPicker
               mode="range"
-              modifiers={{ booked: allBookedDates }}
-              modifiersStyles={{ booked: bookedStyle }}
+              modifiers={{ booked: bookedDatesForCabin }}
+              modifiersStyles={{
+                booked: {
+                  color: "var(--color-grey-400)",
+                  pointerEvents: "none",
+                  opacity: 0.5,
+                },
+              }}
               onDayClick={handleDayClick}
               selected={range}
               onSelect={(range) => {
@@ -502,8 +516,13 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
                 },
               }}
               control={control}
-              render={({ field }) => (
-                <input type="hidden" {...field} value={field.value || ""} />
+              render={({ field: { ref, value, onChange } }) => (
+                <input
+                  type="hidden"
+                  ref={ref}
+                  onChange={(e) => onChange(e.target.value)}
+                  value={value || ""}
+                />
               )}
             />
             <Controller
@@ -547,17 +566,25 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
                 },
               }}
               control={control}
-              render={({ field }) => {
-                {
-                  console.log("Field value: ", field.value);
-                }
-                <input type="hidden" {...field} value={field.value || ""} />;
-              }}
+              render={({ field: { ref, value, onChange } }) => (
+                <input
+                  type="hidden"
+                  ref={ref}
+                  onChange={(e) => onChange(e.target.value)}
+                  value={value || ""}
+                />
+              )}
             />
             <DayPicker
               mode="range"
-              modifiers={{ booked: allBookedDates }}
-              modifiersStyles={{ booked: bookedStyle }}
+              modifiers={{ booked: bookedDatesForCabin }}
+              modifiersStyles={{
+                booked: {
+                  color: "var(--color-grey-400)",
+                  pointerEvents: "none",
+                  opacity: 0.5,
+                },
+              }}
               onDayClick={handleDayClick}
               selected={range}
               onSelect={(range) => {

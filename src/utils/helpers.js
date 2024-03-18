@@ -1,7 +1,7 @@
 import { add, formatDistance, parseISO } from "date-fns";
 import { differenceInDays } from "date-fns";
 
-// This function work for both Date objects and strings 
+// This function work for both Date objects and strings
 export const subtractDates = (dateStr1, dateStr2) =>
   differenceInDays(parseISO(String(dateStr1)), parseISO(String(dateStr2)));
 
