@@ -52,14 +52,13 @@ const Heading = styled.h1`
       line-height: 1.5;
 
   /* button popover */
-  & span {
-    font-size: 2.2rem;
+  & svg {
+    font-size: 2.8rem;
   }
 
   & span:first-child {
     display: flex;
     align-items: center;
-    font-size: 2.8rem;
   }
 `;
 

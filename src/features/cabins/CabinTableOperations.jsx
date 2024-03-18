@@ -41,7 +41,7 @@ function CabinTableOperations() {
               arrowSize={8}
             >
               <PopoverContent>
-                &#10095; Filter or order by categories
+                &#10095; Filter or sort by categories
               </PopoverContent>
             </ArrowContainer>
           )}

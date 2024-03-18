@@ -216,6 +216,8 @@ export async function getBookingsByCabin(cabinId) {
     .from("bookings")
     .select("*")
     .eq("cabinId", cabinId)
+    .gte("endDate", getToday({ end: true }))
+
     .not("status", "eq", "checked-out");
 
   const { data, error } = await query;

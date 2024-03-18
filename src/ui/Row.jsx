@@ -28,6 +28,7 @@ const Row = styled.div`
         min-width: 30rem;
       }
 
+    
       & .button-back {
         font-size: 1.8rem;
         display: flex;
