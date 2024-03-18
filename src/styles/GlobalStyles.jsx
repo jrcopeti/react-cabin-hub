@@ -217,7 +217,8 @@ img {
   --rdp-outline-selected: 3px solid var(--color-grey-900); /* Outline border for focused _and_ selected elements */
   --rdp-selected-color: var(--color-grey-50); /* Color of selected day text */
 
-  margin: 1em;
+  /* margin: 1em; */
+ margin: 2rem -0.3rem;
 }
 
 

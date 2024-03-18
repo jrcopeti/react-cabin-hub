@@ -71,6 +71,11 @@ const color = {
     color: var(--color-yellow-700);
     text-shadow: 2px 2px 2px var(--color-yellow-100);
   `,
+  green: css`
+    background-color: var(--color-green-100);
+    color: var(--color-green-700);
+    text-shadow: 2px 2px 2px var(--color-green-100);
+  `,
 };
 
 const Message = styled.div`
@@ -82,16 +87,22 @@ const Message = styled.div`
   font-size: 1.6rem;
   display: flex;
   align-items: center;
+  text-align: center;
   justify-content: center;
   gap: 0.8rem;
   transition: ease-in-out 0.35s;
+
+  
 
   & span {
     font-size: 2.5rem;
     display: flex;
     align-items: center;
     text-align: center;
+
   }
+
+
 `;
 
 function CreateBookingForm() {
@@ -145,7 +156,7 @@ function CreateBookingForm() {
   const startDateInput = watch("startDate");
   const endDateInput = watch("endDate");
 
-  const { availability, resetAvailability } = useAvailability(
+  const { availability} = useAvailability(
     cabinIdInput,
     startDateInput,
     endDateInput
@@ -229,11 +240,12 @@ function CreateBookingForm() {
   });
 
   function handleReset() {
-    resetAvailability();
     reset();
     navigate("/bookings/new");
     handleResetRange();
   }
+
+  console.log(isAvailable, "isAvailable");
 
   function onSubmit(data) {
     // selected Cabin
@@ -333,21 +345,12 @@ function CreateBookingForm() {
         </Heading>
       </Row>
 
-      {isAvailable === false && (
-        <FormRowVertical>
-          <Message color={color}>
-            <span>{React.createElement(Icon)}</span>
-            {messageAvailable}
-          </Message>
-          {!!(cabinIdInput || startDateInput || endDateInput) && (
-            <span style={{ placeSelf: "center" }}>
-              <Button type="reset" variation="secondary" onClick={handleReset}>
-                Reset
-              </Button>
-            </span>
-          )}
-        </FormRowVertical>
-      )}
+      <FormRowVertical>
+        <Message color={color}>
+          <span>{React.createElement(Icon)}</span>
+          {messageAvailable}
+        </Message>
+      </FormRowVertical>
 
       {width >= windowSizes.tablet ? (
         <Form type="regular" onSubmit={handleSubmit(onSubmit, onError)}>
@@ -368,7 +371,7 @@ function CreateBookingForm() {
             />
           </FormRow>
 
-          <FormRowVertical label="Check in - Check out dates">
+          <FormRow flex="datepicker" label="Check in - Check out dates">
             <Controller
               name="startDate"
               id="startDate"
@@ -453,6 +456,11 @@ function CreateBookingForm() {
                   pointerEvents: "none",
                   opacity: 0.5,
                 },
+                today: {
+                  color: "var(--color-yellow-700)",
+                  fontSize: "1.8rem",
+                  backgroundColor: "var(--color-yellow-100)",
+                },
               }}
               onDayClick={handleDayClick}
               selected={range}
@@ -469,7 +477,23 @@ function CreateBookingForm() {
               }}
               footer={footer}
             />
-          </FormRowVertical>
+          </FormRow>
+
+          {isAvailable === false && (
+            <FormRowVertical>
+              {!!(cabinIdInput || startDateInput || endDateInput) && (
+                <span style={{ placeSelf: "center" }}>
+                  <Button
+                    type="reset"
+                    variation="secondary"
+                    onClick={handleReset}
+                  >
+                    Reset
+                  </Button>
+                </span>
+              )}
+            </FormRowVertical>
+          )}
 
           {isAvailable === true && (
             <>
@@ -581,16 +605,22 @@ function CreateBookingForm() {
               </FormRow>
 
               <FormRow>
-                <Button
-                  variation="secondary"
-                  type="reset"
-                  onClick={handleReset}
-                >
-                  Cancel
-                </Button>
-                <Button disabled={isCreating} type="submit" variation="primary">
-                  Create Booking
-                </Button>
+                <ButtonGroup>
+                  <Button
+                    variation="secondary"
+                    type="reset"
+                    onClick={handleReset}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    disabled={isCreating}
+                    type="submit"
+                    variation="primary"
+                  >
+                    Create Booking
+                  </Button>
+                </ButtonGroup>
               </FormRow>
             </>
           )}
@@ -689,6 +719,11 @@ function CreateBookingForm() {
                   pointerEvents: "none",
                   opacity: 0.5,
                 },
+                today: {
+                  color: "var(--color-yellow-700)",
+                  fontSize: "1.8rem",
+                  backgroundColor: "var(--color-yellow-100)",
+                },
               }}
               onDayClick={handleDayClick}
               selected={range}
@@ -706,6 +741,22 @@ function CreateBookingForm() {
               footer={footer}
             />
           </FormRowVertical>
+
+          {isAvailable === false && (
+            <FormRowVertical>
+              {!!(cabinIdInput || startDateInput || endDateInput) && (
+                <span style={{ placeSelf: "center" }}>
+                  <Button
+                    type="reset"
+                    variation="secondary"
+                    onClick={handleReset}
+                  >
+                    Reset
+                  </Button>
+                </span>
+              )}
+            </FormRowVertical>
+          )}
 
           {isAvailable === true && (
             <>

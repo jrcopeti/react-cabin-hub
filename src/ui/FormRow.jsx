@@ -4,7 +4,7 @@ import { screenSizes } from "../utils/constants";
 const StyledFormRow = styled.div`
   display: grid;
   align-items: center;
-  grid-template-columns: 24rem 1fr 1.2fr;
+  grid-template-columns: 24rem 1fr 1fr;
   gap: 2.4rem;
   padding: 1.2rem 0;
 
@@ -24,6 +24,12 @@ const StyledFormRow = styled.div`
     display: flex;
     justify-content: flex-end;
     gap: 1.2rem;
+  }
+
+  &:has(button):has(td) {
+    display: flex;
+    justify-content: flex-start;
+    gap: 7.7rem;
   }
 
   @media (max-width: ${screenSizes.tablet}) {
@@ -49,5 +55,9 @@ function FormRow({ label, error, children }) {
     </StyledFormRow>
   );
 }
+
+FormRow.defaultProps = {
+  flex: "normal",
+};
 
 export default FormRow;

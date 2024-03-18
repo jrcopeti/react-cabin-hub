@@ -79,13 +79,12 @@ function CreateGuestForm({ onCloseModal }) {
   return (
     <StyledDiv>
       <Row type="form">
-
-      <Heading as="h2">
-        <span>
-          <HiOutlineUserPlus />
-        </span>
-        Add New Guest
-      </Heading>
+        <Heading as="h2">
+          <span>
+            <HiOutlineUserPlus />
+          </span>
+          Add New Guest
+        </Heading>
       </Row>
       <br />
       <Form
