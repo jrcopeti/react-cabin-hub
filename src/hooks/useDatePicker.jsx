@@ -13,6 +13,7 @@ const StyledFooter = styled.footer`
   padding: 1.2rem 1.6rem;
   border-top: 1px solid var(--color-grey-300);
   background-color: var(--color-grey-100);
+  box-shadow: var(--shadow-md);
 `;
 
 export function useDatePicker() {
@@ -42,13 +43,6 @@ export function useDatePicker() {
           {subtractDates(range.to.toISOString(), range.from.toISOString())}{" "}
           nights
         </StyledFooter>
-      );
-      console.log(range.from);
-      console.log(range.to);
-      console.log(range.from.toISOString());
-      console.log(range.to.toISOString());
-      console.log(
-        subtractDates(range.to.toISOString(), range.from.toISOString())
       );
     }
   }

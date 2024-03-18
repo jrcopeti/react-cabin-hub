@@ -89,12 +89,19 @@ function CreateBookingForm() {
       totalPrice: 0,
       hasBreakfast: false,
       isPaid: false,
+      startDate: "",
+      endDate: "",
     },
   });
 
   useEffect(() => {
     reset({
       cabinId: cabinIdUrl || "",
+      numGuests: 1,
+      hasBreakfast: false,
+      isPaid: false,
+      startDate: "",
+      endDate: "",
     });
   }, [cabinIdUrl, reset]);
 
@@ -102,7 +109,7 @@ function CreateBookingForm() {
   const startDateInput = watch("startDate");
   const endDateInput = watch("endDate");
 
-  const { availability, resetAvailability } = useAvailability(
+  const { availability } = useAvailability(
     cabinIdInput,
     startDateInput,
     endDateInput
@@ -520,6 +527,7 @@ function CreateBookingForm() {
 
               <FormRow>
                 <Controller
+                  defauktValue={false}
                   control={control}
                   name="hasBreakfast"
                   render={({ field: { onChange, value } }) => (
@@ -535,6 +543,7 @@ function CreateBookingForm() {
                 />
 
                 <Controller
+                  defaultValue={false}
                   control={control}
                   name="isPaid"
                   render={({ field: { onChange, value } }) => (
@@ -737,6 +746,7 @@ function CreateBookingForm() {
                 <Controller
                   name="numGuests"
                   control={control}
+                  defaultValues={1}
                   rules={{
                     required: "Number of guests is required",
                     min: {

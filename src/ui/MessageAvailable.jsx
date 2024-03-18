@@ -1,4 +1,4 @@
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 import { useAvailability } from "../features/bookings/useAvailability";
 import FormRowVertical from "./FormRowVertical";
 import { useEffect } from "react";
@@ -166,16 +166,16 @@ function MessageAvailable({ cabinIdInput, startDateInput, endDateInput }) {
         transition: { duration: 2, delay: 0.5, type: "spring" },
       });
     }
-  }, [controls, isDarkMode, color, iconControls]);
+  }, [controls, iconControls, isDarkMode, color]);
 
   return (
     <FormRowVertical>
       <Message animate={controls}>
-        {Icon ? (
+        {Icon && (
           <motion.div animate={iconControls}>
             <Icon />
           </motion.div>
-        ) : null}
+        )}
 
         {message}
       </Message>

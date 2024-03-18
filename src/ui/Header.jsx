@@ -39,10 +39,14 @@ function Header() {
   const { toggleSidebar, headerRef } = useOpenSidebar();
   const sidebarButtonFocus = useAutoFocus();
 
-
   return (
     <StyledHeader ref={headerRef}>
-      <ButtonIcon whileHover={{ scale: 1.4 }} whileTap={{ scale: 0.8 }} onClick={toggleSidebar} ref={sidebarButtonFocus}>
+      <ButtonIcon
+        whileHover={{ scale: 1.4 }}
+        whileTap={{ scale: 0.8 }}
+        onClick={toggleSidebar}
+        ref={sidebarButtonFocus}
+      >
         <HiOutlineQueueList />
       </ButtonIcon>
       <UserAvatar />

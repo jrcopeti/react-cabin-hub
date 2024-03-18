@@ -28,7 +28,6 @@ const Row = styled.div`
         min-width: 30rem;
       }
 
-    
       & .button-back {
         font-size: 1.8rem;
         display: flex;
@@ -73,25 +72,17 @@ const Row = styled.div`
     props.type === "form" &&
     css`
       align-items: center;
-      min-width: 120rem;
       font-size: 3rem;
       padding: 1.6rem 1.2rem;
       gap: 1.6rem;
-
       background-color: var(--color-blue-100);
       border: 1px solid var(--color-grey-100);
       border-radius: var(--border-radius-md);
       box-shadow: var(--shadow-md);
 
-      @media (max-width: ${screenSizes.laptop}) {
-        min-width: 88rem;
-      }
-
       @media (max-width: ${screenSizes.tablet}) {
         flex-direction: column;
         gap: 0.8rem;
-
-        min-width: 30rem;
       }
 
       & .button-back {

@@ -10,16 +10,14 @@ const transform = {
     position: fixed;
     z-index: 10;
     transform: translate(0);
-    transition: ease-in-out 0.35s;
+    transition: ease-in-out 0.4s;
   `,
 
   closed: css`
     position: fixed;
     z-index: 10;
-    transition: ease-in-out 0.35s;
-    transform: translate(-26rem);
-    transition: ease-in-out 0.35s;
-
+    transition: ease-in-out 0.4s;
+    transform: translate(-100%);
   `,
 };
 
@@ -40,7 +38,10 @@ const StyledSidebar = styled.aside`
 function Sidebar() {
   const { sidebarRef, isSidebarOpen } = useOpenSidebar();
   return (
-    <StyledSidebar ref={sidebarRef} transform={isSidebarOpen ? "open" : "closed"}>
+    <StyledSidebar
+      ref={sidebarRef}
+      transform={isSidebarOpen ? "open" : "closed"}
+    >
       <Logo />
       <MainNav />
       {/* <Uploader /> */}

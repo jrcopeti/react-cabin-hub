@@ -246,6 +246,7 @@ img {
   overflow: hidden !important;
   clip: rect(1px, 1px, 1px, 1px) !important;
   border: 0 !important;
+
 }
 
 /* Buttons */
@@ -310,6 +311,8 @@ img {
   margin: 0;
   max-width: calc(var(--rdp-cell-size) * 7);
   border-collapse: collapse;
+  box-shadow: var(--shadow-md);
+  
 }
 
 .rdp-with_weeknumber .rdp-table {
@@ -323,6 +326,8 @@ img {
   justify-content: space-between;
   padding: 0;
   text-align: left;
+  background-color: var(--color-grey-100);
+  box-shadow: var(--shadow-md);
 }
 
 .rdp-multiple_months .rdp-caption {
@@ -447,6 +452,7 @@ img {
 
 .rdp-tbody {
   border: 0;
+
 }
 
 .rdp-tfoot {
@@ -478,6 +484,7 @@ img {
   margin: 0;
   border: 2px solid transparent;
   border-radius: 100%;
+
 }
 
 .rdp-day_today:not(.rdp-day_outside) {
