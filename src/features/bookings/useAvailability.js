@@ -16,7 +16,7 @@ export function useAvailability(cabinId, startDate, endDate) {
     isAvailable: false,
     message: "",
     color: "",
-    Icon: "",
+    Icon: null,
   };
 
   const [availability, setAvailability] = useState({ initialState });
@@ -135,7 +135,6 @@ export function useAvailability(cabinId, startDate, endDate) {
             color: "green",
             Icon: HiOutlineCheckCircle,
           });
-          toast.success("The cabin is available for the selected dates");
         }
       } catch (error) {
         console.error(error);

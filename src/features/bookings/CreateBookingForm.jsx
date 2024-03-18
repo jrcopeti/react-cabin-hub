@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 import { useNavigate, useParams } from "react-router-dom";
 import { Controller, useForm } from "react-hook-form";
@@ -35,11 +35,7 @@ import {
   endOfDay,
 } from "date-fns";
 
-import styled, { css } from "styled-components";
 import {
-  HiOutlineEllipsisHorizontalCircle,
-  HiOutlineExclamationTriangle,
-  HiOutlineXCircle,
   HiOutlineSquare3Stack3D,
   HiOutlineQuestionMarkCircle,
 } from "react-icons/hi2";
@@ -53,57 +49,7 @@ import { usePopover } from "../../hooks/usePopover";
 import { useDatePicker } from "../../hooks/useDatePicker";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { windowSizes } from "../../utils/constants";
-
-const color = {
-  red: css`
-    background-color: var(--color-red-100);
-    color: var(--color-red-700);
-    text-shadow: 2px 2px 2px var(--color-red-100);
-  `,
-  grey: css`
-    background-color: var(--color-grey-50);
-    color: var(--color-grey-500);
-    text-shadow: 2px 2px 2px var(--color-grey-100);
-  `,
-
-  yellow: css`
-    background-color: var(--color-yellow-100);
-    color: var(--color-yellow-700);
-    text-shadow: 2px 2px 2px var(--color-yellow-100);
-  `,
-  green: css`
-    background-color: var(--color-green-100);
-    color: var(--color-green-700);
-    text-shadow: 2px 2px 2px var(--color-green-100);
-  `,
-};
-
-const Message = styled.div`
-  ${(props) => color[props.color]}
-  padding: 1.6rem 2.4rem;
-  border-radius: var(--border-radius-md);
-  border: 1px solid var(--color-grey-100);
-  font-weight: 500;
-  font-size: 1.6rem;
-  display: flex;
-  align-items: center;
-  text-align: center;
-  justify-content: center;
-  gap: 0.8rem;
-  transition: ease-in-out 0.35s;
-
-  
-
-  & span {
-    font-size: 2.5rem;
-    display: flex;
-    align-items: center;
-    text-align: center;
-
-  }
-
-
-`;
+import MessageAvailable from "../../ui/MessageAvailable";
 
 function CreateBookingForm() {
   const { createBooking, isLoading: isCreating } = useCreateBookings();
@@ -156,13 +102,13 @@ function CreateBookingForm() {
   const startDateInput = watch("startDate");
   const endDateInput = watch("endDate");
 
-  const { availability} = useAvailability(
+  const { availability, resetAvailability } = useAvailability(
     cabinIdInput,
     startDateInput,
     endDateInput
   );
 
-  const { isAvailable, message: messageAvailable, color, Icon } = availability;
+  const { isAvailable } = availability;
 
   const { range, setRange, footer, handleDayClick, handleResetRange } =
     useDatePicker();
@@ -244,8 +190,6 @@ function CreateBookingForm() {
     navigate("/bookings/new");
     handleResetRange();
   }
-
-  console.log(isAvailable, "isAvailable");
 
   function onSubmit(data) {
     // selected Cabin
@@ -337,6 +281,9 @@ function CreateBookingForm() {
                 onClick={openPopover}
                 onMouseEnter={openPopover}
                 onMouseLeave={closePopover}
+                whileHover={{ scale: [1, 1.1, 1.2] }}
+                whileTap={{ scale: 0.5 }}
+                transition={{ duration: 0.3 }}
               >
                 <HiOutlineQuestionMarkCircle />
               </ButtonText>
@@ -345,12 +292,11 @@ function CreateBookingForm() {
         </Heading>
       </Row>
 
-      <FormRowVertical>
-        <Message color={color}>
-          <span>{React.createElement(Icon)}</span>
-          {messageAvailable}
-        </Message>
-      </FormRowVertical>
+      <MessageAvailable
+        cabinIdInput={cabinIdInput}
+        startDateInput={startDateInput}
+        endDateInput={endDateInput}
+      />
 
       {width >= windowSizes.tablet ? (
         <Form type="regular" onSubmit={handleSubmit(onSubmit, onError)}>

@@ -91,8 +91,10 @@ function Window({ children, name }) {
 
   if (name !== openName) return null;
   return createPortal(
+
     <Overlay>
       <StyledModal ref={ref}>
+        
         <Button onClick={close}>
           <HiXMark />
         </Button>

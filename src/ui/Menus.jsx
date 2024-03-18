@@ -3,6 +3,7 @@ import { createPortal } from "react-dom";
 import { HiEllipsisVertical } from "react-icons/hi2";
 import { useOutsideClickAndScroll } from "../hooks/useOutsideClickAndScroll";
 import styled from "styled-components";
+import { motion } from "framer-motion";
 
 const Menu = styled.div`
   display: flex;
@@ -10,13 +11,11 @@ const Menu = styled.div`
   justify-content: flex-end;
 `;
 
-const StyledToggle = styled.button`
+const StyledToggle = styled(motion.button)`
   background: none;
   border: none;
   padding: 0.4rem;
   border-radius: var(--border-radius-sm);
-  transform: translateX(0.8rem);
-  transition: all 0.2s;
 
   &:hover {
     background-color: var(--color-grey-100);
@@ -96,7 +95,12 @@ function Toggle({ id }) {
     openId === "" || openId !== id ? open(id) : close();
   }
   return (
-    <StyledToggle onClick={handleClick}>
+    <StyledToggle
+      whileHover={{ scale: 1.4 }}
+      whileTap={{ scale: 0.8 }}
+      transition={{ duration: 0.3 }}
+      onClick={handleClick}
+    >
       <HiEllipsisVertical />
     </StyledToggle>
   );
@@ -119,8 +123,8 @@ function List({ id, children }) {
 function Button({ children, icon, onClick }) {
   const { close } = useContext(MenusContext);
   function handleClick() {
-    onClick?.()
-    close()
+    onClick?.();
+    close();
   }
   return (
     <li>

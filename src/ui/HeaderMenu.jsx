@@ -16,7 +16,11 @@ function HeaderMenu() {
   return (
     <StyledHeaderMenu>
       <li>
-        <ButtonIcon onClick={() => navigate("/account")}>
+        <ButtonIcon
+          whileHover={{ scale: 1.4 }}
+          whileTap={{ scale: 0.8 }}
+          onClick={() => navigate("/account")}
+        >
           <HiOutlineUser />
         </ButtonIcon>
       </li>

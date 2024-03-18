@@ -18,6 +18,7 @@ const transform = {
     z-index: 10;
     transition: ease-in-out 0.35s;
     transform: translate(-26rem);
+    transition: ease-in-out 0.35s;
 
   `,
 };

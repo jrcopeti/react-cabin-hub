@@ -1,10 +1,11 @@
 import styled, { css } from "styled-components";
+import { motion } from "framer-motion";
 
-const ButtonText = styled.button`
+const ButtonText = styled(motion.button)`
   color: var(--color-brand-600);
   font-weight: 500;
   text-align: center;
-  transition: all 0.3s;
+
   background: none;
   border: none;
   border-radius: var(--border-radius-sm);
@@ -31,6 +32,10 @@ const ButtonText = styled.button`
 
       &:active {
         color: var(--color-grey-500);
+      }
+
+      &:focus {
+        outline: none;
       }
     `}
 `;

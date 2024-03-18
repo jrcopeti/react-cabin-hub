@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { screenSizes } from "../../utils/constants";
+import { motion } from "framer-motion";
 
 const StyledStat = styled.div`
   /* Box */
@@ -24,13 +25,14 @@ const StyledStat = styled.div`
   }
 `;
 
-const Icon = styled.div`
+const Icon = styled(motion.div)`
   grid-row: 1 / -1;
   aspect-ratio: 1;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 
   background-color: var(--color-${(props) => props.color}-100);
 
@@ -70,7 +72,9 @@ const Value = styled.p`
 function Stat({ icon, title, value, color }) {
   return (
     <StyledStat>
-      <Icon color={color}>{icon}</Icon>
+      <Icon whileHover={{ scale: 1.2 }} whileTap={{ scale: 0.8 }} color={color}>
+        {icon}
+      </Icon>
       <Title>{title}</Title>
       <Value>{value}</Value>
     </StyledStat>
