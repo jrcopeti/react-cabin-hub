@@ -102,6 +102,7 @@ function CreateBookingForm() {
       isPaid: false,
       startDate: "",
       endDate: "",
+      guestId: "",
     });
   }, [cabinIdUrl, reset]);
 
