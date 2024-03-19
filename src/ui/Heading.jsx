@@ -4,7 +4,7 @@ import { screenSizes } from "../utils/constants";
 const Heading = styled.h1`
   display: flex;
   align-items: center;
-  gap: 0.4rem;
+  gap: 0.8rem;
 
   ${(props) =>
     props.as === "h1" &&
@@ -56,7 +56,7 @@ const Heading = styled.h1`
     font-size: 2.8rem;
   }
 
-  & span:first-child {
+  & span:first-of-type {
     display: flex;
     align-items: center;
   }

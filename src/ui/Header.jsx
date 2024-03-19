@@ -6,11 +6,12 @@ import { useOpenSidebar } from "../hooks/useOpenSideBar";
 import HeaderMenu from "./HeaderMenu";
 import ButtonIcon from "./ButtonIcon";
 
-import { screenSizes } from "../utils/constants";
+import { screenSizes, windowSizes } from "../utils/constants";
 
 import { HiOutlineQueueList } from "react-icons/hi2";
 
 import { useAutoFocus } from "../hooks/useAutoFocus";
+import { useWindowSize } from "../hooks/useWindowSize";
 
 const StyledHeader = styled.header`
   background-color: var(--color-grey-0);
@@ -38,20 +39,29 @@ const StyledHeader = styled.header`
 function Header() {
   const { toggleSidebar, headerRef } = useOpenSidebar();
   const sidebarButtonFocus = useAutoFocus();
+  const { width } = useWindowSize();
 
   return (
-    <StyledHeader ref={headerRef}>
-      <ButtonIcon
-        whileHover={{ scale: 1.4 }}
-        whileTap={{ scale: 0.8 }}
-        onClick={toggleSidebar}
-        ref={sidebarButtonFocus}
-      >
-        <HiOutlineQueueList />
-      </ButtonIcon>
-      <UserAvatar />
-      <HeaderMenu />
-    </StyledHeader>
+    <>
+      <StyledHeader ref={headerRef}>
+        <ButtonIcon
+          whileHover={width >= windowSizes.tablet ? { scale: 1.6 } : ""}
+          whileTap={width >= windowSizes.tablet ? { scale: 1 } : { scale: 1.6 }}
+          transition={
+            width >= windowSizes.tablet
+              ? { duration: 0.3, type: "spring", stiffness: 250 }
+              : { duration: 0.3, type: "spring", stiffness: 300 }
+          }
+          onClick={toggleSidebar}
+          ref={sidebarButtonFocus}
+        >
+          <HiOutlineQueueList />
+        </ButtonIcon>
+
+        <UserAvatar />
+        <HeaderMenu />
+      </StyledHeader>
+    </>
   );
 }
 
