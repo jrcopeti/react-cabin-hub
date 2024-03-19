@@ -135,8 +135,8 @@ function BookingRow({ booking }) {
               &rarr; {numNights} night stay
             </span>
             <span>
-              {format(new Date(startDate), " dd MMM yyyy")} &mdash;{" "}
-              {format(new Date(endDate), " dd MMM yyyy")}
+              {format(new Date(startDate), "EEE, dd MMM yyyy")} &mdash;{" "}
+              {format(new Date(endDate), "EEE, dd MMM yyyy")}
             </span>
           </Stacked>
 
@@ -275,8 +275,8 @@ function BookingRow({ booking }) {
               &rarr; {numNights} night stay
             </span>
             <span>
-              {format(new Date(startDate), " dd MMM yyyy")} &mdash;{" "}
-              {format(new Date(endDate), " dd MMM yyyy")}
+              {format(new Date(startDate), "EEE, dd MMM yyyy")} &mdash;{" "}
+              {format(new Date(endDate), "EEE, dd MMM yyyy")}
             </span>
           </Stacked>
 
