@@ -350,9 +350,9 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             />
           </FormRow>
 
-          <FormRowVertical error={errors?.endDate?.message}>
+          <FormRow error={errors?.endDate?.message}>
             <input hidden name="endDate" id="endDate" />
-          </FormRowVertical>
+          </FormRow>
 
           <FormRow label="Number of Nights">
             <Input disabled value={numNightsInput} />
@@ -476,6 +476,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
           </FormRow>
         </Form>
       ) : (
+        // Mobile
         <Form
           onSubmit={handleSubmit(onSubmit, onError)}
           type={onCloseModal ? "modal" : "regular"}

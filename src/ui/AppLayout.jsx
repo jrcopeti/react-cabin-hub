@@ -1,10 +1,10 @@
 import { Outlet } from "react-router-dom";
 import styled, { css } from "styled-components";
 
-import { useOpenSidebar } from "../context/useOpenSideBar";
-
 import Header from "./Header";
 import Sidebar from "./Sidebar";
+
+import { useOpenSidebar } from "../hooks/useOpenSideBar";
 import { screenSizes } from "../utils/constants";
 
 const StyledAppLayout = styled.div`

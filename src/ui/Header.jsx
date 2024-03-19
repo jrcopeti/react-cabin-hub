@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import UserAvatar from "../features/authentication/UserAvatar";
-import { useOpenSidebar } from "../context/useOpenSideBar";
+import { useOpenSidebar } from "../hooks/useOpenSideBar";
 
 import HeaderMenu from "./HeaderMenu";
 import ButtonIcon from "./ButtonIcon";

@@ -3,7 +3,7 @@ import Logo from "./Logo";
 import MainNav from "./MainNav";
 
 import styled, { css } from "styled-components";
-import { useOpenSidebar } from "../context/useOpenSideBar";
+import { useOpenSidebar } from "../hooks/useOpenSideBar";
 
 const transform = {
   open: css`

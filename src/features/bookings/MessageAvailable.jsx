@@ -1,6 +1,6 @@
 import styled from "styled-components";
-import { useAvailability } from "../features/bookings/useAvailability";
-import FormRowVertical from "./FormRowVertical";
+import { useAvailability } from "./useAvailability";
+import FormRowVertical from "../../ui/FormRowVertical";
 import { useEffect } from "react";
 import {
   HiOutlineEllipsisHorizontalCircle,
@@ -9,7 +9,7 @@ import {
   HiOutlineCheckCircle,
 } from "react-icons/hi2";
 import { motion, useAnimation } from "framer-motion";
-import { useDarkMode } from "../context/useDarkMode";
+import { useDarkMode } from "../../hooks/useDarkMode";
 
 // props for the message component
 // const color = {
@@ -91,7 +91,7 @@ const Message = styled(motion.div)`
   align-items: center;
   text-align: center;
   justify-content: center;
-  gap: 1rem;
+  gap: 1.2rem;
   background-color: var(--color-grey-50);
 
   & :has(svg) {
@@ -161,8 +161,8 @@ function MessageAvailable({ cabinIdInput, startDateInput, endDateInput }) {
 
     if (color === "green") {
       iconControls.start({
-        scale: [1, 1.7],
-        rotate: [0, 360, 360, 360, 360],
+        scale: [1, 1.7, 1.9],
+        rotate: [0, -360, -360, -360, -360],
         transition: { duration: 2, delay: 0.5, type: "spring" },
       });
     }

@@ -3,6 +3,7 @@ import { format } from "date-fns";
 import { subtractDates } from "../utils/helpers";
 import styled from "styled-components";
 
+
 const StyledFooter = styled.footer`
   display: flex;
   justify-content: center;

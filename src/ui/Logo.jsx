@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { useDarkMode } from "../context/useDarkMode";
+import { useDarkMode } from "../hooks/useDarkMode";
 
 const Img = styled.img`
   height: 9.6rem;

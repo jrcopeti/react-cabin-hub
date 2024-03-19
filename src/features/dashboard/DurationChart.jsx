@@ -8,7 +8,7 @@ import {
   ResponsiveContainer,
   Tooltip,
 } from "recharts";
-import { useDarkMode } from "../../context/useDarkMode";
+import { useDarkMode } from "../../hooks/useDarkMode";
 import { screenSizes, windowSizes } from "../../utils/constants";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import Row from "../../ui/Row";

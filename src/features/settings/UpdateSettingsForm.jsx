@@ -6,6 +6,7 @@ import FormRowVertical from "../../ui/FormRowVertical";
 import Input from "../../ui/Input";
 import Spinner from "../../ui/Spinner";
 
+
 function UpdateSettingsForm() {
   const {
     isLoading,
@@ -69,6 +70,8 @@ function UpdateSettingsForm() {
           onBlur={(e) => handleUpdate(e, "breakfastPrice")}
           disabled={isUpdating}
         />
+      </FormRowVertical>
+      <FormRowVertical>
       </FormRowVertical>
     </Form>
   );

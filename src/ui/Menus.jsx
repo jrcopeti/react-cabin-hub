@@ -96,7 +96,7 @@ function Toggle({ id }) {
   }
   return (
     <StyledToggle
-      whileHover={{ scale: 1.4 }}
+      whileHover={{ scale: 1.4, rotate: -90}}
       whileTap={{ scale: 0.8 }}
       transition={{ duration: 0.3 }}
       onClick={handleClick}

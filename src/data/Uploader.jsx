@@ -7,6 +7,8 @@ import { subtractDates } from "../utils/helpers";
 import { bookings } from "./data-bookings";
 import { cabins } from "./data-cabins";
 import { guests } from "./data-guests";
+import { updateExpiredBookings } from "../services/apiBookings";
+import { useCheckoutExpiredBookings } from "../features/check-in-out/useCheckoutExpiredBookings";
 
 // const originalSettings = {
 //   minBookingLength: 3,
@@ -103,6 +105,9 @@ async function createBookings() {
 function Uploader() {
   const [isLoading, setIsLoading] = useState(false);
 
+  const { checkoutExpiredBookings, isCheckingOut } =
+    useCheckoutExpiredBookings();
+
   async function uploadAll() {
     setIsLoading(true);
     // Bookings to be deleted FIRST
@@ -146,6 +151,14 @@ function Uploader() {
 
       <Button onClick={uploadBookings} disabled={isLoading}>
         Upload bookings ONLY
+      </Button>
+
+      <Button onClick={() => updateExpiredBookings()}>
+        Check expired bookings
+      </Button>
+
+      <Button onClick={() => checkoutExpiredBookings()}>
+        Checkout Expired Bookings
       </Button>
     </div>
   );

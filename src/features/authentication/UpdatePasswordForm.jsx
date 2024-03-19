@@ -108,6 +108,7 @@ function UpdatePasswordForm() {
       </FormRow>
     </>
   ) : (
+    // MOBILE
     <>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <FormRowVertical
