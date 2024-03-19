@@ -277,8 +277,8 @@ function CreateBookingForm() {
                 >
                   <PopoverContent>
                     &#10095; First, check if the cabin is available for the
-                    selected dates. If it&apos;s available, fill out the rest
-                    form to complete your booking.
+                    selected dates. Then fill out the rest of the form to
+                    complete your booking.
                   </PopoverContent>
                 </ArrowContainer>
               )}
@@ -288,9 +288,11 @@ function CreateBookingForm() {
                 onClick={openPopover}
                 onMouseEnter={openPopover}
                 onMouseLeave={closePopover}
-                whileHover={{ scale: [1, 1.1, 1.2] }}
-                whileTap={{ scale: 0.5 }}
-                transition={{ duration: 0.3 }}
+                whileHover={width >= windowSizes.tablet ? { scale: 1.8 } : ""}
+                whileTap={
+                  width >= windowSizes.tablet ? { scale: 1 } : { scale: 2 }
+                }
+                transition={{ duration: 0.3, type: "spring", stiffness: 500 }}
               >
                 <HiOutlineQuestionMarkCircle />
               </ButtonText>

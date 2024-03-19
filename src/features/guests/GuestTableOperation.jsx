@@ -52,28 +52,20 @@ function GuestTableOperations() {
             </ArrowContainer>
           )}
         >
-          {width >= windowSizes.tablet ? (
-            <ButtonText
-              type="form"
-              onMouseEnter={openPopover}
-              onMouseLeave={closePopover}
-              whileHover={{ scale: [1, 1.1, 1.2] }}
-              whileTap={{ scale: 0.5 }}
-              transition={{ duration: 0.3 }}
-            >
-              <HiOutlineMagnifyingGlass />
-            </ButtonText>
-          ) : (
-            <ButtonText
-              type="form"
-              onClick={openPopover}
-              whileHover={{ scale: [1, 1.1, 1.2] }}
-              whileTap={{ scale: 0.5 }}
-              transition={{ duration: 0.3 }}
-            >
-              <HiOutlineMagnifyingGlass />
-            </ButtonText>
-          )}
+          <ButtonText
+            type="form"
+            onMouseEnter={openPopover}
+            onMouseLeave={closePopover}
+            whileHover={width >= windowSizes.tablet ? { scale: 1.5 } : ""}
+            whileTap={width >= windowSizes.tablet ? { scale: 1 } : { scale: 2 }}
+            transition={
+              width >= windowSizes.tablet
+                ? { duration: 0.3, type: "spring", stiffness: 300 }
+                : { duration: 0.3, type: "spring", stiffness: 500 }
+            }
+          >
+            <HiOutlineMagnifyingGlass />
+          </ButtonText>
         </Popover>
         <SortBy
           options={[

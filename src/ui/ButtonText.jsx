@@ -26,8 +26,8 @@ const ButtonText = styled(motion.button)`
       color: var(--color-grey-700);
 
       &:hover {
-        scale: 1.4;
-        color: var(--color-grey-500);
+
+        color: var(--color-indigo-500);
       }
 
       &:active {

@@ -10,7 +10,28 @@ export async function getAllGuests() {
   return data;
 }
 
-export async function getGuests({ filter, sortBy, page }) {
+export async function getGuests({ sortBy, page }) {
+  let query = supabase.from("guests").select("*", { count: "exact" });
+
+  if (sortBy) {
+    query = query.order(sortBy.field, {
+      ascending: sortBy.direction === "asc",
+    });
+  }
+  if (page) {
+    const from = (page - 1) * (PAGE_SIZE - 1);
+    const to = from + PAGE_SIZE - 1;
+    query = query.range(from, to);
+  }
+
+  const { data, error, count } = await query;
+
+  if (error) throw new Error("Guests could not be loaded");
+
+  return { data, count };
+}
+
+export async function getGuestsWithBookings({ filter, sortBy, page }) {
   let query = supabase
     .from("guests")
     .select("*, bookings!inner(*)", { count: "exact" });

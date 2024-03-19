@@ -56,9 +56,11 @@ function Settings() {
                 onClick={openPopover}
                 onMouseEnter={openPopover}
                 onMouseLeave={closePopover}
-                whileHover={{ scale: [1, 1.1, 1.2] }}
-                whileTap={{ scale: 0.5 }}
-                transition={{ duration: 0.3 }}
+                whileHover={width >= windowSizes.tablet ? { scale: 1.8 } : ""}
+                whileTap={
+                  width >= windowSizes.tablet ? { scale: 1 } : { scale: 2 }
+                }
+                transition={{ duration: 0.3, type: "spring", stiffness: 500 }}
               >
                 <HiOutlineQuestionMarkCircle />
               </ButtonText>

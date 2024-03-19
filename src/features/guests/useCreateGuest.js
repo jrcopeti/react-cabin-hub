@@ -9,7 +9,7 @@ export function useCreateGuest() {
     mutationFn: createGuestApi,
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["bookings"],
+        queryKey: ["guests"],
       });
     },
     onError: (err) => toast.error(err.message),
