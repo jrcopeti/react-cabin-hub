@@ -50,7 +50,7 @@ function CabinTableOperations() {
             type="form"
             onMouseEnter={openPopover}
             onMouseLeave={closePopover}
-            whileHover={width >= windowSizes.tablet ? { scale: 1.5 } : ""}
+            whileHover={{ scale: 1.5 }}
             whileTap={width >= windowSizes.tablet ? { scale: 1 } : { scale: 2 }}
             transition={
               width >= windowSizes.tablet

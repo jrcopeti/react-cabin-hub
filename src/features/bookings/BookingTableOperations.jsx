@@ -19,7 +19,6 @@ function BookingTableOperations() {
       <Filter
         filterField="status"
         options={[
-
           { value: "all", label: "All" },
           { value: "checked-out", label: "Checked out" },
           { value: "checked-in", label: "Checked in" },
@@ -52,7 +51,7 @@ function BookingTableOperations() {
             type="form"
             onMouseEnter={openPopover}
             onMouseLeave={closePopover}
-            whileHover={width >= windowSizes.tablet ? { scale: 1.5 } : ""}
+            whileHover={{ scale: 1.5 }}
             whileTap={width >= windowSizes.tablet ? { scale: 1 } : { scale: 2 }}
             transition={
               width >= windowSizes.tablet

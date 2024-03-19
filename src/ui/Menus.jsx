@@ -99,7 +99,7 @@ function Toggle({ id }) {
   }
   return (
     <StyledToggle
-      whileHover={width >= windowSizes.tablet ? { scale: 1.4, rotate: -90 } : ""}
+      whileHover={ { scale: 1.4, rotate: -90 }}
       whileTap={width >= windowSizes.tablet ? { scale: 0.8 } : { scale: 1.6, rotate: -90}}
       transition={{ duration: 0.3 }}
       onClick={handleClick}
