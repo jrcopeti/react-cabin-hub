@@ -10,10 +10,10 @@ import { windowSizes } from "../../utils/constants";
 function Logout() {
   const { logout, isLoading } = useLogout();
   const { width } = useWindowSize();
-  
+
   return (
     <ButtonIcon
-      whileHover={width >= windowSizes.tablet ? { scale: 1.6 } : ""}
+      whileHover={{ scale: 1.6 }}
       whileTap={width >= windowSizes.tablet ? { scale: 1 } : { scale: 1.6 }}
       transition={
         width >= windowSizes.tablet

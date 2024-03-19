@@ -45,7 +45,7 @@ function Header() {
     <>
       <StyledHeader ref={headerRef}>
         <ButtonIcon
-          whileHover={width >= windowSizes.tablet ? { scale: 1.6 } : ""}
+          whileHover={{ scale: 1.6 }}
           whileTap={width >= windowSizes.tablet ? { scale: 1 } : { scale: 1.6 }}
           transition={
             width >= windowSizes.tablet

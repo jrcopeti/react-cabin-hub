@@ -288,7 +288,7 @@ function CreateBookingForm() {
                 onClick={openPopover}
                 onMouseEnter={openPopover}
                 onMouseLeave={closePopover}
-                whileHover={width >= windowSizes.tablet ? { scale: 1.8 } : ""}
+                whileHover={{ scale: 1.8 }}
                 whileTap={
                   width >= windowSizes.tablet ? { scale: 1 } : { scale: 2 }
                 }
