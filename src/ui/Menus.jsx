@@ -4,6 +4,8 @@ import { HiEllipsisVertical } from "react-icons/hi2";
 import { useOutsideClickAndScroll } from "../hooks/useOutsideClickAndScroll";
 import styled from "styled-components";
 import { motion } from "framer-motion";
+import { windowSizes } from "../utils/constants";
+import { useWindowSize } from "../hooks/useWindowSize";
 
 const Menu = styled.div`
   display: flex;
@@ -84,6 +86,7 @@ function Menus({ children }) {
 
 function Toggle({ id }) {
   const { openId, open, close, setPosition } = useContext(MenusContext);
+  const { width } = useWindowSize();
 
   function handleClick(e) {
     e.stopPropagation();
@@ -96,8 +99,8 @@ function Toggle({ id }) {
   }
   return (
     <StyledToggle
-      whileHover={{ scale: 1.4, rotate: -90}}
-      whileTap={{ scale: 0.8 }}
+      whileHover={width >= windowSizes.tablet ? { scale: 1.4, rotate: -90 } : ""}
+      whileTap={width >= windowSizes.tablet ? { scale: 0.8 } : { scale: 1.6, rotate: -90}}
       transition={{ duration: 0.3 }}
       onClick={handleClick}
     >
