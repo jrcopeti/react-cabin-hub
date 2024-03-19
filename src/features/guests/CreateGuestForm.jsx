@@ -29,8 +29,6 @@ function CreateGuestForm({ onCloseModal }) {
     formState: { errors },
   } = useForm();
 
-  const queryClient = useQueryClient();
-
   const { createGuest, isCreating } = useCreateGuest();
 
   const { countries, isLoading: isLoadingCountries } = useCountries();
@@ -67,10 +65,10 @@ function CreateGuestForm({ onCloseModal }) {
 
     createGuest(finalData, {
       onSuccess: () => {
+        toast.success(`A new guest was created`);
         reset();
         onCloseModal?.();
-        queryClient.invalidateQueries(["guests"]);
-        toast.success(`A new guest was created`);
+        // queryClient.invalidateQueries(["guests"]);
       },
     });
   }

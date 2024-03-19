@@ -71,6 +71,7 @@ function CabinTableOperations() {
         </Popover>
         <SortBy
           options={[
+            { value: "", label: "Select" },
             { value: "name-asc", label: "Name (A-Z)" },
             { value: "name-desc", label: "Name (Z-A)" },
             { value: "regularPrice-asc", label: "Price (low first)" },

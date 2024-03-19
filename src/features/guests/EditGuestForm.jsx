@@ -1,5 +1,4 @@
 import { Controller, useForm } from "react-hook-form";
-import { useQueryClient } from "@tanstack/react-query";
 
 import { useCountries } from "../../hooks/useCountries";
 
@@ -20,18 +19,18 @@ import { windowSizes } from "../../utils/constants";
 import FormRowVertical from "../../ui/FormRowVertical";
 import ButtonGroup from "../../ui/ButtonGroup";
 
-function CreateGuestForm({ onCloseModal, guestToEdit = {} }) {
-  const { id, ...editValues } = guestToEdit;
+function EditGuestForm({ onCloseModal, guestToEdit = {} }) {
+  // remove bookings from the object
+  const { id, bookings, ...editValues } = guestToEdit;
   const { fullName } = editValues;
 
   const {
     register,
     handleSubmit,
     control,
+    reset,
     formState: { errors },
   } = useForm({ defaultValues: editValues });
-
-  const queryClient = useQueryClient();
 
   const { updateGuest, isUpdating } = useUpdateGuest();
 
@@ -69,9 +68,9 @@ function CreateGuestForm({ onCloseModal, guestToEdit = {} }) {
       { id, editGuestData: finalData },
       {
         onSuccess: () => {
-          onCloseModal?.();
-          queryClient.refetchQueries(["guests"]);
           toast.success(`Guest ${finalData.fullName} was updated`);
+          reset();
+          onCloseModal?.();
         },
       }
     );
@@ -92,7 +91,7 @@ function CreateGuestForm({ onCloseModal, guestToEdit = {} }) {
         </Heading>
       </Row>
       <br />
-      
+
       {width >= windowSizes.tablet ? (
         <Form
           onSubmit={handleSubmit(onSubmit, onError)}
@@ -228,7 +227,6 @@ function CreateGuestForm({ onCloseModal, guestToEdit = {} }) {
             />
           </FormRowVertical>
 
-
           <FormRowVertical>
             <ButtonGroup>
               <Button
@@ -250,4 +248,4 @@ function CreateGuestForm({ onCloseModal, guestToEdit = {} }) {
   );
 }
 
-export default CreateGuestForm;
+export default EditGuestForm;

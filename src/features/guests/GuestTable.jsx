@@ -7,7 +7,7 @@ import { useGuests } from "./useGuests";
 import GuestRow from "./GuestRow";
 
 function GuestTable() {
-  const { guests, isLoading, error, count } = useGuests();
+  const { guests, isLoading, count, error } = useGuests();
 
   if (isLoading) return <Spinner />;
 

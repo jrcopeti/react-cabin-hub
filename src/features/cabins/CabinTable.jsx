@@ -19,14 +19,17 @@ function CabinTable() {
 
   let filteredCabins;
   if (filterValue === "all") filteredCabins = cabins;
+
   if (filterValue === "no-discount")
     filteredCabins = cabins.filter((cabin) => cabin.discount === 0);
+
   if (filterValue === "with-discount")
     filteredCabins = cabins.filter((cabin) => cabin.discount > 0);
 
-  const sortBy = searchParams.get("sortBy") || "startDate-asc";
+  const sortBy = searchParams.get("sortBy") || "name-asc";
   const [field, direction] = sortBy.split("-");
   const modifier = direction === "asc" ? 1 : -1;
+
   const sortedCabins =
     field === "name"
       ? filteredCabins.sort(

@@ -1,7 +1,8 @@
 import styled from "styled-components";
 import { useRecentBookings } from "./useRecentBookings";
 import { useRecentStays } from "./useRecentStays";
-import { useCabins } from "../cabins/useCabins";
+import { useAllCabins } from "../cabins/useAllCabins";
+
 import Spinner from "../../ui/Spinner";
 import Stats from "./Stats";
 import SalesChart from "./SalesChart";
@@ -20,14 +21,13 @@ const StyledDashboardLayout = styled.div`
     display: flex;
     gap: 1.2rem;
     column-gap: 2rem;
-
   }
 `;
 
 function DashboardLayout() {
   const { bookings, isLoading } = useRecentBookings();
   const { confirmedStays, isLoading: isLoading2, numDays } = useRecentStays();
-  const { cabins, isLoading: isLoading3 } = useCabins();
+  const { cabins, isLoading: isLoading3 } = useAllCabins();
 
   if (isLoading || isLoading2 || isLoading3) return <Spinner />;
 
