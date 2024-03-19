@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import DashboardBox from "./DashboardBox";
 import Heading from "../../ui/Heading";
-import { useDarkMode } from "../../context/useDarkMode";
+import { useDarkMode } from "../../hooks/useDarkMode";
 import {
   Area,
   AreaChart,

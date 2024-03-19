@@ -92,6 +92,7 @@ function CreateGuestForm({ onCloseModal, guestToEdit = {} }) {
         </Heading>
       </Row>
       <br />
+      
       {width >= windowSizes.tablet ? (
         <Form
           onSubmit={handleSubmit(onSubmit, onError)}
@@ -164,6 +165,7 @@ function CreateGuestForm({ onCloseModal, guestToEdit = {} }) {
           </FormRow>
         </Form>
       ) : (
+        // Mobile
         <Form
           onSubmit={handleSubmit(onSubmit, onError)}
           type={onCloseModal ? "modal" : "regular"}
@@ -225,7 +227,7 @@ function CreateGuestForm({ onCloseModal, guestToEdit = {} }) {
               )}
             />
           </FormRowVertical>
-          
+
 
           <FormRowVertical>
             <ButtonGroup>

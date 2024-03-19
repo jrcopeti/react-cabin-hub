@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { OpenSidebarContext } from "./OpenSidebarContext";
+import { OpenSidebarContext } from "../context/OpenSidebarContext";
 
 export function useOpenSidebar() {
   const context = useContext(OpenSidebarContext);

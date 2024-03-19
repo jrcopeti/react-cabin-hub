@@ -49,7 +49,7 @@ import { usePopover } from "../../hooks/usePopover";
 import { useDatePicker } from "../../hooks/useDatePicker";
 import { useWindowSize } from "../../hooks/useWindowSize";
 import { windowSizes } from "../../utils/constants";
-import MessageAvailable from "../../ui/MessageAvailable";
+import MessageAvailable from "./MessageAvailable";
 
 function CreateBookingForm() {
   const { createBooking, isLoading: isCreating } = useCreateBookings();
@@ -432,6 +432,10 @@ function CreateBookingForm() {
             />
           </FormRow>
 
+          <FormRow error={errors?.endDate?.message}>
+            <input hidden name="endDate" id="endDate" />
+          </FormRow>
+
           {isAvailable === false && (
             <FormRowVertical>
               {!!(cabinIdInput || startDateInput || endDateInput) && (
@@ -616,8 +620,13 @@ function CreateBookingForm() {
                 },
               }}
               control={control}
-              render={({ field }) => (
-                <input type="hidden" {...field} value={field.value || ""} />
+              render={({ field: { ref, value, onChange } }) => (
+                <input
+                  type="hidden"
+                  ref={ref}
+                  onChange={(e) => onChange(e.target.value)}
+                  value={value || ""}
+                />
               )}
             />
             <Controller
@@ -661,9 +670,14 @@ function CreateBookingForm() {
                 },
               }}
               control={control}
-              render={({ field }) => {
-                <input type="hidden" {...field} value={field.value || ""} />;
-              }}
+              render={({ field: { ref, value, onChange } }) => (
+                <input
+                  type="hidden"
+                  ref={ref}
+                  onChange={(e) => onChange(e.target.value)}
+                  value={value || ""}
+                />
+              )}
             />
             <DayPicker
               mode="range"
@@ -695,6 +709,10 @@ function CreateBookingForm() {
               }}
               footer={footer}
             />
+          </FormRowVertical>
+
+          <FormRowVertical error={errors?.endDate?.message}>
+            <input hidden name="endDate" id="endDate" />
           </FormRowVertical>
 
           {isAvailable === false && (

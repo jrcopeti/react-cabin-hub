@@ -55,13 +55,13 @@ const StyledModal = styled(motion.div)`
   }
 
   @media (max-width: ${screenSizes.tablet}) {
-    top: 10dvh;
-    left: 5dvw;
+    top: 5dvh;
+    left: 0dvw;
   }
 
   @media (max-width: ${screenSizes.laptop}) {
     top: 5dvh;
-    left: 5dvw;
+    left: 0dvw;
   }
 `;
 

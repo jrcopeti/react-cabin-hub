@@ -46,17 +46,28 @@ function CabinTableOperations() {
             </ArrowContainer>
           )}
         >
-          <ButtonText
-            type="form"
-            onClick={openPopover}
-            onMouseEnter={openPopover}
-            onMouseLeave={closePopover}
-            whileHover={{ scale: [1, 1.1, 1.2] }}
-            whileTap={{ scale: 0.5 }}
-            transition={{ duration: 0.3 }}
-          >
-            <HiOutlineMagnifyingGlass />
-          </ButtonText>
+          {width >= windowSizes.tablet ? (
+            <ButtonText
+              type="form"
+              onMouseEnter={openPopover}
+              onMouseLeave={closePopover}
+              whileHover={{ scale: [1, 1.1, 1.2] }}
+              whileTap={{ scale: 0.5 }}
+              transition={{ duration: 0.3 }}
+            >
+              <HiOutlineMagnifyingGlass />
+            </ButtonText>
+          ) : (
+            <ButtonText
+              type="form"
+              onClick={openPopover}
+              whileHover={{ scale: [1, 1.1, 1.2] }}
+              whileTap={{ scale: 0.5 }}
+              transition={{ duration: 0.3 }}
+            >
+              <HiOutlineMagnifyingGlass />
+            </ButtonText>
+          )}
         </Popover>
         <SortBy
           options={[

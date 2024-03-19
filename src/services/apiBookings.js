@@ -224,3 +224,28 @@ export async function getBookingsByCabin(cabinId) {
   }
   return data;
 }
+
+// Fetch bookings that have ended but not marked as 'checked-out'
+// export async function updateExpiredBookings() {
+//   const query = supabase
+//     .from("bookings")
+//     .update({ status: "checked-out" })
+
+//     //  expired checkins
+//     .lte("endDate", getToday())
+
+
+//   // expired checkouts
+//   // .lt("endDate", new Date().toISOString())
+//   // .eq("status", "checked-in" || "unconfirmed");
+
+//   const { data, error } = await query;
+//   console.log("expired bookings", data);
+
+//   if (error) {
+//     console.error("Error fetching bookings:", error);
+//     return;
+//   }
+
+//   return data;
+// }

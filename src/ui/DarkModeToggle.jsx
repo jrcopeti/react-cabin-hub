@@ -1,4 +1,4 @@
-import { useDarkMode } from "../context/useDarkMode";
+import { useDarkMode } from "../hooks/useDarkMode";
 import ButtonIcon from "./ButtonIcon";
 import { HiOutlineMoon, HiOutlineSun } from "react-icons/hi2";
 
