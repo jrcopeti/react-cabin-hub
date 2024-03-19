@@ -47,7 +47,7 @@ function GuestTableOperations() {
               arrowSize={8}
             >
               <PopoverContent>
-                &#10095; Filter or sort by categories
+                &#10095; Filter or sort by the categories.
               </PopoverContent>
             </ArrowContainer>
           )}
@@ -69,6 +69,7 @@ function GuestTableOperations() {
         </Popover>
         <SortBy
           options={[
+            { value: "", label: "Select" },
             { value: "fullName-asc", label: "Name (A-Z)" },
             { value: "fullName-desc", label: "Name (Z-A)" },
             { value: "id-asc", label: "ID # (asc)" },
