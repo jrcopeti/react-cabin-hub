@@ -60,13 +60,13 @@ const colorMapping = {
     },
     dark: {
       backgroundColor: {
-        red: "#fee2e2",
+        red: "#991b1b",
         grey: "#111827",
         yellow: "#854d0e",
         green: "#166534",
       },
       textColor: {
-        red: "#b91c1c",
+        red: "#fee2e2",
         grey: "#9ca3af",
         yellow: "#fef9c3",
         green: "#dcfce7",

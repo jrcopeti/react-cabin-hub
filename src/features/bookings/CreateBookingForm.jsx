@@ -408,7 +408,6 @@ function CreateBookingForm() {
               modifiersStyles={{
                 booked: {
                   color: "var(--color-grey-400)",
-                  pointerEvents: "none",
                   opacity: 0.5,
                 },
                 today: {
@@ -533,7 +532,6 @@ function CreateBookingForm() {
 
               <FormRow>
                 <Controller
-                  defauktValue={false}
                   control={control}
                   name="hasBreakfast"
                   render={({ field: { onChange, value } }) => (
@@ -549,7 +547,6 @@ function CreateBookingForm() {
                 />
 
                 <Controller
-                  defaultValue={false}
                   control={control}
                   name="isPaid"
                   render={({ field: { onChange, value } }) => (
@@ -687,7 +684,6 @@ function CreateBookingForm() {
               modifiersStyles={{
                 booked: {
                   color: "var(--color-grey-400)",
-                  pointerEvents: "none",
                   opacity: 0.5,
                 },
                 today: {
@@ -766,7 +762,6 @@ function CreateBookingForm() {
                 <Controller
                   name="numGuests"
                   control={control}
-                  defaultValues={1}
                   rules={{
                     required: "Number of guests is required",
                     min: {

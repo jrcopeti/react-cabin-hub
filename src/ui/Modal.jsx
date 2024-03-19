@@ -65,7 +65,7 @@ const StyledModal = styled(motion.div)`
   }
 `;
 
-const Overlay = styled(motion.div)`
+const Overlay = styled.div`
   position: fixed;
   top: 0;
   left: 0;

@@ -3,7 +3,6 @@ import { format } from "date-fns";
 import { subtractDates } from "../utils/helpers";
 import styled from "styled-components";
 
-
 const StyledFooter = styled.footer`
   display: flex;
   justify-content: center;
@@ -37,12 +36,15 @@ export function useDatePicker() {
     if (!range.to) {
       footer = <StyledFooter>{format(range.from, "dd MMM yyyy")}</StyledFooter>;
     } else if (range.to) {
+      const numberOfNights = subtractDates(
+        range.to.toISOString(),
+        range.from.toISOString()
+      );
       footer = (
         <StyledFooter>
           {format(range.from, "dd MMM yyyy")} -{" "}
           {format(range.to, "dd MMM yyyy")} <br />
-          {subtractDates(range.to.toISOString(), range.from.toISOString())}{" "}
-          nights
+          {numberOfNights} night{numberOfNights > 1 ? "s" : ""}
         </StyledFooter>
       );
     }

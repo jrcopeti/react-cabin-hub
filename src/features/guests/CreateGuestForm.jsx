@@ -1,5 +1,4 @@
 import { Controller, useForm } from "react-hook-form";
-import { useQueryClient } from "@tanstack/react-query";
 
 import { useCreateGuest } from "./useCreateGuest";
 import { useCountries } from "../../hooks/useCountries";
@@ -68,7 +67,6 @@ function CreateGuestForm({ onCloseModal }) {
         toast.success(`A new guest was created`);
         reset();
         onCloseModal?.();
-        // queryClient.invalidateQueries(["guests"]);
       },
     });
   }

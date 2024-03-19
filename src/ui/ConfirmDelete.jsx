@@ -2,12 +2,17 @@ import styled from "styled-components";
 import Button from "./Button";
 import Heading from "./Heading";
 import { HiOutlineTrash } from "react-icons/hi2";
+import { screenSizes } from "../utils/constants";
 
 const StyledConfirmDelete = styled.div`
   width: 40rem;
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
+
+  @media (max-width: ${screenSizes.tablet}) {
+    width: 70dvw;
+  }
 
   & p {
     color: var(--color-grey-500);
