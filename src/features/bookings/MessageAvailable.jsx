@@ -121,8 +121,8 @@ function MessageAvailable({ cabinIdInput, startDateInput, endDateInput }) {
     const textShadowColor = colorMapping.theme[mode].textShadow[color];
 
     controls.start({
-      scale: [1, 1.1, 1],
-      transition: { duration: 0.5 },
+      scale: [1, 1.14, 1],
+      transition: { duration: 0.5, type: "tween" },
       backgroundColor: backgroundColor,
       color: textColor,
       textShadow: textShadowColor,
@@ -131,7 +131,7 @@ function MessageAvailable({ cabinIdInput, startDateInput, endDateInput }) {
     if (color === "grey") {
       iconControls.start({
         scale: [1, 1.5],
-        rotate: [0, 360, 360, 360, 360],
+        rotate: [0, 360],
 
         transition: {
           type: "spring",
@@ -146,7 +146,7 @@ function MessageAvailable({ cabinIdInput, startDateInput, endDateInput }) {
     if (color === "red") {
       iconControls.start({
         scale: [1, 1.7],
-        rotate: [0, 360, 360, 360, 360],
+        rotate: [0, 360],
         transition: { duration: 2.5, delay: 0.5, type: "spring" },
       });
     }
@@ -154,7 +154,7 @@ function MessageAvailable({ cabinIdInput, startDateInput, endDateInput }) {
     if (color === "yellow") {
       iconControls.start({
         scale: [1, 1.5],
-        rotate: [0, 360, 360, 360, 360],
+        rotate: [0, 360],
         transition: { duration: 2, delay: 0.5, type: "spring" },
       });
     }
@@ -162,8 +162,8 @@ function MessageAvailable({ cabinIdInput, startDateInput, endDateInput }) {
     if (color === "green") {
       iconControls.start({
         scale: [1, 1.7, 1.9],
-        rotate: [0, -360, -360, -360, -360],
-        transition: { duration: 2, delay: 0.5, type: "spring" },
+        rotate: [0, -360],
+        transition: { duration: 2, delay: 0.5, type: "spring", stiffness: 60 },
       });
     }
   }, [controls, iconControls, isDarkMode, color]);
