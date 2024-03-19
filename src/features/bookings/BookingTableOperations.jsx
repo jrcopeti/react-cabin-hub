@@ -19,6 +19,7 @@ function BookingTableOperations() {
       <Filter
         filterField="status"
         options={[
+
           { value: "all", label: "All" },
           { value: "checked-out", label: "Checked out" },
           { value: "checked-in", label: "Checked in" },
@@ -65,6 +66,7 @@ function BookingTableOperations() {
 
         <SortBy
           options={[
+            { value: "", label: "Select" },
             { value: "startDate-asc", label: "Start Date (earliest)" },
             { value: "startDate-desc", label: "Start Date (latest)" },
             { value: "created_at-asc", label: "Booked on (earliest)" },
