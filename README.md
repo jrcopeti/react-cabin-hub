@@ -40,3 +40,4 @@ The application is designed with a focus on reusability, scalability, and perfor
 - **Custom Hooks**: Utilize custom hooks to manage state and logic across the application.
 - **Responsive Design**: Fully responsive design to ensure compatibility across devices.
 - **Framer Motion**: To sprinkle some joy with animations.
+
