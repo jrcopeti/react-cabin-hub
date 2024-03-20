@@ -19,10 +19,10 @@ const modalVariants = {
 
     opacity: 1,
     transition: {
-      duration: 0.1,
+      duration: 4,
       type: "spring",
       damping: 25,
-      stiffness: 500,
+      stiffness: 300,
     },
   },
   exit: {
@@ -96,8 +96,8 @@ const Button = styled.button`
   & svg {
     width: 2.4rem;
     height: 2.4rem;
-    /* fill: var(--color-grey-500);
-    stroke: var(--color-grey-500); */
+    fill: var(--color-grey-500);
+    stroke: var(--color-grey-500);
     color: var(--color-grey-500);
   }
 `;
@@ -137,7 +137,7 @@ function Window({ children, name }) {
         animate="visible"
         exit="exit"
         variants={modalVariants}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 1 }}
       >
         <Button onClick={close}>
           <HiXMark />
