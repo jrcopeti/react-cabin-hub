@@ -20,7 +20,6 @@ export const modifiersStylesDatePicker = {
   create: {
     booked: {
       color: "var(--color-grey-400)",
-
       opacity: 0.5,
     },
     today: {
