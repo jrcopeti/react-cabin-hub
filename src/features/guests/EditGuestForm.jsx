@@ -1,23 +1,23 @@
 import { Controller, useForm } from "react-hook-form";
 
-import { useCountries } from "../../hooks/useCountries";
-
 import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 import Button from "../../ui/Button";
 import Select from "../../ui/Select";
 import Spinner from "../../ui/Spinner";
-import toast from "react-hot-toast";
-
-import { useUpdateGuest } from "./useUpdateGuest";
-import Heading from "../../ui/Heading";
-import { HiOutlinePencilSquare } from "react-icons/hi2";
 import Row from "../../ui/Row";
-import { useWindowSize } from "../../hooks/useWindowSize";
-import { windowSizes } from "../../utils/constants";
+import toast from "react-hot-toast";
 import FormRowVertical from "../../ui/FormRowVertical";
 import ButtonGroup from "../../ui/ButtonGroup";
+import Heading from "../../ui/Heading";
+
+import { useCountries } from "../../hooks/useCountries";
+import { useUpdateGuest } from "./useUpdateGuest";
+import { useWindowSize } from "../../hooks/useWindowSize";
+import { windowSizes } from "../../utils/constants";
+
+import { HiOutlinePencilSquare } from "react-icons/hi2";
 
 function EditGuestForm({ onCloseModal, guestToEdit = {} }) {
   // remove bookings from the object
@@ -121,7 +121,7 @@ function EditGuestForm({ onCloseModal, guestToEdit = {} }) {
             />
           </FormRow>
 
-          <FormRow label="national ID" error={errors?.nationalID?.message}>
+          <FormRow label="National ID" error={errors?.nationalID?.message}>
             <Input
               disabled={isUpdating}
               type="text"

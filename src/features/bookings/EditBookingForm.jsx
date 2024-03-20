@@ -36,9 +36,15 @@ import toast from "react-hot-toast";
 import { HiOutlinePencilSquare } from "react-icons/hi2";
 import { useWindowSize } from "../../hooks/useWindowSize";
 
-import { windowSizes } from "../../utils/constants";
 import { DayPicker } from "react-day-picker";
 import { useDatePicker } from "../../hooks/useDatePicker";
+import FooterDatePicker from "../../ui/FooterDatePicker";
+import {
+
+  modifiersStylesDatePicker,
+  windowSizes,
+} from "../../utils/constants";
+
 
 const StyledDiv = styled.div`
   display: flex;
@@ -87,7 +93,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
   const startDateInput = watch("startDate");
   const endDateInput = watch("endDate");
 
-  const { range, setRange, footer, handleDayClick } = useDatePicker();
+  const { range, setRange, handleDayClick } = useDatePicker();
 
   const { bookings: bookedDates, isLoading: isLoadingBookedDates } =
     useGetBookingsByCabin(Number(cabinIdInput));
@@ -150,7 +156,8 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
 
   const discountInput = cabinInput ? cabinInput.discount : 0;
 
-  const totalPriceInput = cabinPriceInput + extraPriceInput - discountInput;
+  const totalPriceInput =
+    numNightsInput > 0 ? cabinPriceInput + extraPriceInput - discountInput : 0;
 
   const bookedDatesForCabin = bookedDates?.flatMap(({ startDate, endDate }) => {
     const start = parseISO(startDate);
@@ -159,6 +166,72 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
     const datesInRange = eachDayOfInterval({ start: startToday, end });
     return datesInRange;
   });
+
+  const bookingsValidation = {
+    cabinId: {
+      required: "Cabin is required",
+    },
+
+    startDate: {
+      required: "Check in date is required",
+      validate: {
+        isValidDate: (value) => isValid(parseISO(value)) || "Invalid date",
+        isFutureDate: (value) =>
+          isBefore(value, startOfToday())
+            ? "Check in cannot before today"
+            : true,
+      },
+    },
+
+    endDate: {
+      required: "Check out date is required",
+      validate: {
+        isValidDate: (value) => isValid(parseISO(value)) || "Invalid date",
+
+        isAfterStartDate: (value) => {
+          return (
+            !isBefore(parseISO(value), parseISO(getValues("startDate"))) ||
+            "Check out cannot be before check in"
+          );
+        },
+
+        isSameDate: (value) => {
+          return (
+            parseISO(value).getTime() !==
+              parseISO(getValues("startDate")).getTime() ||
+            "Check out cannot be the same date as check in"
+          );
+        },
+        isMinBookingLength: (value) => {
+          return subtractDates(value, getValues("startDate")) >=
+            settings?.minBookingLength
+            ? true
+            : `Minimum number of nights per booking is ${settings?.minBookingLength}`;
+        },
+
+        ismaxBookingLength: (value) => {
+          return subtractDates(value, getValues("startDate")) <=
+            settings?.maxBookingLength
+            ? true
+            : `Maximum number of nights per booking is ${settings?.maxBookingLength}`;
+        },
+      },
+    },
+
+    guestId: { required: "The booking must have a guest" },
+
+    numGuests: {
+      required: "Number of guests is required",
+      min: {
+        value: 1,
+        message: "Minimum number of guests must be 1",
+      },
+      max: {
+        value: cabinInput?.maxCapacity,
+        message: `Maximum number of guests must be ${cabinInput?.maxCapacity}`,
+      },
+    },
+  };
 
   function onSubmit(data) {
     // selected Cabin
@@ -232,7 +305,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             <Controller
               name="cabinId"
               control={control}
-              rules={{ required: "Cabin is required" }}
+              rules={bookingsValidation.cabinId}
               render={({ field: { ref, value, onChange } }) => (
                 <Select
                   ref={ref}
@@ -252,17 +325,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             <Controller
               name="startDate"
               id="startDate"
-              rules={{
-                required: "Check in date is required",
-                validate: {
-                  isValidDate: (value) =>
-                    isValid(parseISO(value)) || "Invalid date",
-                  isFutureDate: (value) =>
-                    isBefore(new Date(value), startOfToday())
-                      ? "Check in cannot be before today"
-                      : true,
-                },
-              }}
+              rules={bookingsValidation.startDate}
               control={control}
               render={({ field: { ref, value, onChange } }) => (
                 <input
@@ -276,43 +339,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             <Controller
               name="endDate"
               id="endDate"
-              rules={{
-                required: "Check out date is required",
-                validate: {
-                  isValidDate: (value) =>
-                    isValid(parseISO(value)) || "Invalid date",
-
-                  isAfterStartDate: (value) => {
-                    return (
-                      !isBefore(
-                        parseISO(value),
-                        parseISO(getValues("startDate"))
-                      ) || "Check out cannot be before check in"
-                    );
-                  },
-
-                  isSameDate: (value) => {
-                    return (
-                      parseISO(value).getTime() !==
-                        parseISO(getValues("startDate")).getTime() ||
-                      "Check out cannot be the same date as check in"
-                    );
-                  },
-                  isMinBookingLength: (value) => {
-                    return subtractDates(value, getValues("startDate")) >=
-                      settings?.minBookingLength
-                      ? true
-                      : `Minimum number of nights per booking is ${settings?.minBookingLength}`;
-                  },
-
-                  ismaxBookingLength: (value) => {
-                    return subtractDates(value, getValues("startDate")) <=
-                      settings?.maxBookingLength
-                      ? true
-                      : `Maximum number of nights per booking is ${settings?.maxBookingLength}`;
-                  },
-                },
-              }}
+              rules={bookingsValidation.endDate}
               control={control}
               render={({ field: { ref, value, onChange } }) => (
                 <input
@@ -326,13 +353,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             <DayPicker
               mode="range"
               modifiers={{ booked: bookedDatesForCabin }}
-              modifiersStyles={{
-                booked: {
-                  color: "var(--color-grey-400)",
-                  pointerEvents: "none",
-                  opacity: 0.5,
-                },
-              }}
+              modifiersStyles={modifiersStylesDatePicker.edit}
               onDayClick={handleDayClick}
               selected={range}
               onSelect={(range) => {
@@ -346,7 +367,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
                   range?.to ? format(range?.to, "yyyy-MM-dd") : ""
                 );
               }}
-              footer={footer}
+              footer={<FooterDatePicker range={range} />}
             />
           </FormRow>
 
@@ -379,17 +400,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             <Controller
               name="numGuests"
               control={control}
-              rules={{
-                required: "Number of guests is required",
-                min: {
-                  value: 1,
-                  message: "Minimum number of guests must be 1",
-                },
-                max: {
-                  value: cabinInput?.maxCapacity,
-                  message: `Maximum number of guests must be ${cabinInput?.maxCapacity}`,
-                },
-              }}
+              rules={bookingsValidation.numGuests}
               render={({ field: { ref, value, onChange } }) => (
                 <Select
                   ref={ref}
@@ -431,7 +442,6 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             <Controller
               control={control}
               name="hasBreakfast"
-              defaultValue={false}
               render={({ field: { onChange, value } }) => (
                 <Checkbox
                   id="hasBreakfast"
@@ -447,7 +457,6 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             <Controller
               control={control}
               name="isPaid"
-              defaultValue={false}
               render={({ field: { onChange, value } }) => (
                 <Checkbox
                   id="isPaid"
@@ -485,7 +494,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             <Controller
               name="cabinId"
               control={control}
-              rules={{ required: "Cabin is required" }}
+              rules={bookingsValidation.cabinId}
               render={({ field: { ref, value, onChange } }) => (
                 <Select
                   ref={ref}
@@ -505,17 +514,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             <Controller
               name="startDate"
               id="startDate"
-              rules={{
-                required: "Check in date is required",
-                validate: {
-                  isValidDate: (value) =>
-                    isValid(parseISO(value)) || "Invalid date",
-                  isFutureDate: (value) =>
-                    isBefore(new Date(value), startOfToday())
-                      ? "Check in cannot be before today"
-                      : true,
-                },
-              }}
+              rules={bookingsValidation.startDate}
               control={control}
               render={({ field: { ref, value, onChange } }) => (
                 <input
@@ -529,43 +528,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             <Controller
               name="endDate"
               id="endDate"
-              rules={{
-                required: "Check out date is required",
-                validate: {
-                  isValidDate: (value) =>
-                    isValid(parseISO(value)) || "Invalid date",
-
-                  isAfterStartDate: (value) => {
-                    return (
-                      !isBefore(
-                        parseISO(value),
-                        parseISO(getValues("startDate"))
-                      ) || "Check out cannot be before check in"
-                    );
-                  },
-
-                  isSameDate: (value) => {
-                    return (
-                      parseISO(value).getTime() !==
-                        parseISO(getValues("startDate")).getTime() ||
-                      "Check out cannot be the same date as check in"
-                    );
-                  },
-                  isMinBookingLength: (value) => {
-                    return subtractDates(value, getValues("startDate")) >=
-                      settings?.minBookingLength
-                      ? true
-                      : `Minimum number of nights per booking is ${settings?.minBookingLength}`;
-                  },
-
-                  ismaxBookingLength: (value) => {
-                    return subtractDates(value, getValues("startDate")) <=
-                      settings?.maxBookingLength
-                      ? true
-                      : `Maximum number of nights per booking is ${settings?.maxBookingLength}`;
-                  },
-                },
-              }}
+              rules={bookingsValidation.endDate}
               control={control}
               render={({ field: { ref, value, onChange } }) => (
                 <input
@@ -579,13 +542,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             <DayPicker
               mode="range"
               modifiers={{ booked: bookedDatesForCabin }}
-              modifiersStyles={{
-                booked: {
-                  color: "var(--color-grey-400)",
-                  pointerEvents: "none",
-                  opacity: 0.5,
-                },
-              }}
+              modifiersStyles={modifiersStylesDatePicker.edit}
               onDayClick={handleDayClick}
               selected={range}
               onSelect={(range) => {
@@ -599,7 +556,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
                   range?.to ? format(range?.to, "yyyy-MM-dd") : ""
                 );
               }}
-              footer={footer}
+              footer={<FooterDatePicker range={range} />}
             />
           </FormRowVertical>
 
@@ -615,7 +572,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             <Controller
               name="guestId"
               control={control}
-              rules={{ required: "The booking must have a guest" }}
+              rules={bookingsValidation.guestId}
               render={({ field: { ref, value, onChange } }) => (
                 <Select
                   ref={ref}
@@ -635,17 +592,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             <Controller
               name="numGuests"
               control={control}
-              rules={{
-                required: "Number of guests is required",
-                min: {
-                  value: 1,
-                  message: "Minimum number of guests must be 1",
-                },
-                max: {
-                  value: cabinInput?.maxCapacity,
-                  message: `Maximum number of guests must be ${cabinInput?.maxCapacity}`,
-                },
-              }}
+              rules={bookingsValidation.numGuests}
               render={({ field: { ref, value, onChange } }) => (
                 <Select
                   ref={ref}
@@ -670,7 +617,6 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             <Textarea
               disabled={isUpdating}
               id="observations"
-              defaultValue=""
               {...register("observations")}
             />
           </FormRowVertical>
@@ -687,7 +633,6 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             <Controller
               control={control}
               name="hasBreakfast"
-              defaultValue={false}
               render={({ field: { onChange, value } }) => (
                 <Checkbox
                   id="hasBreakfast"
@@ -703,7 +648,6 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             <Controller
               control={control}
               name="isPaid"
-              defaultValue={false}
               render={({ field: { onChange, value } }) => (
                 <Checkbox
                   id="isPaid"

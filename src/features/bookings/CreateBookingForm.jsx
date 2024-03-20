@@ -24,6 +24,8 @@ import ButtonText from "../../ui/ButtonText";
 import Heading from "../../ui/Heading";
 import ButtonGroup from "../../ui/ButtonGroup";
 import PopoverContent from "../../ui/PopoverContent";
+import FooterDatePicker from "../../ui/FooterDatePicker";
+import MessageAvailable from "./MessageAvailable";
 
 import {
   isBefore,
@@ -48,8 +50,7 @@ import { formatCurrency, subtractDates } from "../../utils/helpers";
 import { usePopover } from "../../hooks/usePopover";
 import { useDatePicker } from "../../hooks/useDatePicker";
 import { useWindowSize } from "../../hooks/useWindowSize";
-import { windowSizes } from "../../utils/constants";
-import MessageAvailable from "./MessageAvailable";
+import { modifiersStylesDatePicker, windowSizes } from "../../utils/constants";
 
 function CreateBookingForm() {
   const { createBooking, isLoading: isCreating } = useCreateBookings();
@@ -192,6 +193,72 @@ function CreateBookingForm() {
     const datesInRange = eachDayOfInterval({ start: startToday, end });
     return datesInRange;
   });
+
+  const bookingsValidation = {
+    cabinId: {
+      required: "Cabin is required",
+    },
+
+    startDate: {
+      required: "Check in date is required",
+      validate: {
+        isValidDate: (value) => isValid(parseISO(value)) || "Invalid date",
+        isFutureDate: (value) =>
+          isBefore(value, startOfToday())
+            ? "Check in cannot before today"
+            : true,
+      },
+    },
+
+    endDate: {
+      required: "Check out date is required",
+      validate: {
+        isValidDate: (value) => isValid(parseISO(value)) || "Invalid date",
+
+        isAfterStartDate: (value) => {
+          return (
+            !isBefore(parseISO(value), parseISO(getValues("startDate"))) ||
+            "Check out cannot be before check in"
+          );
+        },
+
+        isSameDate: (value) => {
+          return (
+            parseISO(value).getTime() !==
+              parseISO(getValues("startDate")).getTime() ||
+            "Check out cannot be the same date as check in"
+          );
+        },
+        isMinBookingLength: (value) => {
+          return subtractDates(value, getValues("startDate")) >=
+            settings?.minBookingLength
+            ? true
+            : `Minimum number of nights per booking is ${settings?.minBookingLength}`;
+        },
+
+        ismaxBookingLength: (value) => {
+          return subtractDates(value, getValues("startDate")) <=
+            settings?.maxBookingLength
+            ? true
+            : `Maximum number of nights per booking is ${settings?.maxBookingLength}`;
+        },
+      },
+    },
+
+    guestId: { required: "The booking must have a guest" },
+
+    numGuests: {
+      required: "Number of guests is required",
+      min: {
+        value: 1,
+        message: "Minimum number of guests must be 1",
+      },
+      max: {
+        value: cabinInput?.maxCapacity,
+        message: `Maximum number of guests must be ${cabinInput?.maxCapacity}`,
+      },
+    },
+  };
 
   function handleReset() {
     reset();
@@ -406,17 +473,7 @@ function CreateBookingForm() {
             <DayPicker
               mode="range"
               modifiers={{ booked: bookedDatesForCabin }}
-              modifiersStyles={{
-                booked: {
-                  color: "var(--color-grey-400)",
-                  opacity: 0.5,
-                },
-                today: {
-                  color: "var(--color-yellow-700)",
-                  fontSize: "1.8rem",
-                  backgroundColor: "var(--color-yellow-100)",
-                },
-              }}
+              modifiersStyles={modifiersStylesDatePicker.create}
               onDayClick={handleDayClick}
               selected={range}
               onSelect={(range) => {
@@ -430,7 +487,7 @@ function CreateBookingForm() {
                   range?.to ? format(range?.to, "yyyy-MM-dd") : ""
                 );
               }}
-              footer={footer}
+              footer={<FooterDatePicker range={range} />}
             />
           </FormRow>
 
@@ -682,17 +739,7 @@ function CreateBookingForm() {
             <DayPicker
               mode="range"
               modifiers={{ booked: bookedDatesForCabin }}
-              modifiersStyles={{
-                booked: {
-                  color: "var(--color-grey-400)",
-                  opacity: 0.5,
-                },
-                today: {
-                  color: "var(--color-yellow-700)",
-                  fontSize: "1.8rem",
-                  backgroundColor: "var(--color-yellow-100)",
-                },
-              }}
+              modifiersStyles={modifiersStylesDatePicker.create}
               onDayClick={handleDayClick}
               selected={range}
               onSelect={(range) => {
