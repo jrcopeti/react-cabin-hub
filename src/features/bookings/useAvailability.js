@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { checkForOverlappingBookings } from "../../services/apiBookings";
-import toast from "react-hot-toast";
 import { isBefore, parseISO, startOfToday } from "date-fns";
 import {
   HiOutlineEllipsisHorizontalCircle,
@@ -25,19 +24,19 @@ export function useAvailability(cabinId, startDate, endDate) {
 
   useEffect(() => {
     const checkAvailability = async () => {
-      if (cabinId && !startDate && !endDate) {
+      if (!cabinId || !startDate || !endDate) {
         return setAvailability({
           isAvailable: false,
-          message: "Please select a check in and a check out dates",
+          message: "Start by selecting a cabin",
           color: "grey",
           Icon: HiOutlineEllipsisHorizontalCircle,
         });
       }
 
-      if (cabinId && startDate && !endDate) {
+      if (cabinId && !startDate && !endDate) {
         return setAvailability({
           isAvailable: false,
-          message: "Please select a check out date",
+          message: "Please select a check in and a check out dates",
           color: "grey",
           Icon: HiOutlineEllipsisHorizontalCircle,
         });
@@ -52,10 +51,10 @@ export function useAvailability(cabinId, startDate, endDate) {
         });
       }
 
-      if (!cabinId || !startDate || !endDate) {
+      if (cabinId && startDate && !endDate) {
         return setAvailability({
           isAvailable: false,
-          message: "Start by selecting a cabin",
+          message: "Please select a check out date",
           color: "grey",
           Icon: HiOutlineEllipsisHorizontalCircle,
         });

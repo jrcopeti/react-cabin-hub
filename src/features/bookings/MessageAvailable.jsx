@@ -2,12 +2,7 @@ import styled from "styled-components";
 import { useAvailability } from "./useAvailability";
 import FormRowVertical from "../../ui/FormRowVertical";
 import { useEffect } from "react";
-import {
-  HiOutlineEllipsisHorizontalCircle,
-  HiOutlineExclamationTriangle,
-  HiOutlineXCircle,
-  HiOutlineCheckCircle,
-} from "react-icons/hi2";
+
 import { motion, useAnimation } from "framer-motion";
 import { useDarkMode } from "../../hooks/useDarkMode";
 
@@ -40,40 +35,40 @@ const colorMapping = {
   theme: {
     light: {
       backgroundColor: {
-        red: "#fee2e2",
         grey: "#f9fafb",
+        red: "#fee2e2",
         yellow: "#fef9c3",
         green: "#dcfce7",
       },
       textColor: {
-        red: "#b91c1c",
         grey: "#6b7280",
+        red: "#b91c1c",
         yellow: "#a16207",
         green: "#15803d",
       },
       textShadow: {
-        red: "#fee2e2",
         grey: "#f3f4f6",
+        red: "#fee2e2",
         yellow: "#fef9c3",
         green: "#dcfce7",
       },
     },
     dark: {
       backgroundColor: {
-        red: "#991b1b",
         grey: "#111827",
+        red: "#991b1b",
         yellow: "#854d0e",
         green: "#166534",
       },
       textColor: {
-        red: "#fee2e2",
         grey: "#9ca3af",
+        red: "#fee2e2",
         yellow: "#fef9c3",
         green: "#dcfce7",
       },
       textShadow: {
-        red: "#fee2e2",
         grey: "#1f2937",
+        red: "#fee2e2",
         yellow: "#854d0e",
         green: "#dcfce7",
       },

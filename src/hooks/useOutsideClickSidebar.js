@@ -7,7 +7,9 @@ export function useOutsideClickSidebar(handler, ...refs) {
   useEffect(
     function () {
       function handleClick(e) {
-        if (refs.every(ref => ref.current && !ref.current.contains(e.target))) {
+        if (
+          refs.every((ref) => ref.current && !ref.current.contains(e.target))
+        ) {
           handler();
         }
       }

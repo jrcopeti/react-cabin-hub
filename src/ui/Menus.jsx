@@ -91,16 +91,31 @@ function Toggle({ id }) {
   function handleClick(e) {
     e.stopPropagation();
     const rect = e.target.closest("button").getBoundingClientRect();
+
+    let calculatedX = window.innerWidth - rect.width - rect.x;
+    let calculatedY = rect.y + rect.height + 8;
+
+    // To fix the position of the modal when it's close to the bottom of the screen
+    const modalHeight = 160;
+    if (calculatedY + modalHeight > window.innerHeight) {
+      calculatedY = rect.y - modalHeight - 8;
+    }
+
     setPosition({
-      x: window.innerWidth - rect.width - rect.x,
-      y: rect.y + rect.height + 8,
+      x: calculatedX,
+      y: calculatedY,
     });
     openId === "" || openId !== id ? open(id) : close();
   }
+  
   return (
     <StyledToggle
-      whileHover={ { scale: 1.4, rotate: -90 }}
-      whileTap={width >= windowSizes.tablet ? { scale: 0.8 } : { scale: 1.6, rotate: -90}}
+      whileHover={{ scale: 1.4, rotate: -90 }}
+      whileTap={
+        width >= windowSizes.tablet
+          ? { scale: 0.8 }
+          : { scale: 1.6, rotate: -90 }
+      }
       transition={{ duration: 0.3 }}
       onClick={handleClick}
     >

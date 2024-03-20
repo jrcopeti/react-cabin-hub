@@ -1,23 +1,23 @@
 import { Controller, useForm } from "react-hook-form";
 
-import { useCountries } from "../../hooks/useCountries";
-
 import Form from "../../ui/Form";
 import FormRow from "../../ui/FormRow";
 import Input from "../../ui/Input";
 import Button from "../../ui/Button";
 import Select from "../../ui/Select";
 import Spinner from "../../ui/Spinner";
-import toast from "react-hot-toast";
-
-import { useUpdateGuest } from "./useUpdateGuest";
-import Heading from "../../ui/Heading";
-import { HiOutlinePencilSquare } from "react-icons/hi2";
 import Row from "../../ui/Row";
-import { useWindowSize } from "../../hooks/useWindowSize";
-import { windowSizes } from "../../utils/constants";
+import toast from "react-hot-toast";
 import FormRowVertical from "../../ui/FormRowVertical";
 import ButtonGroup from "../../ui/ButtonGroup";
+import Heading from "../../ui/Heading";
+
+import { useCountries } from "../../hooks/useCountries";
+import { useUpdateGuest } from "./useUpdateGuest";
+import { useWindowSize } from "../../hooks/useWindowSize";
+import { windowSizes } from "../../utils/constants";
+
+import { HiOutlinePencilSquare } from "react-icons/hi2";
 
 function EditGuestForm({ onCloseModal, guestToEdit = {} }) {
   // remove bookings from the object
@@ -53,6 +53,22 @@ function EditGuestForm({ onCloseModal, guestToEdit = {} }) {
         key: `${country.value}-${index}`,
       })),
   ];
+
+  const guestValidation = {
+    fullName: { required: "This field is required" },
+
+    email: {
+      required: "Email is required",
+      pattern: {
+        value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+        message: "Invalid email address",
+      },
+    },
+
+    nationalID: { required: "National ID is required" },
+
+    nationality: { required: "National ID is required" },
+  };
 
   function onSubmit(data) {
     const countryFlag = countries.find(
@@ -102,7 +118,7 @@ function EditGuestForm({ onCloseModal, guestToEdit = {} }) {
               disabled={isUpdating}
               type="text"
               id="fullName"
-              {...register("fullName", { required: "This field is required" })}
+              {...register("fullName", guestValidation.fullName)}
             />
           </FormRow>
 
@@ -111,24 +127,16 @@ function EditGuestForm({ onCloseModal, guestToEdit = {} }) {
               disabled={isUpdating}
               type="text"
               id="email"
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                  message: "Invalid email address",
-                },
-              })}
+              {...register("email", guestValidation.email)}
             />
           </FormRow>
 
-          <FormRow label="national ID" error={errors?.nationalID?.message}>
+          <FormRow label="National ID" error={errors?.nationalID?.message}>
             <Input
               disabled={isUpdating}
               type="text"
               id="nationalID"
-              {...register("nationalID", {
-                required: "National ID is required",
-              })}
+              {...register("nationalID", guestValidation.nationalID)}
             />
           </FormRow>
 
@@ -136,7 +144,7 @@ function EditGuestForm({ onCloseModal, guestToEdit = {} }) {
             <Controller
               name="nationality"
               control={control}
-              rules={{ required: "This field is required" }}
+              rules={guestValidation.nationality}
               render={({ field: { ref, value, onChange } }) => (
                 <Select
                   ref={ref}
@@ -164,7 +172,7 @@ function EditGuestForm({ onCloseModal, guestToEdit = {} }) {
           </FormRow>
         </Form>
       ) : (
-        // Mobile
+        // MOBILE
         <Form
           onSubmit={handleSubmit(onSubmit, onError)}
           type={onCloseModal ? "modal" : "regular"}
@@ -174,7 +182,7 @@ function EditGuestForm({ onCloseModal, guestToEdit = {} }) {
               disabled={isUpdating}
               type="text"
               id="fullName"
-              {...register("fullName", { required: "This field is required" })}
+              {...register("fullName", guestValidation.fullName)}
             />
           </FormRowVertical>
 
@@ -183,13 +191,7 @@ function EditGuestForm({ onCloseModal, guestToEdit = {} }) {
               disabled={isUpdating}
               type="text"
               id="email"
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                  message: "Invalid email address",
-                },
-              })}
+              {...register("email", guestValidation.email)}
             />
           </FormRowVertical>
 
@@ -201,9 +203,7 @@ function EditGuestForm({ onCloseModal, guestToEdit = {} }) {
               disabled={isUpdating}
               type="text"
               id="nationalID"
-              {...register("nationalID", {
-                required: "National ID is required",
-              })}
+              {...register("nationalID", guestValidation.nationalID)}
             />
           </FormRowVertical>
 
@@ -214,7 +214,7 @@ function EditGuestForm({ onCloseModal, guestToEdit = {} }) {
             <Controller
               name="nationality"
               control={control}
-              rules={{ required: "This field is required" }}
+              rules={guestValidation.nationality}
               render={({ field: { ref, value, onChange } }) => (
                 <Select
                   ref={ref}

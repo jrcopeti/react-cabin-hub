@@ -6,13 +6,14 @@ import Button from "../../ui/Button";
 import { screenSizes } from "../../utils/constants";
 import { formatCurrency } from "../../utils/helpers";
 import Spinner from "../../ui/Spinner";
+import ButtonGroup from "../../ui/ButtonGroup";
 
 const StyledCabinDetails = styled.div`
   display: flex;
   flex-direction: column;
   min-width: 40rem;
   max-width: 50rem;
-  max-height: 85dvh;
+  max-height: 80dvh;
 
   background-color: var(--color-grey-0);
   border: 1px solid var(--color-grey-100);
@@ -148,16 +149,18 @@ function CabinDetails({ cabin, onCloseModal, isLoading }) {
 
           <Description>{description}</Description>
         </Section>
-        <StyledNavLink to={`/bookings/new/${cabinId}`}>
-          <Button>Book</Button>
-        </StyledNavLink>
-        <Button
-          variation="secondary"
-          type="reset"
-          onClick={() => onCloseModal?.()}
-        >
-          Close
-        </Button>
+        <ButtonGroup>
+          <Button
+            variation="secondary"
+            type="reset"
+            onClick={() => onCloseModal?.()}
+          >
+            Close
+          </Button>
+          <StyledNavLink to={`/bookings/new/${cabinId}`}>
+            <Button>Book</Button>
+          </StyledNavLink>
+        </ButtonGroup>
       </StyledCabinDetails>
     </>
   );
