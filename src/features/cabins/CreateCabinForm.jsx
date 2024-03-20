@@ -20,6 +20,7 @@ import { useWindowSize } from "../../hooks/useWindowSize";
 import { windowSizes } from "../../utils/constants";
 import ButtonGroup from "../../ui/ButtonGroup";
 import styled from "styled-components";
+import toast from "react-hot-toast";
 
 const StyledDiv = styled.div`
   display: flex;
@@ -59,6 +60,41 @@ function CreateCabinForm({ onCloseModal, cabinToEdit = {} }) {
 
   const { width } = useWindowSize();
 
+  const cabinValidation = {
+    name: { required: "This field is required" },
+
+    maxCapacity: {
+      required: "This field is required",
+      min: {
+        value: 1,
+        message: "Minimum capacity is 1",
+      },
+    },
+
+    regularPrice: {
+      required: "This field is required",
+      min: {
+        value: 1,
+        message: "Minimum price should be at least 1",
+      },
+    },
+
+    discount: {
+      required: "This field is required",
+      validate: (value) =>
+        +value <= +getValues().regularPrice ||
+        "Discount should be less than regular price",
+    },
+
+    description: {
+      required: "This field is required",
+    },
+
+    image: {
+      required: isEditSession ? false : "This field is required",
+    },
+  };
+
   function onSubmit(data) {
     const image = typeof data.image === "string" ? data.image : data.image[0];
 
@@ -69,6 +105,7 @@ function CreateCabinForm({ onCloseModal, cabinToEdit = {} }) {
           onSuccess: () => {
             reset();
             onCloseModal?.();
+            toast.success(`Cabin ${data.name} was updated successfully`);
           },
         }
       );
@@ -79,6 +116,7 @@ function CreateCabinForm({ onCloseModal, cabinToEdit = {} }) {
           onSuccess: () => {
             reset();
             onCloseModal?.();
+            toast.success(`Cabin ${data.name} was created successfully`);
           },
         }
       );
@@ -89,25 +127,22 @@ function CreateCabinForm({ onCloseModal, cabinToEdit = {} }) {
   }
   return (
     <StyledDiv>
-      {isEditSession ? (
-        <Row type="form">
-          <Heading as="h2">
+      <Row type="form">
+        <Heading as="h2">
+          {isEditSession ? (
             <span>
               <HiOutlinePencilSquare />
+              {`Edit Cabin ${editValues.name}`}
             </span>
-            Edit Cabin
-          </Heading>
-        </Row>
-      ) : (
-        <Row type="form">
-          <Heading as="h2">
+          ) : (
             <span>
               <HiOutlineChevronDoubleUp />
+              Create New Cabin
             </span>
-            Create New Cabin
-          </Heading>
-        </Row>
-      )}
+          )}
+        </Heading>
+      </Row>
+
       <br />
       {width >= windowSizes.tablet ? (
         <Form
@@ -119,7 +154,7 @@ function CreateCabinForm({ onCloseModal, cabinToEdit = {} }) {
               type="text"
               id="name"
               disabled={isWorking}
-              {...register("name", { required: "This field is required" })}
+              {...register("name", cabinValidation.name)}
             />
           </FormRow>
 
@@ -131,13 +166,7 @@ function CreateCabinForm({ onCloseModal, cabinToEdit = {} }) {
               type="number"
               id="maxCapacity"
               disabled={isWorking}
-              {...register("maxCapacity", {
-                required: "This field is required",
-                min: {
-                  value: 1,
-                  message: "Minimum capacity is 1",
-                },
-              })}
+              {...register("maxCapacity", cabinValidation.maxCapacity)}
             />
           </FormRow>
 
@@ -146,13 +175,7 @@ function CreateCabinForm({ onCloseModal, cabinToEdit = {} }) {
               type="number"
               id="regularPrice"
               disabled={isWorking}
-              {...register("regularPrice", {
-                required: "This field is required",
-                min: {
-                  value: 1,
-                  message: "Minimum price should be at least 1",
-                },
-              })}
+              {...register("regularPrice", cabinValidation.regularPrice)}
             />
           </FormRow>
 
@@ -161,12 +184,7 @@ function CreateCabinForm({ onCloseModal, cabinToEdit = {} }) {
               type="number"
               id="discount"
               disabled={isWorking}
-              {...register("discount", {
-                required: "This field is required",
-                validate: (value) =>
-                  +value <= +getValues().regularPrice ||
-                  "Discount should be less than regular price",
-              })}
+              {...register("discount", cabinValidation.discount)}
             />
           </FormRow>
 
@@ -179,9 +197,7 @@ function CreateCabinForm({ onCloseModal, cabinToEdit = {} }) {
               id="description"
               disabled={isWorking}
               defaultValue=""
-              {...register("description", {
-                required: "This field is required",
-              })}
+              {...register("description", cabinValidation.description)}
             />
           </FormRow>
 
@@ -190,14 +206,11 @@ function CreateCabinForm({ onCloseModal, cabinToEdit = {} }) {
               id="image"
               accept="image/*"
               disabled={isWorking}
-              {...register("image", {
-                required: isEditSession ? false : "This field is required",
-              })}
+              {...register("image", cabinValidation.image)}
             />
           </FormRow>
 
           <FormRow>
-            {/* type is an HTML attribute! */}
             <Button
               variation="secondary"
               type="reset"
@@ -211,6 +224,8 @@ function CreateCabinForm({ onCloseModal, cabinToEdit = {} }) {
           </FormRow>
         </Form>
       ) : (
+        // MOBILE
+
         <Form
           onSubmit={handleSubmit(onSubmit, onError)}
           type={onCloseModal ? "modal" : "regular"}
@@ -220,7 +235,7 @@ function CreateCabinForm({ onCloseModal, cabinToEdit = {} }) {
               type="text"
               id="name"
               disabled={isWorking}
-              {...register("name", { required: "This field is required" })}
+              {...register("name", cabinValidation.name)}
             />
           </FormRowVertical>
 
@@ -232,13 +247,7 @@ function CreateCabinForm({ onCloseModal, cabinToEdit = {} }) {
               type="number"
               id="maxCapacity"
               disabled={isWorking}
-              {...register("maxCapacity", {
-                required: "This field is required",
-                min: {
-                  value: 1,
-                  message: "Minimum capacity is 1",
-                },
-              })}
+              {...register("maxCapacity", cabinValidation.maxCapacity)}
             />
           </FormRowVertical>
 
@@ -250,13 +259,7 @@ function CreateCabinForm({ onCloseModal, cabinToEdit = {} }) {
               type="number"
               id="regularPrice"
               disabled={isWorking}
-              {...register("regularPrice", {
-                required: "This field is required",
-                min: {
-                  value: 1,
-                  message: "Minimum price should be at least 1",
-                },
-              })}
+              {...register("regularPrice", cabinValidation.regularPrice)}
             />
           </FormRowVertical>
 
@@ -265,12 +268,7 @@ function CreateCabinForm({ onCloseModal, cabinToEdit = {} }) {
               type="number"
               id="discount"
               disabled={isWorking}
-              {...register("discount", {
-                required: "This field is required",
-                validate: (value) =>
-                  +value <= +getValues().regularPrice ||
-                  "Discount should be less than regular price",
-              })}
+              {...register("discount", cabinValidation.discount)}
             />
           </FormRowVertical>
 
@@ -283,9 +281,7 @@ function CreateCabinForm({ onCloseModal, cabinToEdit = {} }) {
               id="description"
               disabled={isWorking}
               defaultValue=""
-              {...register("description", {
-                required: "This field is required",
-              })}
+              {...register("description", cabinValidation.description)}
             />
           </FormRowVertical>
 
@@ -294,9 +290,7 @@ function CreateCabinForm({ onCloseModal, cabinToEdit = {} }) {
               id="image"
               accept="image/*"
               disabled={isWorking}
-              {...register("image", {
-                required: isEditSession ? false : "This field is required",
-              })}
+              {...register("image", cabinValidation.image)}
             />
           </FormRowVertical>
 

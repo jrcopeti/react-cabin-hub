@@ -55,6 +55,7 @@ const Title = styled.h5`
   letter-spacing: 0.4px;
   font-weight: 600;
   color: var(--color-grey-500);
+  
   @media (max-width: ${screenSizes.tablet}) {
     align-self: center;
   }
@@ -64,6 +65,7 @@ const Value = styled.p`
   font-size: 2.4rem;
   line-height: 1;
   font-weight: 500;
+
   @media (max-width: ${screenSizes.tablet}) {
     align-self: center;
   }

@@ -19,8 +19,7 @@ import ButtonGroup from "../../ui/ButtonGroup";
 import Heading from "../../ui/Heading";
 import Row from "../../ui/Row";
 import FormRowVertical from "../../ui/FormRowVertical";
-
-import { formatCurrency, subtractDates } from "../../utils/helpers";
+import FooterDatePicker from "../../ui/FooterDatePicker";
 
 import {
   eachDayOfInterval,
@@ -32,19 +31,15 @@ import {
   startOfToday,
 } from "date-fns";
 import toast from "react-hot-toast";
+import { DayPicker } from "react-day-picker";
 
 import { HiOutlinePencilSquare } from "react-icons/hi2";
 import { useWindowSize } from "../../hooks/useWindowSize";
 
-import { DayPicker } from "react-day-picker";
 import { useDatePicker } from "../../hooks/useDatePicker";
-import FooterDatePicker from "../../ui/FooterDatePicker";
-import {
 
-  modifiersStylesDatePicker,
-  windowSizes,
-} from "../../utils/constants";
-
+import { modifiersStylesDatePicker, windowSizes } from "../../utils/constants";
+import { formatCurrency, subtractDates } from "../../utils/helpers";
 
 const StyledDiv = styled.div`
   display: flex;
@@ -98,11 +93,6 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
   const { bookings: bookedDates, isLoading: isLoadingBookedDates } =
     useGetBookingsByCabin(Number(cabinIdInput));
 
-  const numNightsInput =
-    startDateInput && endDateInput && endDateInput > startDateInput
-      ? subtractDates(endDateInput, startDateInput)
-      : 0;
-
   if (
     isLoadingSettings ||
     isLoadingCabins ||
@@ -110,6 +100,11 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
     isLoadingBookedDates
   )
     return <Spinner />;
+
+  const numNightsInput =
+    startDateInput && endDateInput && endDateInput > startDateInput
+      ? subtractDates(endDateInput, startDateInput)
+      : 0;
 
   const cabinOptions = [
     { value: "", label: "Select a Cabin" },
@@ -162,12 +157,14 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
   const bookedDatesForCabin = bookedDates?.flatMap(({ startDate, endDate }) => {
     const start = parseISO(startDate);
     const end = endOfDay(parseISO(endDate));
+
     const startToday = isBefore(start, startOfToday()) ? startOfToday() : start;
+
     const datesInRange = eachDayOfInterval({ start: startToday, end });
     return datesInRange;
   });
 
-  const bookingsValidation = {
+  const bookingValidation = {
     cabinId: {
       required: "Cabin is required",
     },
@@ -238,17 +235,14 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
     const cabinIdNum = Number(data.cabinId);
     const reservedCabin = cabins.find((cabin) => cabin.id === cabinIdNum);
 
-    // CabinPrice
     const cabinPrice = reservedCabin
       ? (reservedCabin.regularPrice - reservedCabin.discount) * numNightsInput
       : 0;
 
-    // ExtraPrice
     const extraPrice = hasBreakfast
       ? numNightsInput * settings.breakfastPrice * Number(data.numGuests)
       : 0;
 
-    // Total Price
     const totalPrice = cabinPrice + extraPrice;
 
     const finalData = {
@@ -305,7 +299,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             <Controller
               name="cabinId"
               control={control}
-              rules={bookingsValidation.cabinId}
+              rules={bookingValidation.cabinId}
               render={({ field: { ref, value, onChange } }) => (
                 <Select
                   ref={ref}
@@ -325,7 +319,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             <Controller
               name="startDate"
               id="startDate"
-              rules={bookingsValidation.startDate}
+              rules={bookingValidation.startDate}
               control={control}
               render={({ field: { ref, value, onChange } }) => (
                 <input
@@ -339,7 +333,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             <Controller
               name="endDate"
               id="endDate"
-              rules={bookingsValidation.endDate}
+              rules={bookingValidation.endDate}
               control={control}
               render={({ field: { ref, value, onChange } }) => (
                 <input
@@ -400,7 +394,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             <Controller
               name="numGuests"
               control={control}
-              rules={bookingsValidation.numGuests}
+              rules={bookingValidation.numGuests}
               render={({ field: { ref, value, onChange } }) => (
                 <Select
                   ref={ref}
@@ -494,7 +488,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             <Controller
               name="cabinId"
               control={control}
-              rules={bookingsValidation.cabinId}
+              rules={bookingValidation.cabinId}
               render={({ field: { ref, value, onChange } }) => (
                 <Select
                   ref={ref}
@@ -514,7 +508,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             <Controller
               name="startDate"
               id="startDate"
-              rules={bookingsValidation.startDate}
+              rules={bookingValidation.startDate}
               control={control}
               render={({ field: { ref, value, onChange } }) => (
                 <input
@@ -528,7 +522,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             <Controller
               name="endDate"
               id="endDate"
-              rules={bookingsValidation.endDate}
+              rules={bookingValidation.endDate}
               control={control}
               render={({ field: { ref, value, onChange } }) => (
                 <input
@@ -572,7 +566,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             <Controller
               name="guestId"
               control={control}
-              rules={bookingsValidation.guestId}
+              rules={bookingValidation.guestId}
               render={({ field: { ref, value, onChange } }) => (
                 <Select
                   ref={ref}
@@ -592,7 +586,7 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             <Controller
               name="numGuests"
               control={control}
-              rules={bookingsValidation.numGuests}
+              rules={bookingValidation.numGuests}
               render={({ field: { ref, value, onChange } }) => (
                 <Select
                   ref={ref}

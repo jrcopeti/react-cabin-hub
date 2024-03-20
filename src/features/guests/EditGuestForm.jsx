@@ -54,6 +54,22 @@ function EditGuestForm({ onCloseModal, guestToEdit = {} }) {
       })),
   ];
 
+  const guestValidation = {
+    fullName: { required: "This field is required" },
+
+    email: {
+      required: "Email is required",
+      pattern: {
+        value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+        message: "Invalid email address",
+      },
+    },
+
+    nationalID: { required: "National ID is required" },
+
+    nationality: { required: "National ID is required" },
+  };
+
   function onSubmit(data) {
     const countryFlag = countries.find(
       (country) => country.label === data.nationality
@@ -102,7 +118,7 @@ function EditGuestForm({ onCloseModal, guestToEdit = {} }) {
               disabled={isUpdating}
               type="text"
               id="fullName"
-              {...register("fullName", { required: "This field is required" })}
+              {...register("fullName", guestValidation.fullName)}
             />
           </FormRow>
 
@@ -111,13 +127,7 @@ function EditGuestForm({ onCloseModal, guestToEdit = {} }) {
               disabled={isUpdating}
               type="text"
               id="email"
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                  message: "Invalid email address",
-                },
-              })}
+              {...register("email", guestValidation.email)}
             />
           </FormRow>
 
@@ -126,9 +136,7 @@ function EditGuestForm({ onCloseModal, guestToEdit = {} }) {
               disabled={isUpdating}
               type="text"
               id="nationalID"
-              {...register("nationalID", {
-                required: "National ID is required",
-              })}
+              {...register("nationalID", guestValidation.nationalID)}
             />
           </FormRow>
 
@@ -136,7 +144,7 @@ function EditGuestForm({ onCloseModal, guestToEdit = {} }) {
             <Controller
               name="nationality"
               control={control}
-              rules={{ required: "This field is required" }}
+              rules={guestValidation.nationality}
               render={({ field: { ref, value, onChange } }) => (
                 <Select
                   ref={ref}
@@ -164,7 +172,7 @@ function EditGuestForm({ onCloseModal, guestToEdit = {} }) {
           </FormRow>
         </Form>
       ) : (
-        // Mobile
+        // MOBILE
         <Form
           onSubmit={handleSubmit(onSubmit, onError)}
           type={onCloseModal ? "modal" : "regular"}
@@ -174,7 +182,7 @@ function EditGuestForm({ onCloseModal, guestToEdit = {} }) {
               disabled={isUpdating}
               type="text"
               id="fullName"
-              {...register("fullName", { required: "This field is required" })}
+              {...register("fullName", guestValidation.fullName)}
             />
           </FormRowVertical>
 
@@ -183,13 +191,7 @@ function EditGuestForm({ onCloseModal, guestToEdit = {} }) {
               disabled={isUpdating}
               type="text"
               id="email"
-              {...register("email", {
-                required: "Email is required",
-                pattern: {
-                  value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
-                  message: "Invalid email address",
-                },
-              })}
+              {...register("email", guestValidation.email)}
             />
           </FormRowVertical>
 
@@ -201,9 +203,7 @@ function EditGuestForm({ onCloseModal, guestToEdit = {} }) {
               disabled={isUpdating}
               type="text"
               id="nationalID"
-              {...register("nationalID", {
-                required: "National ID is required",
-              })}
+              {...register("nationalID", guestValidation.nationalID)}
             />
           </FormRowVertical>
 
@@ -214,7 +214,7 @@ function EditGuestForm({ onCloseModal, guestToEdit = {} }) {
             <Controller
               name="nationality"
               control={control}
-              rules={{ required: "This field is required" }}
+              rules={guestValidation.nationality}
               render={({ field: { ref, value, onChange } }) => (
                 <Select
                   ref={ref}

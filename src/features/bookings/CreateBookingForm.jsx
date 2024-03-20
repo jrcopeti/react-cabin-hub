@@ -84,14 +84,18 @@ function CreateBookingForm() {
   } = useForm({
     defaultValues: {
       cabinId: cabinIdUrl || "",
+      startDate: "",
+      endDate: "",
+      guestId: "",
       numGuests: 1,
+      numNights: 0,
       cabinPrice: 0,
+      discount: 0,
+      observations: "",
       extraPrice: 0,
       totalPrice: 0,
       hasBreakfast: false,
       isPaid: false,
-      startDate: "",
-      endDate: "",
     },
   });
 
@@ -99,11 +103,10 @@ function CreateBookingForm() {
     reset({
       cabinId: cabinIdUrl || "",
       numGuests: 1,
-      hasBreakfast: false,
-      isPaid: false,
       startDate: "",
       endDate: "",
-      guestId: "",
+      hasBreakfast: false,
+      isPaid: false,
     });
   }, [cabinIdUrl, reset]);
 
@@ -122,8 +125,9 @@ function CreateBookingForm() {
   const { range, setRange, footer, handleDayClick, handleResetRange } =
     useDatePicker();
 
-  const { bookings: bookedDates, isLoading: isLoadingBookedDates } =
-    useGetBookingsByCabin(Number(cabinIdInput));
+  const { bookedDates, isLoadingBookedDates } = useGetBookingsByCabin(
+    Number(cabinIdInput)
+  );
 
   if (
     isLoadingSettings ||
@@ -184,17 +188,20 @@ function CreateBookingForm() {
 
   const discountInput = cabinInput ? cabinInput.discount : 0;
 
-  const totalPriceInput = cabinPriceInput + extraPriceInput - discountInput;
+  const totalPriceInput =
+    numNightsInput > 0 ? cabinPriceInput + extraPriceInput - discountInput : 0;
 
   const bookedDatesForCabin = bookedDates?.flatMap(({ startDate, endDate }) => {
     const start = parseISO(startDate);
     const end = endOfDay(parseISO(endDate));
+
     const startToday = isBefore(start, startOfToday()) ? startOfToday() : start;
+
     const datesInRange = eachDayOfInterval({ start: startToday, end });
     return datesInRange;
   });
 
-  const bookingsValidation = {
+  const bookingValidation = {
     cabinId: {
       required: "Cabin is required",
     },
@@ -271,15 +278,12 @@ function CreateBookingForm() {
     const cabinIdNum = Number(data.cabinId);
     const reservedCabin = cabins.find((cabin) => cabin.id === cabinIdNum);
 
-    // CabinPrice
     const cabinPrice =
       (reservedCabin.regularPrice - reservedCabin.discount) * numNightsInput;
 
-    // ExtraPrice
     const extraPrice =
       numNightsInput * settings.breakfastPrice * Number(numGuestInput);
 
-    // Total Price
     const totalPrice = cabinPrice + extraPrice;
 
     const finalData = {
@@ -317,6 +321,7 @@ function CreateBookingForm() {
           &larr; Back
         </ButtonText>
       </div>
+
       <Row type="form">
         <Heading as="h1">
           <span>
@@ -381,7 +386,7 @@ function CreateBookingForm() {
             <Controller
               name="cabinId"
               control={control}
-              rules={{ required: "Cabin is required" }}
+              rules={bookingValidation.cabinId}
               render={({ field: { ref, value, onChange } }) => (
                 <Select
                   ref={ref}
@@ -398,17 +403,7 @@ function CreateBookingForm() {
             <Controller
               name="startDate"
               id="startDate"
-              rules={{
-                required: "Check in date is required",
-                validate: {
-                  isValidDate: (value) =>
-                    isValid(parseISO(value)) || "Invalid date",
-                  isFutureDate: (value) =>
-                    isBefore(value, startOfToday())
-                      ? "Check in cannot before today"
-                      : true,
-                },
-              }}
+              rules={bookingValidation.startDate}
               control={control}
               render={({ field: { ref, value, onChange } }) => (
                 <input
@@ -422,43 +417,7 @@ function CreateBookingForm() {
             <Controller
               name="endDate"
               id="endDate"
-              rules={{
-                required: "Check out date is required",
-                validate: {
-                  isValidDate: (value) =>
-                    isValid(parseISO(value)) || "Invalid date",
-
-                  isAfterStartDate: (value) => {
-                    return (
-                      !isBefore(
-                        parseISO(value),
-                        parseISO(getValues("startDate"))
-                      ) || "Check out cannot be before check in"
-                    );
-                  },
-
-                  isSameDate: (value) => {
-                    return (
-                      parseISO(value).getTime() !==
-                        parseISO(getValues("startDate")).getTime() ||
-                      "Check out cannot be the same date as check in"
-                    );
-                  },
-                  isMinBookingLength: (value) => {
-                    return subtractDates(value, getValues("startDate")) >=
-                      settings?.minBookingLength
-                      ? true
-                      : `Minimum number of nights per booking is ${settings?.minBookingLength}`;
-                  },
-
-                  ismaxBookingLength: (value) => {
-                    return subtractDates(value, getValues("startDate")) <=
-                      settings?.maxBookingLength
-                      ? true
-                      : `Maximum number of nights per booking is ${settings?.maxBookingLength}`;
-                  },
-                },
-              }}
+              rules={bookingValidation.endDate}
               control={control}
               render={({ field: { ref, value, onChange } }) => (
                 <input
@@ -521,7 +480,7 @@ function CreateBookingForm() {
                 <Controller
                   name="guestId"
                   control={control}
-                  rules={{ required: "The booking must have a guest" }}
+                  rules={bookingValidation.guestId}
                   render={({ field: { ref, value, onChange } }) => (
                     <Select
                       ref={ref}
@@ -541,17 +500,7 @@ function CreateBookingForm() {
                 <Controller
                   name="numGuests"
                   control={control}
-                  rules={{
-                    required: "Number of guests is required",
-                    min: {
-                      value: 1,
-                      message: "Minimum number of guests must be 1",
-                    },
-                    max: {
-                      value: cabinInput?.maxCapacity,
-                      message: `Maximum number of guests must be ${cabinInput?.maxCapacity}`,
-                    },
-                  }}
+                  rules={bookingValidation.numGuests}
                   render={({ field: { ref, value, onChange } }) => (
                     <Select
                       ref={ref}
@@ -642,13 +591,13 @@ function CreateBookingForm() {
           )}
         </Form>
       ) : (
-        // Mobile
+        // MOBILE
         <Form type="regular" onSubmit={handleSubmit(onSubmit, onError)}>
           <FormRowVertical label="Cabin" error={errors?.cabinId?.message}>
             <Controller
               name="cabinId"
               control={control}
-              rules={{ required: "Cabin is required" }}
+              rules={bookingValidation.cabinId}
               render={({ field: { ref, value, onChange } }) => (
                 <Select
                   ref={ref}
@@ -660,22 +609,12 @@ function CreateBookingForm() {
               )}
             />
           </FormRowVertical>
+
           <FormRowVertical label="Check in - Check out dates">
             <Controller
               name="startDate"
               id="startDate"
-              rules={{
-                required: "Check in date is required",
-                validate: {
-                  isValidDate: (value) =>
-                    isValid(parseISO(value)) || "Invalid date",
-
-                  isFutureDate: (value) =>
-                    isBefore(value, startOfToday())
-                      ? "Check in cannot be before today"
-                      : true,
-                },
-              }}
+              rules={bookingValidation.startDate}
               control={control}
               render={({ field: { ref, value, onChange } }) => (
                 <input
@@ -689,43 +628,7 @@ function CreateBookingForm() {
             <Controller
               name="endDate"
               id="endDate"
-              rules={{
-                required: "Check out date is required",
-                validate: {
-                  isValidDate: (value) =>
-                    isValid(parseISO(value)) || "Invalid date",
-
-                  isAfterStartDate: (value) => {
-                    return (
-                      !isBefore(
-                        parseISO(value),
-                        parseISO(getValues("startDate"))
-                      ) || "Check out cannot be before check in"
-                    );
-                  },
-
-                  isSameDate: (value) => {
-                    return (
-                      parseISO(value).getTime() !==
-                        parseISO(getValues("startDate")).getTime() ||
-                      "Check out cannot be the same date as check in"
-                    );
-                  },
-                  isMinBookingLength: (value) => {
-                    return subtractDates(value, getValues("startDate")) >=
-                      settings?.minBookingLength
-                      ? true
-                      : `Minimum number of nights per booking is ${settings?.minBookingLength}`;
-                  },
-
-                  ismaxBookingLength: (value) => {
-                    return subtractDates(value, getValues("startDate")) <=
-                      settings?.maxBookingLength
-                      ? true
-                      : `Maximum number of nights per booking is ${settings?.maxBookingLength}`;
-                  },
-                },
-              }}
+              rules={bookingValidation.endDate}
               control={control}
               render={({ field: { ref, value, onChange } }) => (
                 <input
@@ -790,7 +693,7 @@ function CreateBookingForm() {
                 <Controller
                   name="guestId"
                   control={control}
-                  rules={{ required: "The booking must have a guest" }}
+                  rules={bookingValidation.guestId}
                   render={({ field: { ref, value, onChange } }) => (
                     <Select
                       ref={ref}
@@ -810,17 +713,7 @@ function CreateBookingForm() {
                 <Controller
                   name="numGuests"
                   control={control}
-                  rules={{
-                    required: "Number of guests is required",
-                    min: {
-                      value: 1,
-                      message: "Minimum number of guests must be 1",
-                    },
-                    max: {
-                      value: cabinInput?.maxCapacity,
-                      message: `Maximum number of guests must be ${cabinInput?.maxCapacity}`,
-                    },
-                  }}
+                  rules={bookingValidation.numGuests}
                   render={({ field: { ref, value, onChange } }) => (
                     <Select
                       ref={ref}

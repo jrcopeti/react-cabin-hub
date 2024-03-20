@@ -3,13 +3,13 @@ import { getBookingsByCabin } from "../../services/apiBookings";
 
 export function useGetBookingsByCabin(cabinId = null) {
   const {
-    isLoading,
-    data: bookings,
-    error,
+    isLoading: isLoadingBookedDates,
+    data: bookedDates,
+    error: errorBookedDates,
   } = useQuery({
     queryKey: ["bookings", cabinId],
     queryFn: () => getBookingsByCabin(cabinId),
   });
 
-  return { isLoading, bookings, error };
+  return { isLoadingBookedDates, bookedDates, errorBookedDates };
 }

@@ -33,8 +33,8 @@ const modalVariants = {
 
 const StyledModal = styled(motion.div)`
   position: fixed;
-  top: 5dvh;
-  left: 20dvw;
+  top: 10dvh;
+  left: 30dvw;
   max-width: max-content;
   z-index: 100;
   background-color: var(--color-grey-0);
