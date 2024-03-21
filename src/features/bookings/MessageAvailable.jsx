@@ -5,6 +5,7 @@ import { useEffect } from "react";
 
 import { motion, useAnimation } from "framer-motion";
 import { useDarkMode } from "../../hooks/useDarkMode";
+import { HiOutlineClock } from "react-icons/hi2";
 
 // props for the message component
 // const color = {
@@ -115,13 +116,22 @@ function MessageAvailable({ cabinIdInput, startDateInput, endDateInput }) {
     const textColor = colorMapping.theme[mode].textColor[color];
     const textShadowColor = colorMapping.theme[mode].textShadow[color];
 
-    controls.start({
-      scale: [1, 1.14, 1],
-      transition: { duration: 0.5, type: "tween" },
-      backgroundColor: backgroundColor,
-      color: textColor,
-      textShadow: textShadowColor,
-    });
+    if (Icon === HiOutlineClock) {
+      controls.start({
+        transition: { duration: 0.5, type: "tween" },
+        backgroundColor: backgroundColor,
+        color: textColor,
+        textShadow: textShadowColor,
+      });
+    } else {
+      controls.start({
+        scale: [1, 1.14, 1],
+        transition: { duration: 0.5, type: "tween" },
+        backgroundColor: backgroundColor,
+        color: textColor,
+        textShadow: textShadowColor,
+      });
+    }
 
     if (color === "grey") {
       iconControls.start({
@@ -134,6 +144,22 @@ function MessageAvailable({ cabinIdInput, startDateInput, endDateInput }) {
           repeat: Infinity,
           delay: 0.8,
           repeatDelay: 0.8,
+        },
+      });
+    }
+
+    if (color === "grey" && Icon === HiOutlineClock) {
+      iconControls.start({
+        scale: [1, 1.5],
+        rotate: [0, 360],
+
+        transition: {
+          type: "spring",
+          duration: 2,
+          repeat: Infinity,
+          delay: 0,
+          repeatDelay: 0.8,
+          stiffness: 60,
         },
       });
     }
