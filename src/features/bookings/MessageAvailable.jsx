@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { motion, useAnimation } from "framer-motion";
 import { useDarkMode } from "../../hooks/useDarkMode";
 
+
 // props for the message component
 // const color = {
 //   red: css`

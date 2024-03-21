@@ -122,8 +122,7 @@ function CreateBookingForm() {
 
   const { isAvailable } = availability;
 
-  const { range, setRange, footer, handleDayClick, handleResetRange } =
-    useDatePicker();
+  const { range, setRange, handleDayClick, handleResetRange } = useDatePicker();
 
   const { bookedDates, isLoadingBookedDates } = useGetBookingsByCabin(
     Number(cabinIdInput)
@@ -656,7 +655,7 @@ function CreateBookingForm() {
                   range?.to ? format(range?.to, "yyyy-MM-dd") : ""
                 );
               }}
-              footer={footer}
+              footer={<FooterDatePicker range={range} />}
             />
           </FormRowVertical>
 

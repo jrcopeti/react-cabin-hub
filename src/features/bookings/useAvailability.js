@@ -24,24 +24,6 @@ export function useAvailability(cabinId, startDate, endDate) {
 
   useEffect(() => {
     const checkAvailability = async () => {
-      if (!cabinId || !startDate || !endDate) {
-        return setAvailability({
-          isAvailable: false,
-          message: "Start by selecting a cabin",
-          color: "grey",
-          Icon: HiOutlineEllipsisHorizontalCircle,
-        });
-      }
-
-      if (cabinId && !startDate && !endDate) {
-        return setAvailability({
-          isAvailable: false,
-          message: "Please select a check in and a check out dates",
-          color: "grey",
-          Icon: HiOutlineEllipsisHorizontalCircle,
-        });
-      }
-
       if (cabinId && !startDate && endDate) {
         return setAvailability({
           isAvailable: false,
@@ -51,10 +33,28 @@ export function useAvailability(cabinId, startDate, endDate) {
         });
       }
 
+      if (cabinId && !startDate && !endDate) {
+        return setAvailability({
+          isAvailable: false,
+          message: "When do you want to check in?",
+          color: "grey",
+          Icon: HiOutlineEllipsisHorizontalCircle,
+        });
+      }
+
       if (cabinId && startDate && !endDate) {
         return setAvailability({
           isAvailable: false,
-          message: "Please select a check out date",
+          message: "Select a check out date",
+          color: "grey",
+          Icon: HiOutlineEllipsisHorizontalCircle,
+        });
+      }
+
+      if (!cabinId || !startDate || !endDate) {
+        return setAvailability({
+          isAvailable: false,
+          message: "Start selecting a cabin",
           color: "grey",
           Icon: HiOutlineEllipsisHorizontalCircle,
         });
@@ -85,7 +85,7 @@ export function useAvailability(cabinId, startDate, endDate) {
       if (parseISO(endDate).getTime() === parseISO(startDate).getTime()) {
         setAvailability({
           isAvailable: false,
-          message: "Check out cannot be the same date as check in",
+          message: "Check in and check out cannot be the same date",
           color: "red",
           Icon: HiOutlineXCircle,
         });
@@ -123,7 +123,7 @@ export function useAvailability(cabinId, startDate, endDate) {
         if (hasOverlap) {
           setAvailability({
             isAvailable: false,
-            message: "The cabin is already booked. Try different dates",
+            message: "The cabin is already booked. Please try different dates",
             color: "yellow",
             Icon: HiOutlineExclamationTriangle,
           });

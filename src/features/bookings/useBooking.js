@@ -3,7 +3,7 @@ import { getBooking } from "../../services/apiBookings";
 import { useParams } from "react-router-dom";
 
 export function useBooking() {
-  const {bookingId} = useParams();
+  const { bookingId } = useParams();
   const {
     isLoading,
     data: booking,
@@ -15,5 +15,4 @@ export function useBooking() {
   });
 
   return { isLoading, booking, error };
-
 }
