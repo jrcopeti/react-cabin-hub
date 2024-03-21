@@ -6,6 +6,7 @@ import {
   HiOutlineExclamationTriangle,
   HiOutlineXCircle,
   HiOutlineCheckCircle,
+  HiOutlineClock,
 } from "react-icons/hi2";
 import { useSettings } from "../settings/useSettings";
 import { subtractDates } from "../../utils/helpers";
@@ -16,6 +17,7 @@ export function useAvailability(cabinId, startDate, endDate) {
     message: "",
     color: "",
     Icon: null,
+    isLoading: true,
   };
 
   const [availability, setAvailability] = useState({ initialState });
@@ -24,6 +26,14 @@ export function useAvailability(cabinId, startDate, endDate) {
 
   useEffect(() => {
     const checkAvailability = async () => {
+      
+      setAvailability({
+        isAvailable: false,
+        message: "Checking if the cabin is available...",
+        color: "grey",
+        Icon: HiOutlineClock,
+      });
+
       if (cabinId && !startDate && endDate) {
         return setAvailability({
           isAvailable: false,
@@ -120,6 +130,7 @@ export function useAvailability(cabinId, startDate, endDate) {
           startDate,
           endDate
         );
+
         if (hasOverlap) {
           setAvailability({
             isAvailable: false,
