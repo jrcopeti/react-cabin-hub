@@ -26,7 +26,8 @@ export function useAvailability(cabinId, startDate, endDate) {
 
   useEffect(() => {
     const checkAvailability = async () => {
-      
+
+
       setAvailability({
         isAvailable: false,
         message: "Checking if the cabin is available...",
@@ -125,6 +126,8 @@ export function useAvailability(cabinId, startDate, endDate) {
       }
 
       try {
+        await new Promise((resolve) => setTimeout(resolve, 2000));
+
         const hasOverlap = await checkForOverlappingBookings(
           cabinId,
           startDate,

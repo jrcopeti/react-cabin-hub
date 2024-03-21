@@ -150,16 +150,17 @@ function MessageAvailable({ cabinIdInput, startDateInput, endDateInput }) {
 
     if (color === "grey" && Icon === HiOutlineClock) {
       iconControls.start({
-        scale: [1, 1.5],
+        scale: [1, 1.8],
         rotate: [0, 360],
+
 
         transition: {
           type: "spring",
           duration: 2,
           repeat: Infinity,
           delay: 0,
-          repeatDelay: 0.8,
-          stiffness: 60,
+          repeatDelay: 1,
+          stiffness: 70,
         },
       });
     }
@@ -183,11 +184,11 @@ function MessageAvailable({ cabinIdInput, startDateInput, endDateInput }) {
     if (color === "green") {
       iconControls.start({
         scale: [1, 1.7, 1.9],
-        rotate: [0, -360],
-        transition: { duration: 2, delay: 0.5, type: "spring", stiffness: 60 },
+        rotate: [0, 360],
+        transition: { duration: 2.5, delay: 0.5, type: "spring", stiffness: 60 },
       });
     }
-  }, [controls, iconControls, isDarkMode, color]);
+  }, [controls, iconControls, isDarkMode, color, Icon]);
 
   return (
     <FormRowVertical>
