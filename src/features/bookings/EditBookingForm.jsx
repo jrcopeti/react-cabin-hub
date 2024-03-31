@@ -300,12 +300,10 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
               name="cabinId"
               control={control}
               rules={bookingValidation.cabinId}
-              render={({ field: { ref, value, onChange } }) => (
+              render={({ field }) => (
                 <Select
-                  ref={ref}
+                  {...field}
                   options={cabinOptions}
-                  value={value}
-                  onChange={(e) => onChange(e.target.value)}
                   disabled={isUpdating}
                 />
               )}
@@ -321,28 +319,14 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
               id="startDate"
               rules={bookingValidation.startDate}
               control={control}
-              render={({ field: { ref, value, onChange } }) => (
-                <input
-                  type="hidden"
-                  ref={ref}
-                  onChange={(e) => onChange(e.target.value)}
-                  value={value || ""}
-                />
-              )}
+              render={({ field }) => <input {...field} type="hidden" />}
             />
             <Controller
               name="endDate"
               id="endDate"
               rules={bookingValidation.endDate}
               control={control}
-              render={({ field: { ref, value, onChange } }) => (
-                <input
-                  type="hidden"
-                  ref={ref}
-                  onChange={(e) => onChange(e.target.value)}
-                  value={value || ""}
-                />
-              )}
+              render={({ field }) => <input {...field} type="hidden" />}
             />
             <DayPicker
               mode="range"
@@ -378,12 +362,10 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
               name="guestId"
               control={control}
               rules={{ required: "The booking must have a guest" }}
-              render={({ field: { ref, value, onChange } }) => (
+              render={({ field }) => (
                 <Select
-                  ref={ref}
+                  {...field}
                   options={guestOptions}
-                  value={value}
-                  onChange={(e) => onChange(e.target.value)}
                   disabled={isUpdating}
                 />
               )}
@@ -395,12 +377,10 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
               name="numGuests"
               control={control}
               rules={bookingValidation.numGuests}
-              render={({ field: { ref, value, onChange } }) => (
+              render={({ field }) => (
                 <Select
-                  ref={ref}
+                  {...field}
                   options={numGuestOptions}
-                  value={value}
-                  onChange={(e) => onChange(e.target.value)}
                   disabled={isUpdating}
                 />
               )}
@@ -436,13 +416,8 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             <Controller
               control={control}
               name="hasBreakfast"
-              render={({ field: { onChange, value } }) => (
-                <Checkbox
-                  id="hasBreakfast"
-                  disabled={isUpdating}
-                  checked={value}
-                  onChange={(e) => onChange(e.target.checked)}
-                >
+              render={({ field }) => (
+                <Checkbox {...field} id="hasBreakfast" disabled={isUpdating}>
                   Includes breakfast?
                 </Checkbox>
               )}
@@ -451,13 +426,8 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             <Controller
               control={control}
               name="isPaid"
-              render={({ field: { onChange, value } }) => (
-                <Checkbox
-                  id="isPaid"
-                  disabled={isUpdating}
-                  checked={value}
-                  onChange={(e) => onChange(e.target.checked)}
-                >
+              render={({ field }) => (
+                <Checkbox {...field} id="isPaid" disabled={isUpdating}>
                   Was paid?
                 </Checkbox>
               )}
@@ -489,12 +459,10 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
               name="cabinId"
               control={control}
               rules={bookingValidation.cabinId}
-              render={({ field: { ref, value, onChange } }) => (
+              render={({ field }) => (
                 <Select
-                  ref={ref}
+                  {...field}
                   options={cabinOptions}
-                  value={value}
-                  onChange={(e) => onChange(e.target.value)}
                   disabled={isUpdating}
                 />
               )}
@@ -510,28 +478,14 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
               id="startDate"
               rules={bookingValidation.startDate}
               control={control}
-              render={({ field: { ref, value, onChange } }) => (
-                <input
-                  type="hidden"
-                  ref={ref}
-                  onChange={(e) => onChange(e.target.value)}
-                  value={value || ""}
-                />
-              )}
+              render={({ field }) => <input {...field} type="hidden" />}
             />
             <Controller
               name="endDate"
               id="endDate"
               rules={bookingValidation.endDate}
               control={control}
-              render={({ field: { ref, value, onChange } }) => (
-                <input
-                  type="hidden"
-                  ref={ref}
-                  onChange={(e) => onChange(e.target.value)}
-                  value={value || ""}
-                />
-              )}
+              render={({ field }) => <input {...field} type="hidden" />}
             />
             <DayPicker
               mode="range"
@@ -567,12 +521,10 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
               name="guestId"
               control={control}
               rules={bookingValidation.guestId}
-              render={({ field: { ref, value, onChange } }) => (
+              render={({ field }) => (
                 <Select
-                  ref={ref}
+                  {...field}
                   options={guestOptions}
-                  value={value}
-                  onChange={(e) => onChange(e.target.value)}
                   disabled={isUpdating}
                 />
               )}
@@ -587,12 +539,10 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
               name="numGuests"
               control={control}
               rules={bookingValidation.numGuests}
-              render={({ field: { ref, value, onChange } }) => (
+              render={({ field }) => (
                 <Select
-                  ref={ref}
+                  {...field}
                   options={numGuestOptions}
-                  value={value}
-                  onChange={(e) => onChange(e.target.value)}
                   disabled={isUpdating}
                 />
               )}
@@ -627,13 +577,8 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             <Controller
               control={control}
               name="hasBreakfast"
-              render={({ field: { onChange, value } }) => (
-                <Checkbox
-                  id="hasBreakfast"
-                  disabled={isUpdating}
-                  checked={value}
-                  onChange={(e) => onChange(e.target.checked)}
-                >
+              render={({ field }) => (
+                <Checkbox {...field} id="hasBreakfast" disabled={isUpdating}>
                   Includes breakfast?
                 </Checkbox>
               )}
@@ -642,13 +587,8 @@ function EditBookingForm({ onCloseModal, bookingToEdit = {} }) {
             <Controller
               control={control}
               name="isPaid"
-              render={({ field: { onChange, value } }) => (
-                <Checkbox
-                  id="isPaid"
-                  disabled={isUpdating}
-                  checked={value}
-                  onChange={(e) => onChange(e.target.checked)}
-                >
+              render={({ field }) => (
+                <Checkbox {...field} id="isPaid" disabled={isUpdating}>
                   Was paid?
                 </Checkbox>
               )}

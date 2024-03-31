@@ -138,12 +138,10 @@ function CreateGuestForm({ onCloseModal }) {
               name="nationality"
               control={control}
               rules={guestValidation.nationality}
-              render={({ field: { ref, value, onChange } }) => (
+              render={({ field }) => (
                 <Select
-                  ref={ref}
+                  {...field}
                   options={countriesOptionsNationality}
-                  value={value}
-                  onChange={(e) => onChange(e.target.value)}
                   disabled={isCreating}
                 />
               )}
@@ -208,12 +206,10 @@ function CreateGuestForm({ onCloseModal }) {
               name="nationality"
               control={control}
               rules={guestValidation}
-              render={({ field: { ref, value, onChange } }) => (
+              render={({ field }) => (
                 <Select
-                  ref={ref}
+                  {...field}
                   options={countriesOptionsNationality}
-                  value={value}
-                  onChange={(e) => onChange(e.target.value)}
                   disabled={isCreating}
                 />
               )}
@@ -231,7 +227,7 @@ function CreateGuestForm({ onCloseModal }) {
                 Cancel
               </Button>
               <Button disabled={isCreating} type="submit">
-                Update Guest
+                Add Guest
               </Button>
             </ButtonGroup>
           </FormRowVertical>
