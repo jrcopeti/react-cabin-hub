@@ -114,6 +114,9 @@ function CreateBookingForm() {
   const startDateInput = watch("startDate");
   const endDateInput = watch("endDate");
 
+  console.log("startDateInput", startDateInput);
+  console.log("endDateInput", endDateInput);
+
   const { availability } = useAvailability(
     cabinIdInput,
     startDateInput,
@@ -516,15 +519,16 @@ function CreateBookingForm() {
                 <Input disabled value={formatCurrency(totalPriceInput)} />
               </FormRow>
 
-              <FormRow>
+              <FormRowVertical>
                 <Controller
                   control={control}
                   name="hasBreakfast"
-                  render={({ field }) => (
+                  render={({ field: { onChange, value } }) => (
                     <Checkbox
-                      {...field}
                       id="hasBreakfast"
                       disabled={isCreating}
+                      checked={value}
+                      onChange={(e) => onChange(e.target.checked)}
                     >
                       Includes breakfast?
                     </Checkbox>
@@ -534,13 +538,18 @@ function CreateBookingForm() {
                 <Controller
                   control={control}
                   name="isPaid"
-                  render={({ field }) => (
-                    <Checkbox {...field} id="isPaid" disabled={isCreating}>
+                  render={({ field: { onChange, value } }) => (
+                    <Checkbox
+                      id="isPaid"
+                      disabled={isCreating}
+                      checked={value}
+                      onChange={(e) => onChange(e.target.checked)}
+                    >
                       Was paid?
                     </Checkbox>
                   )}
                 />
-              </FormRow>
+              </FormRowVertical>
 
               <FormRow>
                 <ButtonGroup>
@@ -707,11 +716,12 @@ function CreateBookingForm() {
                 <Controller
                   control={control}
                   name="hasBreakfast"
-                  render={({ field }) => (
+                  render={({ field: { onChange, value } }) => (
                     <Checkbox
-                      {...field}
                       id="hasBreakfast"
                       disabled={isCreating}
+                      checked={value}
+                      onChange={(e) => onChange(e.target.checked)}
                     >
                       Includes breakfast?
                     </Checkbox>
@@ -721,8 +731,13 @@ function CreateBookingForm() {
                 <Controller
                   control={control}
                   name="isPaid"
-                  render={({ field }) => (
-                    <Checkbox {...field} id="isPaid" disabled={isCreating}>
+                  render={({ field: { onChange, value } }) => (
+                    <Checkbox
+                      id="isPaid"
+                      disabled={isCreating}
+                      checked={value}
+                      onChange={(e) => onChange(e.target.checked)}
+                    >
                       Was paid?
                     </Checkbox>
                   )}
