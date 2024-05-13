@@ -2,7 +2,7 @@
 
 https://cabinhub.vercel.app/
 
-![Screenshot](/public/screenshot.png)
+![Screenshot](/public/screenshots/desktop/1.png)
 
 Cabin Hub is a full-stack application designed to manage the operations of hotel rooms or cabin rentals. This application offers a wide range of features to manage bookings, guests, cabins, and much more, providing a one-stop solution for property managers to optimize their workflow and enhance guest experiences.
 
@@ -41,3 +41,26 @@ The application is designed with a focus on reusability, scalability, and perfor
 - **Responsive Design**: Fully responsive design to ensure compatibility across devices.
 - **Framer Motion**: To sprinkle some joy with animations.
 
+## Desktop View - Dark Mode
+
+![Desktop View](/public/screenshots/desktop/1.png)
+![Desktop View](/public/screenshots/desktop/2.png)
+![Desktop View](/public/screenshots/desktop/3.png)
+![Desktop View](/public/screenshots/desktop/4.png)
+![Desktop View](/public/screenshots/desktop/5.png)
+![Desktop View](/public/screenshots/desktop/6.png)
+![Desktop View](/public/screenshots/desktop/7.png)
+![Desktop View](/public/screenshots/desktop/8.png)
+![Desktop View](/public/screenshots/desktop/9.png)
+
+## Mobile View - Light Mode
+![Mobile View](/public/screenshots/mobile/1a.png)
+![Mobile View](/public/screenshots/mobile/2.png)
+![Mobile View](/public/screenshots/mobile/3.png)
+![Mobile View](/public/screenshots/mobile/4.png)
+![Mobile View](/public/screenshots/mobile/5.png)
+![Mobile View](/public/screenshots/mobile/6.png)
+![Mobile View](/public/screenshots/mobile/7.png)
+![Mobile View](/public/screenshots/mobile/8.png)
+![Mobile View](/public/screenshots/mobile/10.png)
+![Mobile View](/public/screenshots/mobile/9.png)
