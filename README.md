@@ -54,6 +54,7 @@ The application is designed with a focus on reusability, scalability, and perfor
 ![Desktop View](/public/screenshots/desktop/9.png)
 
 ## Mobile View - Light Mode
+
 ![Mobile View](/public/screenshots/mobile/1a.png)
 ![Mobile View](/public/screenshots/mobile/2.png)
 ![Mobile View](/public/screenshots/mobile/3.png)
@@ -61,6 +62,5 @@ The application is designed with a focus on reusability, scalability, and perfor
 ![Mobile View](/public/screenshots/mobile/5.png)
 ![Mobile View](/public/screenshots/mobile/6.png)
 ![Mobile View](/public/screenshots/mobile/7.png)
-![Mobile View](/public/screenshots/mobile/8.png)
 ![Mobile View](/public/screenshots/mobile/10.png)
 ![Mobile View](/public/screenshots/mobile/9.png)
