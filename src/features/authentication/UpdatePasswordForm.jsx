@@ -71,7 +71,7 @@ function UpdatePasswordForm() {
             type="password"
             autoComplete="new-password"
             id="passwordConfirm"
-            disabled={isUpdating}
+            disabled={true}
             {...register("passwordConfirm", {
               required: "This field is required",
               validate: (value) =>
@@ -84,7 +84,7 @@ function UpdatePasswordForm() {
             <Button onClick={reset} type="reset" variation="secondary">
               Cancel
             </Button>
-            <Button disabled={isUpdating}>Update password</Button>
+            <Button disabled={true}>Update password</Button>
           </ButtonGroup>
         </FormRow>
       </Form>
